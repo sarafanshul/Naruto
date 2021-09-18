@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Naruto</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="character">Characters</string>
+    <string name="locations">Locations</string>
+    <string name="episodes">Episodes</string>
+</resources>

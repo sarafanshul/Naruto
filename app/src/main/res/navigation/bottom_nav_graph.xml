@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/bottom_nav_graph"
+    app:startDestination="@id/characterListFragment">
+
+    <fragment
+        android:id="@+id/episodeListFragment"
+        android:name="com.projectdelta.naruto.ui.main.episode.EpisodeListFragment"
+        android:label="fragment_episode_list"
+        tools:layout="@layout/fragment_episode_list" />
+    <fragment
+        android:id="@+id/locationListFragment"
+        android:name="com.projectdelta.naruto.ui.main.location.LocationListFragment"
+        android:label="fragment_location_list"
+        tools:layout="@layout/fragment_location_list" />
+    <fragment
+        android:id="@+id/characterListFragment"
+        android:name="com.projectdelta.naruto.ui.main.character.CharacterListFragment"
+        android:label="fragment_character_list"
+        tools:layout="@layout/fragment_character_list" />
+</navigation>
