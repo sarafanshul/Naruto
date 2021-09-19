@@ -14,6 +14,6 @@ interface ChapterApi {
 	@GET(CHAPTER_URL + SUB_URL_SORTED)
 	suspend fun getChapterSortedPaged(
 		@Query(QUERY_PAGE) pageNumber: Int
-	): ApiResult<PageResult<Chapter>>
+	): ApiResult<PageResult<Chapter?>>
 
 }

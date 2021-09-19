@@ -28,7 +28,7 @@ class CharacterListFragment : BaseViewBindingFragment<FragmentCharacterListBindi
 
 	private val viewModel : CharacterViewModel by activityViewModels()
 
-	lateinit var adapter: CharacterListAdapter
+	private lateinit var adapter: CharacterListAdapter
 
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)

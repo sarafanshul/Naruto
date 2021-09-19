@@ -3,6 +3,7 @@ package com.projectdelta.naruto.data.remote
 import com.projectdelta.naruto.data.model.entity.character.Character
 import com.projectdelta.naruto.util.networking.ApiConstants
 import com.projectdelta.naruto.util.networking.ApiConstants.CHARACTER_URL
+import com.projectdelta.naruto.util.networking.ApiConstants.QUERY_PAGE
 import com.projectdelta.naruto.util.networking.ApiConstants.SUB_URL_POWER
 import com.projectdelta.naruto.util.networking.ApiResult
 import com.projectdelta.naruto.util.networking.page.PageResult
@@ -20,6 +21,6 @@ interface CharacterApi {
 	 */
 	@GET(CHARACTER_URL + SUB_URL_POWER)
 	suspend fun getCharactersSortedByPower(
-		@Query(ApiConstants.QUERY_PAGE) pageNumber: Int
+		@Query(QUERY_PAGE) pageNumber: Int
 	):ApiResult<PageResult<Character?>>
 }

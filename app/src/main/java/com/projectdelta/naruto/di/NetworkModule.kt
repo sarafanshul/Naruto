@@ -2,6 +2,7 @@ package com.projectdelta.naruto.di
 
 import com.projectdelta.naruto.data.remote.ChapterApi
 import com.projectdelta.naruto.data.remote.CharacterApi
+import com.projectdelta.naruto.data.remote.VillageApi
 import com.projectdelta.naruto.util.Constants.CONNECTION_TIMEOUT
 import com.projectdelta.naruto.util.Constants.READ_TIMEOUT
 import com.projectdelta.naruto.util.Constants.WRITE_TIMEOUT
@@ -56,6 +57,14 @@ object NetworkModule {
 		return retrofitBuilder
 			.build()
 			.create(CharacterApi::class.java)
+	}
+
+	@Singleton
+	@Provides
+	fun provideVillageApiService(retrofitBuilder: Retrofit.Builder): VillageApi {
+		return retrofitBuilder
+			.build()
+			.create(VillageApi::class.java)
 	}
 
 }
