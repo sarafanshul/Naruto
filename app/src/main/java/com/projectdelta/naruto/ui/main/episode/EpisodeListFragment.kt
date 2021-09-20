@@ -10,9 +10,12 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.projectdelta.naruto.databinding.FragmentEpisodeListBinding
 import com.projectdelta.naruto.ui.base.BaseViewBindingFragment
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 @AndroidEntryPoint
 class EpisodeListFragment : BaseViewBindingFragment<FragmentEpisodeListBinding>() {
@@ -25,6 +28,8 @@ class EpisodeListFragment : BaseViewBindingFragment<FragmentEpisodeListBinding>(
 	private val viewModel : EpisodeViewModel by activityViewModels()
 
 	private lateinit var adapter : EpisodeListAdapter
+
+	private var job : Job? = null
 
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
@@ -53,11 +58,16 @@ class EpisodeListFragment : BaseViewBindingFragment<FragmentEpisodeListBinding>(
 
 		binding.episodeRv.adapter = adapter
 
-		viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO){
+		job = viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
 			viewModel.getChapterSortedPaged().collectLatest { episodes ->
 				adapter.submitData(episodes)
 			}
 		}
+	}
+
+	override fun onDestroy() {
+		super.onDestroy()
+		job?.cancel()
 	}
 
 }

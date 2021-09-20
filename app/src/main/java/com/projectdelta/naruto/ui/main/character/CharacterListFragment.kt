@@ -7,14 +7,10 @@ import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.projectdelta.naruto.data.model.entity.character.Character
 import com.projectdelta.naruto.databinding.FragmentCharacterListBinding
 import com.projectdelta.naruto.ui.base.BaseViewBindingFragment
-import com.projectdelta.naruto.util.networking.ApiResult
-import com.projectdelta.naruto.util.networking.page.PageResult
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
 import timber.log.Timber
 
@@ -29,6 +25,8 @@ class CharacterListFragment : BaseViewBindingFragment<FragmentCharacterListBindi
 	private val viewModel : CharacterViewModel by activityViewModels()
 
 	private lateinit var adapter: CharacterListAdapter
+
+	private var job : Job? = null
 
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
@@ -57,10 +55,15 @@ class CharacterListFragment : BaseViewBindingFragment<FragmentCharacterListBindi
 
 		binding.characterRv.adapter = adapter
 
-		viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
+		job = viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
 			viewModel.characterDataByPowerPaged().collectLatest { characters ->
 				adapter.submitData( characters )
 			}
 		}
+	}
+
+	override fun onDestroy() {
+		super.onDestroy()
+		job?.cancel()
 	}
 }

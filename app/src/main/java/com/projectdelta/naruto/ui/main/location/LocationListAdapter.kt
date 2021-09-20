@@ -3,33 +3,22 @@ package com.projectdelta.naruto.ui.main.location
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.projectdelta.naruto.data.model.entity.location.Village
 import com.projectdelta.naruto.databinding.LocationItemBinding
+import com.projectdelta.naruto.util.callback.BaseModelDiffUtilCallback
+import com.projectdelta.naruto.util.system.lang.isOk
 
 class LocationListAdapter :
-	PagingDataAdapter<Village ,LocationListAdapter.LayoutViewHolder>(DIFF_CALLBACK){
-
-	companion object{
-		private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<Village>(){
-			override fun areItemsTheSame(oldItem: Village, newItem: Village): Boolean {
-				return oldItem.id == newItem.id
-			}
-
-			override fun areContentsTheSame(oldItem: Village, newItem: Village): Boolean {
-				return oldItem == newItem
-			}
-		}
-	}
+	PagingDataAdapter<Village ,LocationListAdapter.LayoutViewHolder>(BaseModelDiffUtilCallback()){
 
 	inner class LayoutViewHolder(
 		private val binding : LocationItemBinding
 	) : RecyclerView.ViewHolder(binding.root){
 
-		fun bind(episode : Village){
+		fun bind(location : Village){
 			with(binding){
-				twCharName.text = episode.name?.english ?: "test not found"
+				twName.text = if (location.name?.english.isOk()) location.name?.english else "test not found"
 			}
 		}
 

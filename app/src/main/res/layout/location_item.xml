@@ -6,7 +6,7 @@
     <com.google.android.material.textview.MaterialTextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/tw_char_name"
+        android:id="@+id/tw_name"
         android:textColor="@color/teal_700"
         android:textSize="20sp"/>
 

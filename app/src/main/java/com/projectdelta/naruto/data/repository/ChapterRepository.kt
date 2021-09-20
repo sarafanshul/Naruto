@@ -8,8 +8,8 @@ import com.projectdelta.naruto.data.model.entity.character.Character
 import com.projectdelta.naruto.data.remote.ChapterApi
 import com.projectdelta.naruto.data.repository.init.InitManager
 import com.projectdelta.naruto.util.networking.ApiResult
-import com.projectdelta.naruto.util.networking.page.ChapterPagingSource
 import com.projectdelta.naruto.util.networking.page.PageResult
+import com.projectdelta.naruto.util.networking.page.PagingSource
 import kotlinx.coroutines.flow.Flow
 import timber.log.Timber
 import javax.inject.Inject
@@ -34,7 +34,7 @@ class ChapterRepository @Inject constructor(
 				enablePlaceholders = false
 			) ,
 			pagingSourceFactory = {
-				ChapterPagingSource(endPoint = { x : Int ->
+				PagingSource(endPoint = { x : Int ->
 					chapterApi.getChapterSortedPaged(x)
 				})
 			}

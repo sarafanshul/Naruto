@@ -1,4 +1,4 @@
-package com.projectdelta.naruto.util
+package com.projectdelta.naruto.util.callback
 
 /**
  * A simple callback to execute something after a function is called

@@ -1,9 +1,10 @@
 package com.projectdelta.naruto.data.model.entity.character
 
+import com.projectdelta.naruto.data.model.entity.BaseModel
 import java.io.Serializable
 
 data class Character(
-	val id: String? = null,
+	override var id: String,
 	val name: CharName? = null,
 	val description: String? = null,
 	val images: List<String>? = null,
@@ -17,4 +18,4 @@ data class Character(
 	val jutsus: List<String>? = null,
 	val tools: List<String>? = null,
 	val databooks: List<CharDatabook>? = null,
-) : Serializable
+) : BaseModel(), Serializable

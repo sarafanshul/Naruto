@@ -1,9 +1,10 @@
 package com.projectdelta.naruto.data.model.entity.chapter
 
+import com.projectdelta.naruto.data.model.entity.BaseModel
 import java.io.Serializable
 
 data class Chapter(
-	val id: String? = null,
+	override var id: String,
 	val name: ChapterName? = null,
 	val episode: ChapterEpisode? = null,
 	val description: String? = null,
@@ -12,7 +13,7 @@ data class Chapter(
 	val manga: ChapterManga? = null,
 	val music: ChapterMusic? = null,
 	val date: ChapterAirDate? = null,
-) : Serializable {
+) : BaseModel() , Serializable {
 
 	companion object {
 		private const val serialVersionUID = 1L

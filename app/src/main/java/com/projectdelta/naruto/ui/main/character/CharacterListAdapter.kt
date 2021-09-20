@@ -3,25 +3,14 @@ package com.projectdelta.naruto.ui.main.character
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.projectdelta.naruto.data.model.entity.character.Character
 import com.projectdelta.naruto.databinding.CharacterItemBinding
+import com.projectdelta.naruto.util.callback.BaseModelDiffUtilCallback
+import com.projectdelta.naruto.util.system.lang.isOk
 
 class CharacterListAdapter :
-	PagingDataAdapter<Character ,CharacterListAdapter.LayoutViewHolder>(DIFF_CALLBACK) {
-
-	companion object{
-		private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<Character>(){
-			override fun areItemsTheSame(oldItem: Character, newItem: Character): Boolean {
-				return oldItem.id == newItem.id
-			}
-
-			override fun areContentsTheSame(oldItem: Character, newItem: Character): Boolean {
-				return oldItem == newItem
-			}
-		}
-	}
+	PagingDataAdapter<Character ,CharacterListAdapter.LayoutViewHolder>(BaseModelDiffUtilCallback()) {
 
 	inner class LayoutViewHolder(
 		private val binding : CharacterItemBinding
@@ -29,7 +18,7 @@ class CharacterListAdapter :
 
 		fun bind(character: Character){
 			with(binding){
-				twCharName.text = character.name?.english ?: "test not found" // use isOk here //
+				twName.text = if (character.name?.english.isOk()) character.name?.english else "test not found"
 			}
 		}
 

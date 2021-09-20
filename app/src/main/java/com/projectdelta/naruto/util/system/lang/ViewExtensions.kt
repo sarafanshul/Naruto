@@ -13,7 +13,7 @@ import android.widget.EditText
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.projectdelta.naruto.util.Constants.CLICK_COLOR_CHANGE_TIME
-import com.projectdelta.naruto.util.TodoCallback
+import com.projectdelta.naruto.util.callback.TodoCallback
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch

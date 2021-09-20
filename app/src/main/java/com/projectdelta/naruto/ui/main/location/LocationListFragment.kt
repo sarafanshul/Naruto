@@ -11,6 +11,7 @@ import com.projectdelta.naruto.databinding.FragmentLocationListBinding
 import com.projectdelta.naruto.ui.base.BaseViewBindingFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -25,6 +26,8 @@ class LocationListFragment : BaseViewBindingFragment<FragmentLocationListBinding
 	private val viewModel : LocationViewModel by activityViewModels()
 
 	private lateinit var adapter : LocationListAdapter
+
+	private var job : Job? = null
 
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
@@ -50,11 +53,16 @@ class LocationListFragment : BaseViewBindingFragment<FragmentLocationListBinding
 		binding.locationRv.layoutManager = LinearLayoutManager(requireActivity())
 
 		binding.locationRv.adapter = adapter
-		viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO){
+		job = viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO){
 			viewModel.getLocationPaged().collectLatest { villages ->
 				adapter.submitData(villages)
 			}
 		}
+	}
+
+	override fun onDestroy() {
+		super.onDestroy()
+		job?.cancel()
 	}
 
 }
