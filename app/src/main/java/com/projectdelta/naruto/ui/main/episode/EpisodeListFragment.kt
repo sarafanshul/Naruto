@@ -33,14 +33,11 @@ class EpisodeListFragment : BaseViewBindingFragment<FragmentEpisodeListBinding>(
 
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
+		// Access viewModel so that it gets initialized on the main thread
 		viewModel
 	}
 
-	override fun onCreateView(
-		inflater: LayoutInflater,
-		container: ViewGroup?,
-		savedInstanceState: Bundle?
-	): View {
+	override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
 		_binding = FragmentEpisodeListBinding.inflate(layoutInflater)
 		return binding.root
 	}
@@ -57,7 +54,6 @@ class EpisodeListFragment : BaseViewBindingFragment<FragmentEpisodeListBinding>(
 		binding.episodeRv.layoutManager = LinearLayoutManager(requireActivity())
 
 		binding.episodeRv.adapter = adapter
-
 		job = viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
 			viewModel.getChapterSortedPaged().collectLatest { episodes ->
 				adapter.submitData(episodes)
@@ -66,8 +62,10 @@ class EpisodeListFragment : BaseViewBindingFragment<FragmentEpisodeListBinding>(
 	}
 
 	override fun onDestroy() {
-		super.onDestroy()
 		job?.cancel()
+		if(_binding != null)
+			binding.episodeRv.adapter = null
+		super.onDestroy()
 	}
 
 }

@@ -1,6 +1,7 @@
 package com.projectdelta.naruto.ui.main
 
 import android.os.Bundle
+import android.view.View
 import androidx.activity.viewModels
 import androidx.navigation.NavDestination
 import androidx.navigation.findNavController
@@ -9,6 +10,7 @@ import com.projectdelta.naruto.R
 import com.projectdelta.naruto.databinding.ActivityMainBinding
 import com.projectdelta.naruto.ui.base.BaseViewBindingActivity
 import dagger.hilt.android.AndroidEntryPoint
+import timber.log.Timber
 
 @AndroidEntryPoint
 class MainActivity : BaseViewBindingActivity<ActivityMainBinding>() {
@@ -24,6 +26,8 @@ class MainActivity : BaseViewBindingActivity<ActivityMainBinding>() {
 
 		setupNavController()
 
+		initUI()
+
 	}
 
 	private fun setupNavController() {
@@ -33,5 +37,18 @@ class MainActivity : BaseViewBindingActivity<ActivityMainBinding>() {
 		navController.addOnDestinationChangedListener { _, destination: NavDestination, _ ->
 			// TODO(IMPL)
 		}
+	}
+
+
+	private fun initUI() {
+		connectivityManager.isNetworkAvailable.observe(this , { coms ->
+			when( coms ){
+				true -> binding.connectionTv.visibility = View.GONE
+				false -> {
+					binding.connectionTv.visibility = View.VISIBLE
+					Timber.w("No Internet connection!")
+				}
+			}
+		})
 	}
 }

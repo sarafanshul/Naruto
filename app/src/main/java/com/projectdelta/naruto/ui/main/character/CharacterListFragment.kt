@@ -34,9 +34,7 @@ class CharacterListFragment : BaseViewBindingFragment<FragmentCharacterListBindi
 		viewModel
 	}
 
-	override fun onCreateView(
-		inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
-	): View {
+	override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
 		_binding = FragmentCharacterListBinding.inflate(layoutInflater)
 		return binding.root
 	}
@@ -63,7 +61,9 @@ class CharacterListFragment : BaseViewBindingFragment<FragmentCharacterListBindi
 	}
 
 	override fun onDestroy() {
-		super.onDestroy()
 		job?.cancel()
+		if(_binding != null)
+			binding.characterRv.adapter = null
+		super.onDestroy()
 	}
 }

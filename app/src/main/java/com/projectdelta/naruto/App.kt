@@ -3,6 +3,7 @@ package com.projectdelta.naruto
 import android.app.Application
 import android.os.Build
 import android.os.StrictMode
+import com.projectdelta.naruto.util.CustomDebugTree
 import dagger.hilt.android.HiltAndroidApp
 import timber.log.Timber
 
@@ -15,7 +16,7 @@ open class App : Application() {
 		setupTheme()
 
 		if (BuildConfig.DEBUG)
-			Timber.plant(Timber.DebugTree())
+			Timber.plant(CustomDebugTree())
 
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
 			setupStrictMode()

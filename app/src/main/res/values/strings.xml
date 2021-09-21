@@ -5,4 +5,5 @@
     <string name="character">Characters</string>
     <string name="locations">Locations</string>
     <string name="episodes">Episodes</string>
+    <string name="no_connection">No Internet Connection</string>
 </resources>

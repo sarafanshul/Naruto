@@ -4,7 +4,25 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:animateLayoutChanges="true"
     tools:context=".ui.main.MainActivity">
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/connection_tv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?colorError"
+        android:fontFamily="sans-serif-light"
+        android:gravity="center"
+        android:paddingVertical="@dimen/base_padding"
+        android:text="@string/no_connection"
+        android:textColor="@color/white"
+        android:textSize="@dimen/connection_status_bar_text_size"
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <fragment
         android:id="@+id/nav_host_fragment"
@@ -14,8 +32,9 @@
         app:defaultNavHost="true"
         app:layout_constraintBottom_toTopOf="@id/bottom_panel"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/connection_tv"
         app:navGraph="@navigation/bottom_nav_graph"
         tools:ignore="FragmentTagUsage" />
 
@@ -26,9 +45,9 @@
         android:layout_gravity="bottom"
         android:background="?colorError"
         app:hideOnScroll="true"
-        app:labelVisibilityMode="selected"
         app:itemIconTint="@drawable/navigation_view_selector"
         app:itemTextColor="@color/white"
+        app:labelVisibilityMode="selected"
         app:layout_behavior="com.google.android.material.behavior.HideBottomViewOnScrollBehavior"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

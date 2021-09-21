@@ -31,13 +31,11 @@ class LocationListFragment : BaseViewBindingFragment<FragmentLocationListBinding
 
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
+		// Access viewModel so that it gets initialized on the main thread
 		viewModel
 	}
 
-	override fun onCreateView(
-		inflater: LayoutInflater, container: ViewGroup?,
-		savedInstanceState: Bundle?
-	): View {
+	override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
 		_binding = FragmentLocationListBinding.inflate(layoutInflater)
 		return binding.root
 	}
@@ -61,8 +59,10 @@ class LocationListFragment : BaseViewBindingFragment<FragmentLocationListBinding
 	}
 
 	override fun onDestroy() {
-		super.onDestroy()
 		job?.cancel()
+		if(_binding != null)
+			binding.locationRv.adapter = null
+		super.onDestroy()
 	}
 
 }

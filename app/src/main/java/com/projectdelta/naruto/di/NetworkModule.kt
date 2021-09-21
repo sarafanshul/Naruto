@@ -1,5 +1,6 @@
 package com.projectdelta.naruto.di
 
+import android.app.Application
 import com.projectdelta.naruto.data.remote.ChapterApi
 import com.projectdelta.naruto.data.remote.CharacterApi
 import com.projectdelta.naruto.data.remote.VillageApi
@@ -8,8 +9,11 @@ import com.projectdelta.naruto.util.Constants.READ_TIMEOUT
 import com.projectdelta.naruto.util.Constants.WRITE_TIMEOUT
 import com.projectdelta.naruto.util.networking.ApiConstants.BASE_URL
 import com.projectdelta.naruto.util.networking.ApiResultCallAdapterFactory
+import com.projectdelta.naruto.util.networking.connectivity.ConnectivityManager
+import com.projectdelta.naruto.util.networking.connectivity.ConnectivityManagerImpl
 import dagger.Module
 import dagger.Provides
+import dagger.hilt.EntryPoint
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
@@ -21,6 +25,19 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object NetworkModule {
+
+	@Singleton
+	@Provides
+	fun provideConnectivityManager(application: Application): ConnectivityManager{
+		return ConnectivityManagerImpl(application)
+	}
+
+	@EntryPoint
+	@Singleton
+	@InstallIn(SingletonComponent::class)
+	interface ConnectivityManagerProviderEntryPoint{
+		fun connectivityManager() : ConnectivityManager
+	}
 
 	@Singleton
 	@Provides
