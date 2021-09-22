@@ -25,7 +25,7 @@ class CharacterViewModel @Inject constructor(
 		emit(response)
 	}.flowOn(Dispatchers.IO)
 
-	var characterDataByPowerPagedData :  Flow<PagingData<Character>>? = null
+	private var characterDataByPowerPagedData :  Flow<PagingData<Character>>? = null
 	fun characterDataByPowerPaged():Flow<PagingData<Character>> {
 		if( characterDataByPowerPagedData == null )
 			characterDataByPowerPagedData = repository

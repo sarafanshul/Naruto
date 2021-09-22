@@ -9,6 +9,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.projectdelta.naruto.databinding.FragmentLocationListBinding
 import com.projectdelta.naruto.ui.base.BaseViewBindingFragment
+import com.projectdelta.naruto.ui.main.MainActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -25,7 +26,7 @@ class LocationListFragment : BaseViewBindingFragment<FragmentLocationListBinding
 
 	private val viewModel : LocationViewModel by activityViewModels()
 
-	private lateinit var adapter : LocationListAdapter
+	private var adapter : LocationListAdapter? = null
 
 	private var job : Job? = null
 
@@ -53,13 +54,23 @@ class LocationListFragment : BaseViewBindingFragment<FragmentLocationListBinding
 		binding.locationRv.adapter = adapter
 		job = viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO){
 			viewModel.getLocationPaged().collectLatest { villages ->
-				adapter.submitData(villages)
+				adapter?.submitData(villages)
 			}
 		}
+
+		(requireActivity() as MainActivity).connectivityManager.isNetworkAvailable.observe(viewLifecycleOwner , connectionWatcher@{ x ->
+			when(x){
+				true -> {
+					adapter?.retry()
+				}
+				false -> { }
+			}
+		})
 	}
 
 	override fun onDestroy() {
 		job?.cancel()
+		adapter = null
 		if(_binding != null)
 			binding.locationRv.adapter = null
 		super.onDestroy()

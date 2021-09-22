@@ -12,12 +12,16 @@ import com.projectdelta.naruto.util.networking.ApiResult
  * and [that](https://medium.com/swlh/paging3-recyclerview-pagination-made-easy-333c7dfa8797)
  * for how to implement from scratch
  *
- * - Update 20-09 00:42 - changed params from service to a particular endpoint, because **if it works**
+ * - *Update 20-09 00:42* - changed params from service to a particular endpoint, because **if it works**
  * we don't have to create a new PagingSource for every new page endpoint.
  *
- * - Update 20-09 17:02 - changed the implementation for [PagingSource] to support generics hence
+ * - *Update 20-09 17:02* - changed the implementation for [PagingSource] to support generics hence
  * we don't have to define a custom paging source for different Documents , for now it supports all
  * subclasses of [BaseModel].
+ *
+ * - *Update 22-09 13:01* - now [PagingSource.load] returns a [PagingSource.LoadResult.Error] when encounters a [ApiResult.NetworkError] ,
+ * [ApiResult.Failure] and [ApiResult.Empty] are still grouped together and returns `nextKey = null`
+ * because we can get a empty page from service i.e [PageResult.content] can be null if [PageResult.last] is true
  *
  * @param T generic for type of document needed.
  * @param endPoint a suspend HTTP request endpoint
@@ -39,6 +43,11 @@ class PagingSource<T: BaseModel> (
 			is ApiResult.Success -> {
 				nextKey = pageIndex + 1
 				responseData.addAll(responsePageable.data.content.filterNotNull())
+			}
+			is ApiResult.NetworkError -> {
+				return LoadResult.Error(
+					Throwable("No network connection!")
+				)
 			}
 			else -> {
 				nextKey = null

@@ -6,4 +6,11 @@
     <string name="locations">Locations</string>
     <string name="episodes">Episodes</string>
     <string name="no_connection">No Internet Connection</string>
+    <string name="item_image_description">Item Image</string>
+    <string name="tv_item_name">Item Name</string>
+    <string name="tv_item_gender">Sex:</string>
+    <string name="tv_item_status">Status:</string>
+    <string name="tv_item_debut">Debut:</string>
+    <string name="tv_item_kanji">Kanji:</string>
+    <string name="not_found">NA</string>
 </resources>

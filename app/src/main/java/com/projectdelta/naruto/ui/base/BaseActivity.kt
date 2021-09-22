@@ -20,7 +20,7 @@ abstract class BaseActivity : AppCompatActivity() {
 		)
 	}
 
-	protected lateinit var connectivityManager : ConnectivityManager
+	lateinit var connectivityManager : ConnectivityManager
 
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)

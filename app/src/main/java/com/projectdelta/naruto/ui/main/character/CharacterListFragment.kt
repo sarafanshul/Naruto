@@ -4,15 +4,22 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.cardview.widget.CardView
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.card.MaterialCardView
+import com.projectdelta.naruto.data.model.entity.BaseModel
+import com.projectdelta.naruto.data.model.entity.character.Character
 import com.projectdelta.naruto.databinding.FragmentCharacterListBinding
 import com.projectdelta.naruto.ui.base.BaseViewBindingFragment
+import com.projectdelta.naruto.ui.main.MainActivity
+import com.projectdelta.naruto.util.callback.BaseModelItemClickCallback
+import com.projectdelta.naruto.util.system.lang.toast
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.collectLatest
-import timber.log.Timber
+
 
 @AndroidEntryPoint
 class CharacterListFragment : BaseViewBindingFragment<FragmentCharacterListBinding>() {
@@ -24,7 +31,7 @@ class CharacterListFragment : BaseViewBindingFragment<FragmentCharacterListBindi
 
 	private val viewModel : CharacterViewModel by activityViewModels()
 
-	private lateinit var adapter: CharacterListAdapter
+	private var adapter: CharacterListAdapter? = null
 
 	private var job : Job? = null
 
@@ -48,20 +55,40 @@ class CharacterListFragment : BaseViewBindingFragment<FragmentCharacterListBindi
 	}
 
 	private fun initUI() {
-		adapter = CharacterListAdapter()
+		adapter = CharacterListAdapter( object : BaseModelItemClickCallback{
+			override fun onItemClick(item: BaseModel, itemCard: CardView) {
+				navigateCharacterDetail(item as Character, itemCard as MaterialCardView)
+			}
+		} )
 		binding.characterRv.layoutManager = LinearLayoutManager(requireActivity())
 
 		binding.characterRv.adapter = adapter
 
 		job = viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
 			viewModel.characterDataByPowerPaged().collectLatest { characters ->
-				adapter.submitData( characters )
+				adapter?.submitData( characters )
 			}
 		}
+
+		(requireActivity() as MainActivity).connectivityManager.isNetworkAvailable.observe(viewLifecycleOwner , connectionWatcher@{ x ->
+			when(x){
+				true -> onNetworkReconnect()
+				false -> { }
+			}
+		})
+	}
+
+	private fun onNetworkReconnect() {
+		adapter?.retry()
+	}
+
+	private fun navigateCharacterDetail(character: Character, card: MaterialCardView) {
+		requireActivity().toast("${character.name?.english} clicked")
 	}
 
 	override fun onDestroy() {
 		job?.cancel()
+		adapter = null
 		if(_binding != null)
 			binding.characterRv.adapter = null
 		super.onDestroy()

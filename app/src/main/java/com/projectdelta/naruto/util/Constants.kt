@@ -13,4 +13,9 @@ object Constants {
 	const val COLLAPSING_TOOLBAR_VISIBILITY_THRESHOLD = -75
 	const val CLICK_THRESHOLD = 150L // a click is considered 150ms or less
 	const val CLICK_COLOR_CHANGE_TIME = 250L
+
+	//Transition names
+	const val TRANSITION_CHARACTER = "character_transition_"
+	const val TRANSITION_LOCATION = "location_transition_"
+	const val TRANSITION_EPISODE = "episode_transition_"
 }
