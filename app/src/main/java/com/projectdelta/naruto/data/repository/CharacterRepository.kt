@@ -21,14 +21,6 @@ class CharacterRepository @Inject constructor(
 		const val DEFAULT_PAGE_SIZE = 20
 	}
 
-	/**
-	 * Bare bone impl of get request
-	 */
-	suspend fun getCharactersSortedByPower(pageNumber: Int): ApiResult<PageResult<Character?>> {
-		Timber.d("fetching paged character by power page:$pageNumber")
-		return characterApi.getCharactersSortedByPower(pageNumber)
-	}
-
 	fun getCharactersSortedByPowerPaged(): Flow<PagingData<Character>> {
 		return Pager(
 			config = PagingConfig(
@@ -38,6 +30,20 @@ class CharacterRepository @Inject constructor(
 			pagingSourceFactory = {
 				PagingSource(endPoint = { x: Int ->
 					characterApi.getCharactersSortedByPower(x)
+				})
+			}
+		).flow
+	}
+
+	fun getCharactersPaged( sortParam1 : String , sortParam2: String = "" ) : Flow<PagingData<Character>> {
+		return Pager(
+			config = PagingConfig(
+				pageSize = DEFAULT_PAGE_SIZE,
+				enablePlaceholders = false
+			),
+			pagingSourceFactory = {
+				PagingSource(endPoint = { x: Int ->
+					characterApi.getCharacterPaged(x ,sortParam1 ,sortParam2)
 				})
 			}
 		).flow

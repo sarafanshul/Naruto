@@ -20,12 +20,12 @@ class CharacterListAdapter(
 ) : PagingDataAdapter<Character ,CharacterListAdapter.LayoutViewHolder>(BaseModelDiffUtilCallback()) {
 
 	inner class LayoutViewHolder(
-		private val item_binding : CharacterItemBinding
-	) : RecyclerView.ViewHolder(item_binding.root){
+		private val binding : CharacterItemBinding
+	) : RecyclerView.ViewHolder(binding.root){
 
 		@SuppressLint("SetTextI18n")
 		fun bind(character: Character ,clickCallback: BaseModelItemClickCallback){
-			with(item_binding){
+			with(binding){
 				val context = root.context
 
 				root.setOnClickListener {
@@ -38,7 +38,7 @@ class CharacterListAdapter(
 					.load(character.images?.first())
 					.apply(
 						RequestOptions()
-//						.placeholder(R.drawable.character_placeholder)
+						.placeholder(R.drawable.placeholder_white_leaf)
 						.diskCacheStrategy(DiskCacheStrategy.DATA)
 					)
 					.into(itemImage)

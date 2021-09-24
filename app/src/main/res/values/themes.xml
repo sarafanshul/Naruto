@@ -14,5 +14,9 @@
         <!-- Customize your theme here. -->
 
         <item name="fontFamily">@font/product_sans_font_family</item>
+
+        <item name="colorControlHighlight">@color/ripple_colored_default</item>
+        <item name="rippleColorToolbar">?attr/colorControlHighlight</item>
+
     </style>
 </resources>

@@ -19,7 +19,9 @@ import android.net.Uri
 import android.os.Build
 import android.os.PowerManager
 import android.util.TypedValue
+import android.view.Display
 import android.view.View
+import android.view.WindowManager
 import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.AttrRes
@@ -330,3 +332,11 @@ fun Context.getResourceColor(@AttrRes resource: Int, alphaFactor: Float = 1f): I
 
 	return color
 }
+
+val Context.displayCompat: Display?
+	get() = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+		display
+	} else {
+		@Suppress("DEPRECATION")
+		getSystemService<WindowManager>()?.defaultDisplay
+	}

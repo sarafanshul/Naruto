@@ -25,6 +25,7 @@
         <ImageView
             android:id="@+id/item_image"
             android:layout_width="0dp"
+            android:maxHeight="@dimen/base_item_image_height"
             android:layout_height="wrap_content"
             android:scaleType="fitCenter"
             android:adjustViewBounds="true"

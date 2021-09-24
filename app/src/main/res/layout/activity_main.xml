@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -7,35 +7,37 @@
     android:animateLayoutChanges="true"
     tools:context=".ui.main.MainActivity">
 
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/connection_tv"
+    <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="?colorError"
-        android:fontFamily="@font/product_sans_font_family"
-        app:fontFamily="@font/product_sans_font_family"
-        android:gravity="center"
-        android:paddingVertical="@dimen/base_padding"
-        android:text="@string/no_connection"
-        android:textColor="@color/white"
-        android:textSize="@dimen/connection_status_bar_text_size"
-        android:visibility="visible"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:id="@+id/app_bar"
+        android:animateLayoutChanges="true"
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/connection_tv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?colorError"
+            android:fontFamily="@font/product_sans_font_family"
+            app:fontFamily="@font/product_sans_font_family"
+            android:gravity="center"
+            android:paddingVertical="@dimen/base_padding"
+            android:text="@string/no_connection"
+            android:textColor="@color/white"
+            android:textSize="@dimen/connection_status_bar_text_size"
+            android:visibility="visible" />
+
+    </com.google.android.material.appbar.AppBarLayout>
 
     <fragment
         android:id="@+id/nav_host_fragment"
         android:name="androidx.navigation.fragment.NavHostFragment"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         app:defaultNavHost="true"
-        app:layout_constraintBottom_toTopOf="@id/bottom_panel"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/connection_tv"
+        app:layout_anchor="@id/app_bar"
+        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
+        app:layout_anchorGravity="bottom"
         app:navGraph="@navigation/bottom_nav_graph"
         tools:ignore="FragmentTagUsage" />
 
@@ -50,10 +52,6 @@
         app:itemTextColor="@color/white"
         app:labelVisibilityMode="selected"
         app:layout_behavior="com.google.android.material.behavior.HideBottomViewOnScrollBehavior"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
         app:menu="@menu/bottom_panel" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

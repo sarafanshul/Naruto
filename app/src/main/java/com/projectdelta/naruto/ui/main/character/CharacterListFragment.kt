@@ -4,11 +4,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.widget.SearchView
 import androidx.cardview.widget.CardView
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.card.MaterialCardView
+import com.projectdelta.naruto.R
 import com.projectdelta.naruto.data.model.entity.BaseModel
 import com.projectdelta.naruto.data.model.entity.character.Character
 import com.projectdelta.naruto.databinding.FragmentCharacterListBinding
@@ -19,6 +21,7 @@ import com.projectdelta.naruto.util.system.lang.toast
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.collectLatest
+import timber.log.Timber
 
 
 @AndroidEntryPoint
@@ -34,6 +37,8 @@ class CharacterListFragment : BaseViewBindingFragment<FragmentCharacterListBindi
 	private var adapter: CharacterListAdapter? = null
 
 	private var job : Job? = null
+
+	private var settingsSheet : CharacterSettingSheet? = null
 
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
@@ -55,6 +60,11 @@ class CharacterListFragment : BaseViewBindingFragment<FragmentCharacterListBindi
 	}
 
 	private fun initUI() {
+
+		setMenu()
+		setSearchBar()
+		initMenu()
+
 		adapter = CharacterListAdapter( object : BaseModelItemClickCallback{
 			override fun onItemClick(item: BaseModel, itemCard: CardView) {
 				navigateCharacterDetail(item as Character, itemCard as MaterialCardView)
@@ -64,11 +74,11 @@ class CharacterListFragment : BaseViewBindingFragment<FragmentCharacterListBindi
 
 		binding.characterRv.adapter = adapter
 
-		job = viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
-			viewModel.characterDataByPowerPaged().collectLatest { characters ->
-				adapter?.submitData( characters )
+//		job = viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
+			viewModel.data.observe(viewLifecycleOwner) { characters ->
+				adapter?.submitData(lifecycle, characters)
 			}
-		}
+//		}
 
 		(requireActivity() as MainActivity).connectivityManager.isNetworkAvailable.observe(viewLifecycleOwner , connectionWatcher@{ x ->
 			when(x){
@@ -76,6 +86,60 @@ class CharacterListFragment : BaseViewBindingFragment<FragmentCharacterListBindi
 				false -> { }
 			}
 		})
+
+
+	}
+
+	private fun initMenu() {
+		settingsSheet = CharacterSettingSheet(
+			requireActivity() ,
+			(requireActivity() as MainActivity).preferenceManager
+		){ group ->
+			when (group) {
+				is CharacterSettingSheet.Filter.FilterGroup -> onFilterChanged()
+				is CharacterSettingSheet.Sort.SortGroup -> onSortChanged()
+
+			}
+		}
+	}
+
+	private fun onSortChanged() {
+//		binding.characterRv.scrollToPosition(0)
+		viewModel.getUpdatePrefDataSort()
+	}
+
+	private fun onFilterChanged() {
+		Timber.i("====filter changed=====")
+	}
+
+	private fun setSearchBar() {
+		val searchView : SearchView? = binding.toolbar.menu.findItem(R.id.action_search).actionView as SearchView?
+		searchView?.queryHint = "Hinata Hyuga"
+
+		searchView?.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
+			override fun onQueryTextSubmit(query: String?): Boolean {
+				requireActivity().toast(query.orEmpty())
+
+				searchView.clearFocus()
+				return false
+			}
+
+			override fun onQueryTextChange(newText: String?): Boolean {
+				return false
+			}
+		})
+	}
+
+	private fun setMenu() {
+		binding.toolbar.setOnMenuItemClickListener {
+			when(it.itemId){
+				R.id.action_filter -> {
+					settingsSheet?.show()
+				}
+				else -> {}
+			}
+			super.onOptionsItemSelected(it)
+		}
 	}
 
 	private fun onNetworkReconnect() {
@@ -92,5 +156,10 @@ class CharacterListFragment : BaseViewBindingFragment<FragmentCharacterListBindi
 		if(_binding != null)
 			binding.characterRv.adapter = null
 		super.onDestroy()
+	}
+
+	override fun onDestroyView() {
+		super.onDestroyView()
+		settingsSheet = null
 	}
 }

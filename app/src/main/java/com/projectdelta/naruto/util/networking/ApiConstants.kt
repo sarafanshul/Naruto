@@ -23,4 +23,5 @@ object ApiConstants {
 	const val SUB_URL_ORDER_BY_JUTSUS = "order_by_jutsus/"
 
 	const val QUERY_PAGE = "page"
+	const val QUERY_SORT = "sort"
 }
