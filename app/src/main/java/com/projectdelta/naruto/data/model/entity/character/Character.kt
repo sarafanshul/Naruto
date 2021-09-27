@@ -18,4 +18,15 @@ data class Character(
 	val jutsus: List<String>? = null,
 	val tools: List<String>? = null,
 	val databooks: List<CharDatabook>? = null,
-) : BaseModel(), Serializable
+) : BaseModel(), Serializable{
+
+	companion object{
+
+		enum class SortCharacter(val value : String){
+			BY_NAME_ASC("name.english,asc"),
+			BY_NAME_DESC("name.english,desc"),
+			BY_DEBUT_ASC("debut.anime,asc"),
+			BY_DEBUT_DESC("debut.anime,desc"),
+		}
+	}
+}

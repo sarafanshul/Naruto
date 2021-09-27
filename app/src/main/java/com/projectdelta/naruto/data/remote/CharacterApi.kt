@@ -3,8 +3,12 @@ package com.projectdelta.naruto.data.remote
 import com.projectdelta.naruto.data.model.entity.character.Character
 import com.projectdelta.naruto.util.networking.ApiConstants
 import com.projectdelta.naruto.util.networking.ApiConstants.CHARACTER_URL
+import com.projectdelta.naruto.util.networking.ApiConstants.QUERY_NAME
 import com.projectdelta.naruto.util.networking.ApiConstants.QUERY_PAGE
+import com.projectdelta.naruto.util.networking.ApiConstants.QUERY_REVERSE
 import com.projectdelta.naruto.util.networking.ApiConstants.QUERY_SORT
+import com.projectdelta.naruto.util.networking.ApiConstants.SUB_URL_CORE
+import com.projectdelta.naruto.util.networking.ApiConstants.SUB_URL_LIKE_PAGED
 import com.projectdelta.naruto.util.networking.ApiConstants.SUB_URL_PAGE
 import com.projectdelta.naruto.util.networking.ApiConstants.SUB_URL_POWER
 import com.projectdelta.naruto.util.networking.ApiResult
@@ -23,7 +27,8 @@ interface CharacterApi {
 	 */
 	@GET(CHARACTER_URL + SUB_URL_POWER)
 	suspend fun getCharactersSortedByPower(
-		@Query(QUERY_PAGE) pageNumber: Int
+		@Query(QUERY_PAGE) pageNumber: Int ,
+		@Query(QUERY_REVERSE) reverse: Boolean
 	):ApiResult<PageResult<Character?>>
 
 	/**
@@ -32,10 +37,25 @@ interface CharacterApi {
 	 *  [ex2](http://localhost:8080/character/page/?sort=_id)
 	 *  [ex3](http://localhost:8080/character/page/?page=22&sort=debut.anime.name,asc&sort=debut.anime.episode,asc)
 	 */
+	@Deprecated("Use getCoreCharacters endPoint")
 	@GET(CHARACTER_URL + SUB_URL_PAGE)
 	suspend fun getCharacterPaged(
 		@Query(QUERY_PAGE) pageNumber: Int ,
 		@Query(QUERY_SORT) sort : String ,
 		@Query(QUERY_SORT) sort1 : String = ""
+	):ApiResult<PageResult<Character?>>
+
+
+	@GET(CHARACTER_URL + SUB_URL_CORE)
+	suspend fun getCoreCharacters(
+		@Query(QUERY_PAGE) pageNumber: Int ,
+		@Query(QUERY_SORT) sortParam : String
+	):ApiResult<PageResult<Character?>>
+
+	@GET(CHARACTER_URL + SUB_URL_LIKE_PAGED)
+	suspend fun getCharacterLikePaged(
+		@Query(QUERY_NAME) name : String ,
+		@Query(QUERY_PAGE) pageNumber: Int ,
+		@Query(QUERY_SORT) sortParam: String
 	):ApiResult<PageResult<Character?>>
 }

@@ -6,11 +6,8 @@ import androidx.paging.PagingData
 import com.projectdelta.naruto.data.model.entity.character.Character
 import com.projectdelta.naruto.data.remote.CharacterApi
 import com.projectdelta.naruto.data.repository.init.InitManager
-import com.projectdelta.naruto.util.networking.ApiResult
-import com.projectdelta.naruto.util.networking.page.PageResult
 import com.projectdelta.naruto.util.networking.page.PagingSource
 import kotlinx.coroutines.flow.Flow
-import timber.log.Timber
 import javax.inject.Inject
 
 class CharacterRepository @Inject constructor(
@@ -21,7 +18,7 @@ class CharacterRepository @Inject constructor(
 		const val DEFAULT_PAGE_SIZE = 20
 	}
 
-	fun getCharactersSortedByPowerPaged(): Flow<PagingData<Character>> {
+	fun getCharactersSortedByPowerPaged(reverse : Boolean): Flow<PagingData<Character>> {
 		return Pager(
 			config = PagingConfig(
 				pageSize = DEFAULT_PAGE_SIZE,
@@ -29,12 +26,14 @@ class CharacterRepository @Inject constructor(
 			),
 			pagingSourceFactory = {
 				PagingSource(endPoint = { x: Int ->
-					characterApi.getCharactersSortedByPower(x)
+					characterApi.getCharactersSortedByPower(x ,reverse)
 				})
 			}
 		).flow
 	}
 
+
+	@Deprecated("Uses Deprecated API")
 	fun getCharactersPaged( sortParam1 : String , sortParam2: String = "" ) : Flow<PagingData<Character>> {
 		return Pager(
 			config = PagingConfig(
@@ -44,6 +43,34 @@ class CharacterRepository @Inject constructor(
 			pagingSourceFactory = {
 				PagingSource(endPoint = { x: Int ->
 					characterApi.getCharacterPaged(x ,sortParam1 ,sortParam2)
+				})
+			}
+		).flow
+	}
+
+	fun getCoreCharacters( sortParam: Character.Companion.SortCharacter ) : Flow<PagingData<Character>>{
+		return Pager(
+			config = PagingConfig(
+				pageSize = DEFAULT_PAGE_SIZE,
+				enablePlaceholders = false
+			),
+			pagingSourceFactory = {
+				PagingSource(endPoint = { x: Int ->
+					characterApi.getCoreCharacters(x ,sortParam.value)
+				})
+			}
+		).flow
+	}
+
+	fun getCharacterLikePaged(name : String , sortParam: Character.Companion.SortCharacter) : Flow<PagingData<Character>>{
+		return Pager(
+			config = PagingConfig(
+				pageSize = DEFAULT_PAGE_SIZE,
+				enablePlaceholders = false
+			),
+			pagingSourceFactory = {
+				PagingSource(endPoint = { x: Int ->
+					characterApi.getCharacterLikePaged(name ,x ,sortParam.value)
 				})
 			}
 		).flow

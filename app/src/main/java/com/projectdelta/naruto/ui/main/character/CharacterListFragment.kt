@@ -74,11 +74,9 @@ class CharacterListFragment : BaseViewBindingFragment<FragmentCharacterListBindi
 
 		binding.characterRv.adapter = adapter
 
-//		job = viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
-			viewModel.data.observe(viewLifecycleOwner) { characters ->
-				adapter?.submitData(lifecycle, characters)
-			}
-//		}
+		viewModel.data.observe(viewLifecycleOwner) { characters ->
+			adapter?.submitData(viewLifecycleOwner.lifecycle, characters)
+		}
 
 		(requireActivity() as MainActivity).connectivityManager.isNetworkAvailable.observe(viewLifecycleOwner , connectionWatcher@{ x ->
 			when(x){
@@ -153,6 +151,8 @@ class CharacterListFragment : BaseViewBindingFragment<FragmentCharacterListBindi
 	override fun onDestroy() {
 		job?.cancel()
 		adapter = null
+		if(viewModel.data.hasActiveObservers())
+			viewModel.data.removeObservers(viewLifecycleOwner)
 		if(_binding != null)
 			binding.characterRv.adapter = null
 		super.onDestroy()

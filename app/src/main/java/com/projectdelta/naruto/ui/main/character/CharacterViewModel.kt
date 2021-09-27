@@ -9,18 +9,11 @@ import com.projectdelta.naruto.data.preference.PreferenceManager
 import com.projectdelta.naruto.data.repository.CharacterRepository
 import com.projectdelta.naruto.widgets.ExtendedNavigationView
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
-import timber.log.Timber
 import javax.inject.Inject
 
-/**
- * - 25-09 01:33 - this is an bare bone approach for sorting and filtering ,
- * 	DO NOT COPY , it'll be updated later , a way better version
- */
+
 @HiltViewModel
 class CharacterViewModel @Inject constructor(
 	private val repository: CharacterRepository ,
@@ -36,32 +29,34 @@ class CharacterViewModel @Inject constructor(
 	val data = currentDataPref.switchMap { (sort ,filters ,search) ->
 		when (sort) {
 			in 0 .. 99 -> { // alpha
-				var query = "_id"
+				var query = Character.Companion.SortCharacter.BY_NAME_ASC
 				if( sort%10 == ExtendedNavigationView.Item.MultiSort.SORT_DESC )
-					query += ",desc"
+					query = Character.Companion.SortCharacter.BY_NAME_DESC
 				characterDataPaged(query)
 			}
 			in 99..999 -> { // power
-//				if( sort%10 == ExtendedNavigationView.Item.MultiSort.SORT_DESC )
-				characterDataByPowerPaged()
+				var reverse = false
+				if( sort%10 == ExtendedNavigationView.Item.MultiSort.SORT_DESC )
+					reverse = true
+				characterDataByPowerPaged(reverse)
 			}
 			else -> { // debut
-				var q1 = "debut.anime.name,asc"
-				var q2 = "debut.anime.episode,asc"
+				var query = Character.Companion.SortCharacter.BY_DEBUT_ASC
 				if( sort%10 == ExtendedNavigationView.Item.MultiSort.SORT_DESC ){
-					q1 = "debut.anime.name,desc"
-					q2 = "debut.anime.episode,desc"
+					query = Character.Companion.SortCharacter.BY_DEBUT_DESC
 				}
-				characterDataPaged(q1 ,q2)
+				characterDataPaged(query)
 			}
-		}.asLiveData()
+		}.asLiveData().cachedIn(viewModelScope)
 	}
 
 	private var characterDataByPowerPagedData :  Flow<PagingData<Character>>? = null
-	fun characterDataByPowerPaged():Flow<PagingData<Character>> {
-		if( characterDataByPowerPagedData == null )
+	private var lastOrder : Boolean? = null
+	fun characterDataByPowerPaged(reverse : Boolean):Flow<PagingData<Character>> {
+		if( characterDataByPowerPagedData == null || (lastOrder != null && lastOrder != reverse))
+			lastOrder = reverse
 			characterDataByPowerPagedData = repository
-				.getCharactersSortedByPowerPaged()
+				.getCharactersSortedByPowerPaged(reverse)
 				.map { pagingData ->
 					pagingData.map {
 						it
@@ -72,12 +67,12 @@ class CharacterViewModel @Inject constructor(
 	}
 
 	private var characterDataPaged : Flow<PagingData<Character>>? = null
-	private var lastQuery : String = ""
-	private fun characterDataPaged(sortParam1 : String, sortParam2: String = "" ): Flow<PagingData<Character>> {
-		if( characterDataPaged == null || lastQuery != sortParam1 )
-			lastQuery = sortParam1
+	private var lastQuery : Character.Companion.SortCharacter?= null
+	private fun characterDataPaged(sortParam : Character.Companion.SortCharacter): Flow<PagingData<Character>> {
+		if( characterDataPaged == null || (lastQuery != null && lastQuery != sortParam) )
+			lastQuery = sortParam
 			characterDataPaged = repository
-				.getCharactersPaged( sortParam1 ,sortParam2)
+				.getCoreCharacters( sortParam )
 				.map { pagingData ->
 					pagingData.map {
 						it
