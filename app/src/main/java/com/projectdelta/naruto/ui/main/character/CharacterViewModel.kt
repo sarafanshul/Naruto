@@ -9,8 +9,9 @@ import com.projectdelta.naruto.data.preference.PreferenceManager
 import com.projectdelta.naruto.data.repository.CharacterRepository
 import com.projectdelta.naruto.widgets.ExtendedNavigationView
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.*
+import timber.log.Timber
 import javax.inject.Inject
 
 
@@ -21,11 +22,14 @@ class CharacterViewModel @Inject constructor(
 ):ViewModel() {
 
 	private val currentDataPref = MutableLiveData( Triple(0 ,0 ,"") )
+
 	init {
 		getUpdatePrefDataSort()
 		getFilterSort()
 	}
 
+	// reloads on switch tab!!!!
+	@ExperimentalCoroutinesApi
 	val data = currentDataPref.switchMap { (sort ,filters ,search) ->
 		when (sort) {
 			in 0 .. 99 -> { // alpha
@@ -47,7 +51,7 @@ class CharacterViewModel @Inject constructor(
 				}
 				characterDataPaged(query)
 			}
-		}.asLiveData().cachedIn(viewModelScope)
+		}.cachedIn(viewModelScope).asLiveData()
 	}
 
 	private var characterDataByPowerPagedData :  Flow<PagingData<Character>>? = null
@@ -83,19 +87,20 @@ class CharacterViewModel @Inject constructor(
 	}
 
 	fun getUpdatePrefDataSort() {
-		val cur = currentDataPref.value
+		Timber.d("getUpdatePrefDataSort called!")
+		val cur = currentDataPref.value!!
 		currentDataPref.value = when {
 			// alpha
 			preferenceManager.sortAlphabetically() != ExtendedNavigationView.Item.MultiSort.SORT_NONE -> {
-				cur?.copy(first = 10 + preferenceManager.sortAlphabetically())
+				cur.copy(first = 10 + preferenceManager.sortAlphabetically())
 			}
 			// power
 			preferenceManager.sortPower() != ExtendedNavigationView.Item.MultiSort.SORT_NONE -> {
-				cur?.copy(first = 100 + preferenceManager.sortPower())
+				cur.copy(first = 100 + preferenceManager.sortPower())
 			}
 			// debut
 			preferenceManager.sortDebut() != ExtendedNavigationView.Item.MultiSort.SORT_NONE -> {
-				cur?.copy(first = 1000 + preferenceManager.sortDebut())
+				cur.copy(first = 1000 + preferenceManager.sortDebut())
 			}
 			else -> throw IllegalStateException("WTF@ViewModel!")
 		}

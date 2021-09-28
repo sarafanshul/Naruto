@@ -130,5 +130,12 @@
     <color name="navigation_menu">#CC95818D</color>
     <color name="navigation_right">#CCA6CFD5</color>
     <color name="navigation_left">#CC7D1128</color>
+    
+<!--    Naruto Colors-->
+    <color name="naruto_yellow">#fbe407</color>
+    <color name="naruto_black">#0b0b0b</color>
+    <color name="naruto_yellow_200">#ffe182</color>
+    <color name="naruto_orange">#f2a30b</color>
+    <color name="naruto_blue">#0c2fdf</color>
 
 </resources>

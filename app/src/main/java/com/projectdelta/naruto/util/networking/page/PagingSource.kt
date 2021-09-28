@@ -5,6 +5,7 @@ import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.projectdelta.naruto.data.model.entity.BaseModel
 import com.projectdelta.naruto.util.networking.ApiResult
+import timber.log.Timber
 
 /**
  * Auto Paging Implementation for paging response from server,
@@ -23,6 +24,10 @@ import com.projectdelta.naruto.util.networking.ApiResult
  * [ApiResult.Failure] and [ApiResult.Empty] are still grouped together and returns `nextKey = null`
  * because we can get a empty page from service i.e [PageResult.content] can be null if [PageResult.last] is true
  *
+ * - *Update 22-09 13:01* - **MAJOR UPDATE** as [PageResult] will return [ApiResult.Success] (200) on every page with empty [PageResult.content],
+ * regardless it exists or not cause of spring paging controller issues this adapter will load infinite number of pages
+ * mimicking a local DOS attack , now `nextKey` will be null if `content.size == 0`.
+ *
  * @param T generic for type of document needed.
  * @param endPoint a suspend HTTP request endpoint
  */
@@ -35,14 +40,20 @@ class PagingSource<T: BaseModel> (
 	}
 
 	override suspend fun load(params: LoadParams<Int>): LoadResult<Int, T> {
+		Timber.d("load Called for : ${endPoint::class}")
 		val pageIndex = params.key ?: DEFAULT_STARTING_PAGE_INDEX
 		val responsePageable = endPoint(pageIndex)
 		val responseData : MutableList<T> = mutableListOf()
 		val nextKey: Int?
 		when( responsePageable ) {
 			is ApiResult.Success -> {
-				nextKey = pageIndex + 1
-				responseData.addAll(responsePageable.data.content.filterNotNull())
+				if(responsePageable.data.content.isNotEmpty()) {
+					nextKey = pageIndex + 1
+					responseData.addAll(responsePageable.data.content.filterNotNull())
+				}
+				else {
+					nextKey = null
+				}
 			}
 			is ApiResult.NetworkError -> {
 				return LoadResult.Error(

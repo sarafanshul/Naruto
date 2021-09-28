@@ -25,15 +25,15 @@ class CharacterRepository @Inject constructor(
 				enablePlaceholders = false
 			),
 			pagingSourceFactory = {
-				PagingSource(endPoint = { x: Int ->
-					characterApi.getCharactersSortedByPower(x ,reverse)
+				PagingSource(endPoint = loadMore@{ x: Int ->
+					characterApi.getCharactersSortedByPower(x, reverse)
 				})
 			}
 		).flow
 	}
 
 
-	@Deprecated("Uses Deprecated API")
+	@Deprecated("Uses Deprecated API, use getCoreCharacters")
 	fun getCharactersPaged( sortParam1 : String , sortParam2: String = "" ) : Flow<PagingData<Character>> {
 		return Pager(
 			config = PagingConfig(
@@ -42,6 +42,7 @@ class CharacterRepository @Inject constructor(
 			),
 			pagingSourceFactory = {
 				PagingSource(endPoint = { x: Int ->
+					@Suppress("DEPRECATION")
 					characterApi.getCharacterPaged(x ,sortParam1 ,sortParam2)
 				})
 			}
@@ -55,7 +56,7 @@ class CharacterRepository @Inject constructor(
 				enablePlaceholders = false
 			),
 			pagingSourceFactory = {
-				PagingSource(endPoint = { x: Int ->
+				PagingSource(endPoint = loadMore@{ x: Int ->
 					characterApi.getCoreCharacters(x ,sortParam.value)
 				})
 			}
@@ -69,7 +70,7 @@ class CharacterRepository @Inject constructor(
 				enablePlaceholders = false
 			),
 			pagingSourceFactory = {
-				PagingSource(endPoint = { x: Int ->
+				PagingSource(endPoint = loadMore@{ x: Int ->
 					characterApi.getCharacterLikePaged(name ,x ,sortParam.value)
 				})
 			}

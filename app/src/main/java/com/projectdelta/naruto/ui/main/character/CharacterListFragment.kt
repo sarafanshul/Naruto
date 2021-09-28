@@ -6,8 +6,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
 import androidx.cardview.widget.CardView
+import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.lifecycleScope
+import androidx.paging.LoadState
+import androidx.paging.LoadStates
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.card.MaterialCardView
 import com.projectdelta.naruto.R
@@ -20,10 +22,9 @@ import com.projectdelta.naruto.util.callback.BaseModelItemClickCallback
 import com.projectdelta.naruto.util.system.lang.toast
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.collectLatest
 import timber.log.Timber
 
-
+@ExperimentalCoroutinesApi
 @AndroidEntryPoint
 class CharacterListFragment : BaseViewBindingFragment<FragmentCharacterListBinding>() {
 
@@ -51,7 +52,6 @@ class CharacterListFragment : BaseViewBindingFragment<FragmentCharacterListBindi
 		return binding.root
 	}
 
-	@InternalCoroutinesApi
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 		super.onViewCreated(view, savedInstanceState)
 
@@ -59,11 +59,10 @@ class CharacterListFragment : BaseViewBindingFragment<FragmentCharacterListBindi
 
 	}
 
+
 	private fun initUI() {
 
 		setMenu()
-		setSearchBar()
-		initMenu()
 
 		adapter = CharacterListAdapter( object : BaseModelItemClickCallback{
 			override fun onItemClick(item: BaseModel, itemCard: CardView) {
@@ -74,9 +73,9 @@ class CharacterListFragment : BaseViewBindingFragment<FragmentCharacterListBindi
 
 		binding.characterRv.adapter = adapter
 
-		viewModel.data.observe(viewLifecycleOwner) { characters ->
-			adapter?.submitData(viewLifecycleOwner.lifecycle, characters)
-		}
+		viewModel.data.observe(viewLifecycleOwner ,{
+			adapter?.submitData( viewLifecycleOwner.lifecycle , it )
+		})
 
 		(requireActivity() as MainActivity).connectivityManager.isNetworkAvailable.observe(viewLifecycleOwner , connectionWatcher@{ x ->
 			when(x){
@@ -85,10 +84,27 @@ class CharacterListFragment : BaseViewBindingFragment<FragmentCharacterListBindi
 			}
 		})
 
+		adapter?.addLoadStateListener { state ->
+			binding.progressBar.isVisible = state.source.refresh is LoadState.Loading
+		}
 
 	}
 
+	private fun setMenu() {
+		initMenu()
+		binding.toolbar.setOnMenuItemClickListener {
+			when(it.itemId){
+				R.id.action_filter -> {
+					settingsSheet?.show()
+				}
+				else -> {}
+			}
+			super.onOptionsItemSelected(it)
+		}
+	}
+
 	private fun initMenu() {
+		setSearchBar()
 		settingsSheet = CharacterSettingSheet(
 			requireActivity() ,
 			(requireActivity() as MainActivity).preferenceManager
@@ -128,18 +144,6 @@ class CharacterListFragment : BaseViewBindingFragment<FragmentCharacterListBindi
 		})
 	}
 
-	private fun setMenu() {
-		binding.toolbar.setOnMenuItemClickListener {
-			when(it.itemId){
-				R.id.action_filter -> {
-					settingsSheet?.show()
-				}
-				else -> {}
-			}
-			super.onOptionsItemSelected(it)
-		}
-	}
-
 	private fun onNetworkReconnect() {
 		adapter?.retry()
 	}
@@ -151,8 +155,6 @@ class CharacterListFragment : BaseViewBindingFragment<FragmentCharacterListBindi
 	override fun onDestroy() {
 		job?.cancel()
 		adapter = null
-		if(viewModel.data.hasActiveObservers())
-			viewModel.data.removeObservers(viewLifecycleOwner)
 		if(_binding != null)
 			binding.characterRv.adapter = null
 		super.onDestroy()

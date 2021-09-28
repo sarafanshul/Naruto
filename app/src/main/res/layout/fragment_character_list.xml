@@ -25,9 +25,21 @@
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:paddingTop="@dimen/base_padding"
         app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
         android:id="@+id/character_rv"
         tools:listitem="@layout/character_item"
         android:overScrollMode="ifContentScrolls"/>
+
+    <com.google.android.material.progressindicator.LinearProgressIndicator
+        android:id="@+id/progress_bar"
+        android:layout_width="match_parent"
+        app:layout_anchor="@id/app_bar"
+        app:indeterminateAnimationType="contiguous"
+        app:indicatorColor="@array/naruto_progress_colors"
+        app:layout_anchorGravity="bottom"
+        android:layout_gravity="center"
+        android:indeterminate="true"
+        android:layout_height="wrap_content"/>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

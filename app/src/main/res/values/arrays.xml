@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <integer-array name="naruto_progress_colors">
+        <item>@color/naruto_yellow</item>
+        <item>@color/naruto_black</item>
+        <item>@color/naruto_yellow_200</item>
+        <item>@color/naruto_orange</item>
+        <item>@color/naruto_blue</item>
+    </integer-array>
+
+</resources>
