@@ -18,7 +18,7 @@ jobs:
         run: ./gradlew test --stacktrace
 
   android_tests:
-    runs-on: macos-latest
+    runs-on: macos-11
     steps:
       - uses: actions/checkout@v2
       - name: Grant execute permission for gradlew
@@ -27,7 +27,8 @@ jobs:
         uses: reactivecircus/android-emulator-runner@v2
         with:
           api-level: 30
-          script: ./gradlew connectedAndroidTest
+          emulator-build: 6110076
+          script: ./gradlew connectedCheck --stacktrace
 
   build:
     needs: [ unit_tests, android_tests ]
