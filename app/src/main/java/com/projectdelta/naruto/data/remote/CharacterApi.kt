@@ -1,7 +1,6 @@
 package com.projectdelta.naruto.data.remote
 
 import com.projectdelta.naruto.data.model.entity.character.Character
-import com.projectdelta.naruto.util.networking.ApiConstants
 import com.projectdelta.naruto.util.networking.ApiConstants.CHARACTER_URL
 import com.projectdelta.naruto.util.networking.ApiConstants.QUERY_NAME
 import com.projectdelta.naruto.util.networking.ApiConstants.QUERY_PAGE

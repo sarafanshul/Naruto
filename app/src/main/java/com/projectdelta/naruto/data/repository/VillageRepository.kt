@@ -27,7 +27,8 @@ class VillageRepository @Inject constructor(
 			pagingSourceFactory = {
 				PagingSource(endPoint = { x: Int ->
 					villageApi.getVillagesPaged(x)
-				})
+				},
+				filters = {true})
 			}
 		).flow
 	}

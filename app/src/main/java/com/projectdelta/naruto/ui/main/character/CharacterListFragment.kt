@@ -9,7 +9,6 @@ import androidx.cardview.widget.CardView
 import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.paging.LoadState
-import androidx.paging.LoadStates
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.card.MaterialCardView
 import com.projectdelta.naruto.R
@@ -22,7 +21,6 @@ import com.projectdelta.naruto.util.callback.BaseModelItemClickCallback
 import com.projectdelta.naruto.util.system.lang.toast
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.*
-import timber.log.Timber
 
 @ExperimentalCoroutinesApi
 @AndroidEntryPoint
@@ -118,12 +116,11 @@ class CharacterListFragment : BaseViewBindingFragment<FragmentCharacterListBindi
 	}
 
 	private fun onSortChanged() {
-//		binding.characterRv.scrollToPosition(0)
 		viewModel.getUpdatePrefDataSort()
 	}
 
 	private fun onFilterChanged() {
-		Timber.i("====filter changed=====")
+		viewModel.triggerFilters()
 	}
 
 	private fun setSearchBar() {

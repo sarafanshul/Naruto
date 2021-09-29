@@ -7,11 +7,12 @@ import androidx.paging.map
 import com.projectdelta.naruto.data.model.entity.character.Character
 import com.projectdelta.naruto.data.preference.PreferenceManager
 import com.projectdelta.naruto.data.repository.CharacterRepository
+import com.projectdelta.naruto.util.DataPrefBus
 import com.projectdelta.naruto.widgets.ExtendedNavigationView
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.*
-import timber.log.Timber
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 
@@ -21,92 +22,109 @@ class CharacterViewModel @Inject constructor(
 	private val preferenceManager: PreferenceManager
 ):ViewModel() {
 
-	private val currentDataPref = MutableLiveData( Triple(0 ,0 ,"") )
+	private val currentDataPref = MutableLiveData( DataPrefBus(0 ,{true} ,"") )
 
 	init {
 		getUpdatePrefDataSort()
-		getFilterSort()
+		triggerFilters()
 	}
 
-	// reloads on switch tab!!!!
 	@ExperimentalCoroutinesApi
-	val data = currentDataPref.switchMap { (sort ,filters ,search) ->
+	var data = currentDataPref.switchMap { (sort ,filters ,_) ->
 		when (sort) {
 			in 0 .. 99 -> { // alpha
 				var query = Character.Companion.SortCharacter.BY_NAME_ASC
 				if( sort%10 == ExtendedNavigationView.Item.MultiSort.SORT_DESC )
 					query = Character.Companion.SortCharacter.BY_NAME_DESC
-				characterDataPaged(query)
+				characterDataPaged(query ,filters)
 			}
 			in 99..999 -> { // power
 				var reverse = false
 				if( sort%10 == ExtendedNavigationView.Item.MultiSort.SORT_DESC )
 					reverse = true
-				characterDataByPowerPaged(reverse)
+				characterDataByPowerPaged(reverse ,filters)
 			}
 			else -> { // debut
 				var query = Character.Companion.SortCharacter.BY_DEBUT_ASC
 				if( sort%10 == ExtendedNavigationView.Item.MultiSort.SORT_DESC ){
 					query = Character.Companion.SortCharacter.BY_DEBUT_DESC
 				}
-				characterDataPaged(query)
+				characterDataPaged(query ,filters)
 			}
 		}.cachedIn(viewModelScope).asLiveData()
 	}
 
-	private var characterDataByPowerPagedData :  Flow<PagingData<Character>>? = null
-	private var lastOrder : Boolean? = null
-	fun characterDataByPowerPaged(reverse : Boolean):Flow<PagingData<Character>> {
-		if( characterDataByPowerPagedData == null || (lastOrder != null && lastOrder != reverse))
-			lastOrder = reverse
-			characterDataByPowerPagedData = repository
-				.getCharactersSortedByPowerPaged(reverse)
-				.map { pagingData ->
-					pagingData.map {
-						it
-					}
+	fun characterDataByPowerPaged(
+		reverse : Boolean ,
+		filters : suspend (Character) -> Boolean
+	):Flow<PagingData<Character>> {
+		return repository
+			.getCharactersSortedByPowerPaged(reverse ,filters)
+			.map { pagingData ->
+				pagingData.map {
+					it
 				}
-				.cachedIn(viewModelScope)
-		return characterDataByPowerPagedData!!
+			}
+			.cachedIn(viewModelScope)
 	}
 
-	private var characterDataPaged : Flow<PagingData<Character>>? = null
-	private var lastQuery : Character.Companion.SortCharacter?= null
-	private fun characterDataPaged(sortParam : Character.Companion.SortCharacter): Flow<PagingData<Character>> {
-		if( characterDataPaged == null || (lastQuery != null && lastQuery != sortParam) )
-			lastQuery = sortParam
-			characterDataPaged = repository
-				.getCoreCharacters( sortParam )
-				.map { pagingData ->
-					pagingData.map {
-						it
-					}
+	private fun characterDataPaged(
+		sortParam : Character.Companion.SortCharacter,
+		filters : suspend (Character) -> Boolean
+	): Flow<PagingData<Character>> {
+		return repository
+			.getCoreCharacters( sortParam , filters)
+			.map { pagingData ->
+				pagingData.map {
+					it
 				}
-				.cachedIn(viewModelScope)
-		return characterDataPaged!!
+			}
+			.cachedIn(viewModelScope)
 	}
 
 	fun getUpdatePrefDataSort() {
-		Timber.d("getUpdatePrefDataSort called!")
-		val cur = currentDataPref.value!!
-		currentDataPref.value = when {
+		val cur = currentDataPref.value
+		cur?.sort = when {
 			// alpha
 			preferenceManager.sortAlphabetically() != ExtendedNavigationView.Item.MultiSort.SORT_NONE -> {
-				cur.copy(first = 10 + preferenceManager.sortAlphabetically())
+				10 + preferenceManager.sortAlphabetically()
 			}
 			// power
 			preferenceManager.sortPower() != ExtendedNavigationView.Item.MultiSort.SORT_NONE -> {
-				cur.copy(first = 100 + preferenceManager.sortPower())
+				100 + preferenceManager.sortPower()
 			}
 			// debut
 			preferenceManager.sortDebut() != ExtendedNavigationView.Item.MultiSort.SORT_NONE -> {
-				cur.copy(first = 1000 + preferenceManager.sortDebut())
+				1000 + preferenceManager.sortDebut()
 			}
 			else -> throw IllegalStateException("WTF@ViewModel!")
 		}
+		currentDataPref.value = cur
 	}
 
-	private fun getFilterSort() {
-
+	// naive function to trigger change in filters
+	fun triggerFilters(){
+		 val filters : suspend (it : Character) -> Boolean = {
+			when(preferenceManager.filterAlive()){
+				ExtendedNavigationView.Item.TriStateGroup.State.INCLUDE.value -> {
+					it.personal?.status == Character.Companion.CharacterStatus.ALIVE.value
+				}
+				ExtendedNavigationView.Item.TriStateGroup.State.EXCLUDE.value -> {
+					it.personal?.status != Character.Companion.CharacterStatus.ALIVE.value
+				}
+				else -> true
+			} && when( preferenceManager.filterFemale() ){
+				ExtendedNavigationView.Item.TriStateGroup.State.INCLUDE.value -> {
+					it.personal?.sex == Character.Companion.CharacterSex.FEMALE.value
+				}
+				ExtendedNavigationView.Item.TriStateGroup.State.EXCLUDE.value -> {
+					it.personal?.sex != Character.Companion.CharacterSex.FEMALE.value
+				}
+				else -> true
+			}
+		}
+		val cur = currentDataPref.value
+		cur?.filters = filters
+		currentDataPref.value = cur
 	}
 }

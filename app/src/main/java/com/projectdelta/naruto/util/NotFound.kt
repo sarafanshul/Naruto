@@ -7,6 +7,6 @@ object NotFound {
 		"(≥o≤)", "(ㆆ _ ㆆ)", "(╥﹏╥)", "<(^_^)>", "=^_^=", "(-_-;)", "(*^_^*)", "(◠﹏◠)"
 	)
 
-	fun surprise() = TextOnlyEmoticons.random()
+	fun surpriseMe() = TextOnlyEmoticons.random()
 
 }

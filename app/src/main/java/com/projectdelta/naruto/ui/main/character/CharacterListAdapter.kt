@@ -12,6 +12,7 @@ import com.projectdelta.naruto.R
 import com.projectdelta.naruto.data.model.entity.character.Character
 import com.projectdelta.naruto.databinding.CharacterItemBinding
 import com.projectdelta.naruto.util.Constants
+import com.projectdelta.naruto.util.NotFound
 import com.projectdelta.naruto.util.callback.BaseModelDiffUtilCallback
 import com.projectdelta.naruto.util.callback.BaseModelItemClickCallback
 
@@ -45,10 +46,10 @@ class CharacterListAdapter(
 
 				itemName.text = character.name?.english
 				itemKanjiValue.text = character.name?.kanji
-				itemGenderValue.text = character.personal?.sex
+				itemGenderValue.text = character.personal?.sex ?: NotFound.surpriseMe()
 				val debut = if(character.debut?.anime?.name == "Naruto Shippūden" ) "Shippūden" else character.debut?.anime?.name
 				itemDebutValue.text = "$debut #${character.debut?.anime?.episode}"
-				itemStatusValue.text = character.personal?.status
+				itemStatusValue.text = character.personal?.status ?: NotFound.surpriseMe()
 				if( character.personal?.status == "Alive" )
 					itemStatusValue.setTextColor(context.getColor(R.color.rm_green_600))
 				else

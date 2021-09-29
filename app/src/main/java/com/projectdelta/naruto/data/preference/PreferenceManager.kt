@@ -2,8 +2,8 @@ package com.projectdelta.naruto.data.preference
 
 import android.content.Context
 import android.content.SharedPreferences
-import com.projectdelta.naruto.data.preference.PreferenceKeys as Keys
 import com.projectdelta.naruto.widgets.ExtendedNavigationView.Item
+import com.projectdelta.naruto.data.preference.PreferenceKeys as Keys
 
 class PreferenceManager(
 	private val context: Context,

@@ -3,8 +3,6 @@ package com.projectdelta.naruto.util.networking.connectivity
 import android.app.Application
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
-import javax.inject.Inject
-import javax.inject.Singleton
 
 /**
  * Author and idea from Mitch Tabian

@@ -28,5 +28,16 @@ data class Character(
 			BY_DEBUT_ASC("debut.anime,asc"),
 			BY_DEBUT_DESC("debut.anime,desc"),
 		}
+
+		enum class CharacterStatus(val value :String){
+			ALIVE("Alive"),
+			DEAD("Deceased")
+		}
+
+		enum class CharacterSex(val value : String){
+			MALE("Male"),
+			FEMALE("Female"),
+			BI("Various")
+		}
 	}
 }

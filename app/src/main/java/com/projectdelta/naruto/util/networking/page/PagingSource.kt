@@ -24,15 +24,20 @@ import timber.log.Timber
  * [ApiResult.Failure] and [ApiResult.Empty] are still grouped together and returns `nextKey = null`
  * because we can get a empty page from service i.e [PageResult.content] can be null if [PageResult.last] is true
  *
- * - *Update 22-09 13:01* - **MAJOR UPDATE** as [PageResult] will return [ApiResult.Success] (200) on every page with empty [PageResult.content],
+ * - *Update 28-09 13:01* - **MAJOR UPDATE** as [PageResult] will return [ApiResult.Success] (200) on every page with empty [PageResult.content],
  * regardless it exists or not cause of spring paging controller issues this adapter will load infinite number of pages
  * mimicking a local DOS attack , now `nextKey` will be null if `content.size == 0`.
  *
+ * - *Update 29-09 13:01* - now supports custom filters for filtering data while fetching from endpoint. and [List.distinct] for distinct ops ,
+ * due to some server side error
+ *
  * @param T generic for type of document needed.
  * @param endPoint a suspend HTTP request endpoint
+ * @param filters a suspend filter lambda for filtering data
  */
 class PagingSource<T: BaseModel> (
-	private val endPoint : suspend (Int) -> ApiResult<PageResult<T?>>
+	private val endPoint : suspend (Int) -> ApiResult<PageResult<T?>>,
+	private val filters : suspend (T) -> Boolean = {true}
 ) : PagingSource<Int ,T>() {
 
 	companion object{
@@ -49,7 +54,10 @@ class PagingSource<T: BaseModel> (
 			is ApiResult.Success -> {
 				if(responsePageable.data.content.isNotEmpty()) {
 					nextKey = pageIndex + 1
-					responseData.addAll(responsePageable.data.content.filterNotNull())
+					responseData.addAll(responsePageable.data.content
+						.filterNotNull()
+						.filter { filters(it) }
+					)
 				}
 				else {
 					nextKey = null

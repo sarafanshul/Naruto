@@ -6,13 +6,7 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.View
 import android.view.ViewGroup
-import android.widget.CheckBox
-import android.widget.CheckedTextView
-import android.widget.EditText
-import android.widget.FrameLayout
-import android.widget.RadioButton
-import android.widget.Spinner
-import android.widget.TextView
+import android.widget.*
 import androidx.appcompat.widget.TintTypedArray
 import androidx.core.view.ViewCompat
 import androidx.recyclerview.widget.LinearLayoutManager

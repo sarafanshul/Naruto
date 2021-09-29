@@ -11,12 +11,10 @@ import com.projectdelta.naruto.databinding.FragmentEpisodeListBinding
 import com.projectdelta.naruto.ui.base.BaseViewBindingFragment
 import com.projectdelta.naruto.ui.main.MainActivity
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import timber.log.Timber
 
 @AndroidEntryPoint
 class EpisodeListFragment : BaseViewBindingFragment<FragmentEpisodeListBinding>() {

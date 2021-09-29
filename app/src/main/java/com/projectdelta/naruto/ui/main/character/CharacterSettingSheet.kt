@@ -10,6 +10,7 @@ import com.projectdelta.naruto.widgets.ExtendedNavigationView
 import com.projectdelta.naruto.widgets.ExtendedNavigationView.Item.TriStateGroup.State
 import com.projectdelta.naruto.widgets.sheet.TabbedBottomSheetDialog
 
+@Suppress("unused")
 class CharacterSettingSheet (
 	fActivity : Activity,
 	private val preferenceManager: PreferenceManager,
@@ -60,22 +61,16 @@ class CharacterSettingSheet (
 
 		inner class FilterGroup : Group {
 
-			private val male = Item.TriStateGroup(R.string.action_filter_male, this)
 			private val female = Item.TriStateGroup(R.string.action_filter_female, this)
-			private val bi = Item.TriStateGroup(R.string.action_filter_bi, this)
 			private val alive = Item.TriStateGroup(R.string.action_filter_alive, this)
-			private val dead = Item.TriStateGroup(R.string.action_filter_dead, this)
 
 			override val header = null
-			override val items: List<Item> = listOf(male ,female ,bi ,alive ,dead)
+			override val items: List<Item> = listOf( female  ,alive )
 			override val footer = null
 
 			override fun initModels() {
-				male.state = preferenceManager.filterMale()
 				female.state = preferenceManager.filterFemale()
-				bi.state = preferenceManager.filterBi()
 				alive.state = preferenceManager.filterAlive()
-				dead.state = preferenceManager.filterDead()
 			}
 
 			override fun onItemClicked(item: Item) {
@@ -88,11 +83,8 @@ class CharacterSettingSheet (
 				}
 				item.state = newState
 				when (item) {
-					male -> preferenceManager.setFilterMale(newState)
 					female -> preferenceManager.setFilterFemale(newState)
-					bi -> preferenceManager.setFilterBi(newState)
 					alive -> preferenceManager.setFilterAlive(newState)
-					dead -> preferenceManager.setFilterDead(newState)
 					else -> {
 						throw IllegalStateException("Unknown arg clicked!")
 					}
