@@ -44,13 +44,22 @@ interface CharacterApi {
 		@Query(QUERY_SORT) sort1 : String = ""
 	):ApiResult<PageResult<Character?>>
 
-
+	/**
+	 * Gets cannon characters with null check on name and images.
+	 * @param pageNumber let PagingSource handle it
+	 * @param sortParam use [Character.SortCharacter] values for this query
+	 */
 	@GET(CHARACTER_URL + SUB_URL_CORE)
 	suspend fun getCoreCharacters(
 		@Query(QUERY_PAGE) pageNumber: Int ,
 		@Query(QUERY_SORT) sortParam : String
 	):ApiResult<PageResult<Character?>>
 
+	/**
+	 * Gets characters with regex match.
+	 * @param pageNumber let PagingSource handle it
+	 * @param sortParam use [Character.SortCharacter] values for this query
+	 */
 	@GET(CHARACTER_URL + SUB_URL_LIKE_PAGED)
 	suspend fun getCharacterLikePaged(
 		@Query(QUERY_NAME) name : String ,

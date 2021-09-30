@@ -13,6 +13,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import timber.log.Timber
 import javax.inject.Inject
 
 
@@ -30,28 +31,35 @@ class CharacterViewModel @Inject constructor(
 	}
 
 	@ExperimentalCoroutinesApi
-	var data = currentDataPref.switchMap { (sort ,filters ,_) ->
-		when (sort) {
-			in 0 .. 99 -> { // alpha
-				var query = Character.Companion.SortCharacter.BY_NAME_ASC
-				if( sort%10 == ExtendedNavigationView.Item.MultiSort.SORT_DESC )
-					query = Character.Companion.SortCharacter.BY_NAME_DESC
-				characterDataPaged(query ,filters)
-			}
-			in 99..999 -> { // power
-				var reverse = false
-				if( sort%10 == ExtendedNavigationView.Item.MultiSort.SORT_DESC )
-					reverse = true
-				characterDataByPowerPaged(reverse ,filters)
-			}
-			else -> { // debut
-				var query = Character.Companion.SortCharacter.BY_DEBUT_ASC
-				if( sort%10 == ExtendedNavigationView.Item.MultiSort.SORT_DESC ){
-					query = Character.Companion.SortCharacter.BY_DEBUT_DESC
+	var data = currentDataPref.switchMap { (sort ,filters ,query) ->
+		if( query.length > 2 ){
+			characterLikePage(query)
+				.cachedIn(viewModelScope).asLiveData()
+		}
+		else {
+			when (sort) {
+				in 0..99 -> { // alpha
+					var sortParam = Character.Companion.SortCharacter.BY_NAME_ASC
+					if (sort % 10 == ExtendedNavigationView.Item.MultiSort.SORT_DESC)
+						sortParam = Character.Companion.SortCharacter.BY_NAME_DESC
+					characterDataPaged(sortParam, filters)
 				}
-				characterDataPaged(query ,filters)
-			}
-		}.cachedIn(viewModelScope).asLiveData()
+				in 99..999 -> { // power
+					var reverse = false
+					if (sort % 10 == ExtendedNavigationView.Item.MultiSort.SORT_DESC)
+						reverse = true
+					characterDataByPowerPaged(reverse, filters)
+				}
+				else -> { // debut
+					var sortParam = Character.Companion.SortCharacter.BY_DEBUT_ASC
+					if (sort % 10 == ExtendedNavigationView.Item.MultiSort.SORT_DESC) {
+						sortParam = Character.Companion.SortCharacter.BY_DEBUT_DESC
+					}
+					characterDataPaged(sortParam, filters)
+				}
+
+			}.cachedIn(viewModelScope).asLiveData()
+		}
 	}
 
 	fun characterDataByPowerPaged(
@@ -76,6 +84,21 @@ class CharacterViewModel @Inject constructor(
 			.getCoreCharacters( sortParam , filters)
 			.map { pagingData ->
 				pagingData.map {
+					it
+				}
+			}
+			.cachedIn(viewModelScope)
+	}
+
+	private fun characterLikePage(
+		name : String ,
+		sortParam: Character.Companion.SortCharacter = Character.Companion.SortCharacter.NA ,
+		filters: suspend (Character) -> Boolean = {true}
+	) : Flow<PagingData<Character>> {
+		return repository
+			.getCharacterLikePaged(name ,sortParam ,filters)
+			.map { paginData ->
+				paginData.map {
 					it
 				}
 			}
@@ -126,5 +149,14 @@ class CharacterViewModel @Inject constructor(
 		val cur = currentDataPref.value
 		cur?.filters = filters
 		currentDataPref.value = cur
+	}
+
+	fun updateQuery( query : String ){
+		if( (query.length <= 2 && query != "") || currentDataPref.value?.query == query) // not empty for resetting
+			return
+		val cur = currentDataPref.value
+		cur?.query = query
+		currentDataPref.value = cur
+		Timber.d("new query = $query")
 	}
 }

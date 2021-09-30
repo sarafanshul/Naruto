@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
+    android:animateLayoutChanges="true"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="ui.main.character.CharacterListFragment">
 
@@ -41,5 +42,17 @@
         android:layout_gravity="center"
         android:indeterminate="true"
         android:layout_height="wrap_content"/>
+
+
+    <ImageView
+        android:id="@+id/empty_view"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:src="@drawable/naruto_icon_bw"
+        app:tint="?colorError"
+        android:layout_gravity="center"
+        android:foregroundGravity="center"
+        android:visibility="gone"
+        android:contentDescription="@string/not_found"/>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

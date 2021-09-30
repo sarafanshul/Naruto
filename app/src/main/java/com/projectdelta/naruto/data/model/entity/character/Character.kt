@@ -27,6 +27,7 @@ data class Character(
 			BY_NAME_DESC("name.english,desc"),
 			BY_DEBUT_ASC("debut.anime,asc"),
 			BY_DEBUT_DESC("debut.anime,desc"),
+			NA("")
 		}
 
 		enum class CharacterStatus(val value :String){

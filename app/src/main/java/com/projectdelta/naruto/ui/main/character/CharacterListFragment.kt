@@ -2,6 +2,7 @@ package com.projectdelta.naruto.ui.main.character
 
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
@@ -84,6 +85,15 @@ class CharacterListFragment : BaseViewBindingFragment<FragmentCharacterListBindi
 
 		adapter?.addLoadStateListener { state ->
 			binding.progressBar.isVisible = state.source.refresh is LoadState.Loading
+			if( state.source.refresh is LoadState.NotLoading &&
+				state.append.endOfPaginationReached && adapter?.itemCount!! < 1) {
+				binding.emptyView.visibility = View.VISIBLE
+				binding.characterRv.isVisible = false
+			}
+			else {
+				binding.emptyView.visibility = View.GONE
+				binding.characterRv.isVisible = true
+			}
 		}
 
 	}
@@ -113,6 +123,7 @@ class CharacterListFragment : BaseViewBindingFragment<FragmentCharacterListBindi
 
 			}
 		}
+
 	}
 
 	private fun onSortChanged() {
@@ -123,22 +134,42 @@ class CharacterListFragment : BaseViewBindingFragment<FragmentCharacterListBindi
 		viewModel.triggerFilters()
 	}
 
+	/*
+	For now Search only support submit to update data
+	 */
 	private fun setSearchBar() {
 		val searchView : SearchView? = binding.toolbar.menu.findItem(R.id.action_search).actionView as SearchView?
 		searchView?.queryHint = "Hinata Hyuga"
 
 		searchView?.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
 			override fun onQueryTextSubmit(query: String?): Boolean {
-				requireActivity().toast(query.orEmpty())
-
 				searchView.clearFocus()
 				return false
 			}
 
 			override fun onQueryTextChange(newText: String?): Boolean {
+				viewModel.updateQuery(newText.orEmpty().trim())
 				return false
 			}
 		})
+
+		// refer : https://stackoverflow.com/a/48989340/11718077
+		binding.toolbar.menu.findItem(R.id.action_search).setOnActionExpandListener(
+			object : MenuItem.OnActionExpandListener{
+				override fun onMenuItemActionExpand(item: MenuItem?): Boolean {
+					binding.toolbar.menu.findItem(R.id.action_filter).isEnabled = false
+					binding.toolbar.menu.findItem(R.id.action_filter).icon.alpha = 130
+					return true
+				}
+
+				override fun onMenuItemActionCollapse(item: MenuItem?): Boolean {
+					viewModel.updateQuery("")
+					binding.toolbar.menu.findItem(R.id.action_filter).isEnabled = true
+					binding.toolbar.menu.findItem(R.id.action_filter).icon.alpha = 255
+					return true
+				}
+			}
+		)
 	}
 
 	private fun onNetworkReconnect() {
