@@ -18,4 +18,5 @@ object Constants {
 	const val TRANSITION_CHARACTER = "character_transition_"
 	const val TRANSITION_LOCATION = "location_transition_"
 	const val TRANSITION_EPISODE = "episode_transition_"
+
 }

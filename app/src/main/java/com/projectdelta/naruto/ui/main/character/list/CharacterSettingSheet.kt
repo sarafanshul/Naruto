@@ -1,4 +1,4 @@
-package com.projectdelta.naruto.ui.main.character
+package com.projectdelta.naruto.ui.main.character.list
 
 import android.app.Activity
 import android.content.Context

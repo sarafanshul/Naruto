@@ -138,4 +138,31 @@
     <color name="naruto_orange">#f2a30b</color>
     <color name="naruto_blue">#0c2fdf</color>
 
+    <color name="mat_black">#191919</color>
+    <color name="diesel">#020001</color>
+    <color name="asphalt">#0b0704</color>
+    <color name="wet_asphalt">#34495e</color>
+    <color name="light_grey">#666666</color>
+
+    <color name="eerie_black">#1B1B1B</color>
+    <color name="chinese_black">#141414</color>
+
+    <color name="lime">#ccff90</color>
+    <color name="pressed_color">#191919</color>
+    <color name="selected_color">#191919</color>
+    <color name="focused_color">#BABABA</color>
+
+    <color name="ocean_blue">#045de9</color>
+    <color name="flame_red">#ff4e00</color>
+    <color name="flame_gold">#cc9934</color>
+
+    <color name="matt_green">#4fd894</color>
+    <color name="light_purple">#D7B9FB</color>
+    <color name="lime_green">#03fc34</color>
+    <color name="maroon">#ca18e7</color>
+    <color name="yellow">#F4B400</color>
+
+    <color name="matte_red">#B33F40</color>
+    <color name="danger">@android:color/holo_red_dark</color>
+
 </resources>

@@ -1,4 +1,4 @@
-package com.projectdelta.naruto.ui.main.character
+package com.projectdelta.naruto.ui.main.character.list
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
@@ -11,14 +11,14 @@ import com.bumptech.glide.request.RequestOptions
 import com.projectdelta.naruto.R
 import com.projectdelta.naruto.data.model.entity.character.Character
 import com.projectdelta.naruto.databinding.CharacterItemBinding
-import com.projectdelta.naruto.util.Constants
+import com.projectdelta.naruto.util.Constants.TRANSITION_CHARACTER
 import com.projectdelta.naruto.util.NotFound
 import com.projectdelta.naruto.util.callback.BaseModelDiffUtilCallback
 import com.projectdelta.naruto.util.callback.BaseModelItemClickCallback
 
 class CharacterListAdapter(
 	private val clickCallback: BaseModelItemClickCallback
-) : PagingDataAdapter<Character ,CharacterListAdapter.LayoutViewHolder>(BaseModelDiffUtilCallback()) {
+) : PagingDataAdapter<Character , CharacterListAdapter.LayoutViewHolder>(BaseModelDiffUtilCallback()) {
 
 	inner class LayoutViewHolder(
 		private val binding : CharacterItemBinding
@@ -33,7 +33,7 @@ class CharacterListAdapter(
 					clickCallback.onItemClick(character ,characterItem)
 				}
 
-				characterItem.transitionName = Constants.TRANSITION_CHARACTER.plus(character.id)
+				characterItem.transitionName = TRANSITION_CHARACTER.plus(character.id)
 
 				Glide.with(context)
 					.load(character.images?.first())

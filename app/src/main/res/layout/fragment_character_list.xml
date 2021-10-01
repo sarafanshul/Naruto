@@ -6,7 +6,7 @@
     android:background="@color/white"
     android:animateLayoutChanges="true"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context="ui.main.character.CharacterListFragment">
+    tools:context=".ui.main.character.list.CharacterListFragment">
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"

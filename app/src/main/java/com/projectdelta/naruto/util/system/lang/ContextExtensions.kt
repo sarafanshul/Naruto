@@ -37,7 +37,11 @@ import androidx.core.graphics.blue
 import androidx.core.graphics.green
 import androidx.core.graphics.red
 import androidx.core.net.toUri
+import androidx.fragment.app.Fragment
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
+import androidx.navigation.NavDirections
+import androidx.navigation.fragment.FragmentNavigator
+import androidx.navigation.fragment.findNavController
 import com.projectdelta.naruto.R
 import kotlin.math.roundToInt
 
@@ -333,6 +337,9 @@ fun Context.getResourceColor(@AttrRes resource: Int, alphaFactor: Float = 1f): I
 	return color
 }
 
+/**
+ * extension function to get display metrics
+ */
 val Context.displayCompat: Display?
 	get() = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
 		display
@@ -340,3 +347,43 @@ val Context.displayCompat: Display?
 		@Suppress("DEPRECATION")
 		getSystemService<WindowManager>()?.defaultDisplay
 	}
+
+/**
+ * get current screen width in pixels
+ */
+fun Context.screenWidthPx() = resources.displayMetrics.widthPixels
+
+/**
+ * get current screen height in pixels
+ */
+fun Context.screenHeightPx() = resources.displayMetrics.heightPixels
+
+/**
+ * returns screen density
+ */
+fun Context.screenDensity() = resources.displayMetrics.density
+
+
+/**
+ * extension function to fix navigation double-click crash
+ * Author: Abner Escócio
+ * https://stackoverflow.com/a/65959445/11836178
+ */
+fun Fragment.safeNavigate(
+	directions: NavDirections,
+	extras: FragmentNavigator.Extras
+) {
+	val navController = findNavController()
+	val destination = navController.currentDestination as FragmentNavigator.Destination
+	if (javaClass.name == destination.className) {
+		navController.navigate(directions, extras)
+	}
+}
+
+fun Fragment.safeNavigate(directions: NavDirections) {
+	val navController = findNavController()
+	val destination = navController.currentDestination as FragmentNavigator.Destination
+	if (javaClass.name == destination.className) {
+		navController.navigate(directions)
+	}
+}

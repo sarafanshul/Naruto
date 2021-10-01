@@ -1,4 +1,4 @@
-package com.projectdelta.naruto.ui.main.character
+package com.projectdelta.naruto.ui.main.character.list
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -9,6 +9,7 @@ import androidx.appcompat.widget.SearchView
 import androidx.cardview.widget.CardView
 import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.card.MaterialCardView
@@ -18,8 +19,10 @@ import com.projectdelta.naruto.data.model.entity.character.Character
 import com.projectdelta.naruto.databinding.FragmentCharacterListBinding
 import com.projectdelta.naruto.ui.base.BaseViewBindingFragment
 import com.projectdelta.naruto.ui.main.MainActivity
+import com.projectdelta.naruto.ui.main.character.CharacterViewModel
+import com.projectdelta.naruto.util.Constants.TRANSITION_CHARACTER
 import com.projectdelta.naruto.util.callback.BaseModelItemClickCallback
-import com.projectdelta.naruto.util.system.lang.toast
+import com.projectdelta.naruto.util.system.lang.safeNavigate
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.*
 
@@ -57,7 +60,6 @@ class CharacterListFragment : BaseViewBindingFragment<FragmentCharacterListBindi
 		initUI()
 
 	}
-
 
 	private fun initUI() {
 
@@ -177,7 +179,14 @@ class CharacterListFragment : BaseViewBindingFragment<FragmentCharacterListBindi
 	}
 
 	private fun navigateCharacterDetail(character: Character, card: MaterialCardView) {
-		requireActivity().toast("${character.name?.english} clicked")
+		val extras = FragmentNavigatorExtras(
+			card to TRANSITION_CHARACTER.plus(character.id)
+		)
+		val action =
+			CharacterListFragmentDirections.actionCharacterListFragmentToCharacterDetailFragment(
+				character
+			)
+		safeNavigate(action ,extras)
 	}
 
 	override fun onDestroy() {

@@ -17,7 +17,20 @@
         tools:layout="@layout/fragment_location_list" />
     <fragment
         android:id="@+id/characterListFragment"
-        android:name="com.projectdelta.naruto.ui.main.character.CharacterListFragment"
+        android:name="com.projectdelta.naruto.ui.main.character.list.CharacterListFragment"
         android:label="fragment_character_list"
-        tools:layout="@layout/fragment_character_list" />
+        tools:layout="@layout/fragment_character_list" >
+        <action
+            android:id="@+id/action_characterListFragment_to_characterDetailFragment"
+            app:destination="@id/characterDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/characterDetailFragment"
+        android:name="com.projectdelta.naruto.ui.main.character.detail.CharacterDetailFragment"
+        android:label="fragment_character_detail"
+        tools:layout="@layout/fragment_character_detail" >
+        <argument
+            android:name="characterData"
+            app:argType="com.projectdelta.naruto.data.model.entity.character.Character" />
+    </fragment>
 </navigation>
