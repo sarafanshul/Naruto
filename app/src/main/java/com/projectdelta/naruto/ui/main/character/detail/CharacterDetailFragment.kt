@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.core.view.doOnPreDraw
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
@@ -28,6 +29,9 @@ import com.projectdelta.naruto.util.callback.TodoCallback
 import com.projectdelta.naruto.util.system.lang.*
 import dagger.hilt.android.AndroidEntryPoint
 
+/**
+ * (for collapsing toolbar)[https://stackoverflow.com/questions/40472680/add-collapsing-toolbar-with-image]
+ */
 @AndroidEntryPoint
 class CharacterDetailFragment : BaseViewBindingFragment<FragmentCharacterDetailBinding>() {
 
@@ -43,7 +47,6 @@ class CharacterDetailFragment : BaseViewBindingFragment<FragmentCharacterDetailB
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
 		viewModel
-		prepareTransitions()
 	}
 
 	override fun onCreateView(
@@ -62,6 +65,7 @@ class CharacterDetailFragment : BaseViewBindingFragment<FragmentCharacterDetailB
 		view.doOnPreDraw {
 			startPostponedEnterTransition()
 		}
+		prepareTransitions()
 
 		initUI()
 		subscribeObservers()
@@ -86,20 +90,20 @@ class CharacterDetailFragment : BaseViewBindingFragment<FragmentCharacterDetailB
 		Glide
 			.with(this)
 			.load(character.images?.first())
-			.apply(
-				RequestOptions()
-					.placeholder(R.drawable.placeholder_white_leaf)
-					.diskCacheStrategy(DiskCacheStrategy.DATA)
-			)
 			.dontTransform()
 			.dontAnimate()
-			.into(binding.characterImageView)
+			.into(binding.characterImage)
+
+		binding.characterName.text = character.name?.english ?: NotFound.surpriseMe()
+
+		binding.toolbarPrimaryIcon.setOnClickListener {
+			findNavController().navigateUp()
+		}
 	}
 
 	/**
 	 *  ref [1](https://www.youtube.com/watch?v=KuV8Y9-T-oA) ,
 	 *  [2](https://github.com/AlexSheva-mason/Rick-Morty-Database/blob/b94ffac84abf765dbc6136d7c6303d44fdd8f642/app/src/main/java/com/shevaalex/android/rickmortydatabase/ui/base/BaseDetailFragment.kt#L232)
-	 *  TODO(Glide stuck / weird behaviour on exit)
 	 */
 	private fun prepareTransitions() {
 		if (resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
@@ -134,11 +138,13 @@ class CharacterDetailFragment : BaseViewBindingFragment<FragmentCharacterDetailB
 
 	private fun transitionToExpandedMode() {
 		binding.toolBarTitle.fadeIn()
+//		binding.toolBar.setBackgroundColor(Color.TRANSPARENT)
 		displayToolbarTitle(binding.toolBarTitle, null, true)
 	}
 
 	private fun transitionToCollapsedMode() {
 		binding.toolBarTitle.fadeOut()
+//		binding.toolBar.setBackgroundColor(Color.WHITE)
 		displayToolbarTitle(binding.toolBarTitle, getToolbarTitle(), true)
 	}
 

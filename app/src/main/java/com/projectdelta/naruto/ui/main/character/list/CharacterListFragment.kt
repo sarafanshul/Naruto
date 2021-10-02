@@ -1,5 +1,6 @@
 package com.projectdelta.naruto.ui.main.character.list
 
+import android.content.res.Configuration
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.MenuItem
@@ -7,12 +8,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
 import androidx.cardview.widget.CardView
+import androidx.core.view.doOnPreDraw
 import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.card.MaterialCardView
+import com.google.android.material.transition.MaterialElevationScale
 import com.projectdelta.naruto.R
 import com.projectdelta.naruto.data.model.entity.BaseModel
 import com.projectdelta.naruto.data.model.entity.character.Character
@@ -56,6 +59,11 @@ class CharacterListFragment : BaseViewBindingFragment<FragmentCharacterListBindi
 
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 		super.onViewCreated(view, savedInstanceState)
+
+		view.doOnPreDraw {
+			startPostponedEnterTransition()
+		}
+		prepareTransitions()
 
 		initUI()
 
@@ -187,6 +195,18 @@ class CharacterListFragment : BaseViewBindingFragment<FragmentCharacterListBindi
 				character
 			)
 		safeNavigate(action ,extras)
+	}
+
+	private fun prepareTransitions() {
+		if (resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
+			postponeEnterTransition()
+			exitTransition = MaterialElevationScale(false).apply {
+				duration = resources.getInteger(R.integer.rm_motion_default_large).toLong()
+			}
+			reenterTransition = MaterialElevationScale(true).apply {
+				duration = resources.getInteger(R.integer.rm_motion_default_large).toLong()
+			}
+		}
 	}
 
 	override fun onDestroy() {

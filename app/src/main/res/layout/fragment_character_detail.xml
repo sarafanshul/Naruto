@@ -11,41 +11,74 @@
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/white"
         android:id="@+id/app_bar">
 
         <com.google.android.material.appbar.CollapsingToolbarLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:expandedTitleGravity="top"
+            app:contentScrim="@color/white"
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
-            <LinearLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_collapseMode="parallax"
                 android:clipToPadding="false"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                app:layout_collapseMode="parallax">
 
                 <ImageView
+                    android:id="@+id/character_image"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:scaleType="fitCenter"
                     android:adjustViewBounds="true"
                     android:contentDescription="@string/item_image_description"
-                    android:id="@+id/character_image_view"
                     android:elevation="@dimen/base_padding"
-                    tools:ignore="Suspicious0dp" />
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/placeholder_white_leaf"
+                    app:layout_collapseMode="parallax"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/character_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:elevation="8dp"
+                    android:ellipsize="end"
+                    android:maxLines="4"
+                    android:outlineProvider="background"
+                    android:padding="@dimen/base_padding"
+                    android:textAppearance="@style/TextAppearance.Naruto.Headline4"
+                    android:textColor="?attr/colorOnPrimary"
+                    app:layout_constrainedWidth="true"
+                    app:layout_constraintBottom_toBottomOf="@id/character_image"
+                    app:layout_constraintEnd_toEndOf="@id/character_image"
+                    app:layout_constraintHorizontal_bias="0"
+                    app:layout_constraintStart_toStartOf="@id/character_image"
+                    tools:text="HOLE IN THE WALL HOLE IN THE WALL HOLE IN THE WALL" />
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:background="@color/light_grey"/>
+                    android:background="@color/light_grey"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="1.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="parent" />
 
-            </LinearLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.appcompat.widget.Toolbar
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/toolbar_height"
+                android:id="@+id/tool_bar"
                 app:layout_collapseMode="pin">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
@@ -59,7 +92,7 @@
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintLeft_toLeftOf="parent"
                         android:id="@+id/toolbar_primary_icon"
-                        android:src="@drawable/ic_arrow_up_white_32dp"
+                        android:src="@drawable/ic_arrow_back_ios_black_24dp"
                         android:contentDescription="@android:string/cancel" />
 
                     <TextView
