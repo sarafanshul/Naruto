@@ -7,10 +7,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.doOnPreDraw
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
@@ -19,7 +22,9 @@ import com.google.android.material.transition.MaterialContainerTransform
 import com.google.android.material.transition.MaterialFadeThrough
 import com.projectdelta.naruto.R
 import com.projectdelta.naruto.data.model.entity.character.Character
+import com.projectdelta.naruto.data.model.entity.character.Character.Companion.DECEASED
 import com.projectdelta.naruto.databinding.FragmentCharacterDetailBinding
+import com.projectdelta.naruto.databinding.JutsuItemBinding
 import com.projectdelta.naruto.ui.base.BaseViewBindingFragment
 import com.projectdelta.naruto.util.CollapsingToolbarState
 import com.projectdelta.naruto.util.Constants.COLLAPSING_TOOLBAR_VISIBILITY_THRESHOLD
@@ -67,37 +72,105 @@ class CharacterDetailFragment : BaseViewBindingFragment<FragmentCharacterDetailB
 		}
 		prepareTransitions()
 
-		initUI()
-		subscribeObservers()
-	}
-
-	private fun initUI() {
 		val args: CharacterDetailFragmentArgs by navArgs()
 		character = args.characterData
 
-		binding.layoutCharacterDetail.transitionName = TRANSITION_CHARACTER.plus(character.id)
+		initUI()
+		subscribeObservers()
 
-		binding.appBar.addOnOffsetChangedListener(
-			AppBarLayout.OnOffsetChangedListener{ _ ,offset ->
-				if (offset < COLLAPSING_TOOLBAR_VISIBILITY_THRESHOLD) {
-					viewModel.setCollapsingToolbarState(CollapsingToolbarState.Collapsed())
-				} else {
-					viewModel.setCollapsingToolbarState(CollapsingToolbarState.Expanded())
+	}
+
+	private fun initUI() {
+
+		binding.apply {
+			layoutCharacterDetail.transitionName = TRANSITION_CHARACTER.plus(character.id)
+
+			appBar.addOnOffsetChangedListener(
+				AppBarLayout.OnOffsetChangedListener{ _ ,offset ->
+					if (offset < COLLAPSING_TOOLBAR_VISIBILITY_THRESHOLD) {
+						viewModel.setCollapsingToolbarState(CollapsingToolbarState.Collapsed())
+					} else {
+						viewModel.setCollapsingToolbarState(CollapsingToolbarState.Expanded())
+					}
+				}
+			)
+
+			Glide
+				.with(this@CharacterDetailFragment)
+				.load(character.images?.first())
+				.dontTransform()
+				.dontAnimate()
+				.into(characterImage)
+
+			characterName.text = "${character.name?.english}\n${character.name?.kanji}"
+
+			toolbarPrimaryIcon.setOnClickListener {
+				findNavController().navigateUp()
+			}
+
+			toolbarSecondaryIcon.setOnClickListener {
+				launchWebView()
+			}
+
+			// status
+			characterStatus.text = character.personal?.status
+			if( character.personal?.status == DECEASED ){
+				characterStatus.compoundDrawables.first().setTint(Color.RED)
+				characterStatus.setTextColor(Color.RED)
+			}
+
+			// birth
+			characterBirth.text = character.personal?.birthDate
+			characterBirth.isSelected = true
+
+			// sex
+			characterSex.text = character.personal?.sex
+			when(character.personal?.sex){
+				"Male" -> characterSex.leftDrawable(R.drawable.ic_male_black_24dp)
+				"Female" -> characterSex.leftDrawable(R.drawable.ic_female_black_24dp)
+				else -> characterSex.leftDrawable(R.drawable.ic_transgender_black_24dp)
+			}
+
+			// description
+			characterDescription.text = character.description
+
+			// debut
+			characterDebut.text = "Manga : ${character.debut?.manga?.name} #${character.debut?.manga?.chapter}" + "\n" +
+					"Anime : ${character.debut?.anime?.name} #${character.debut?.anime?.episode}"
+
+			// clan
+			characterClan.text = if(character.personal?.clan?.first().isOk()) character.personal?.clan?.first() else "Rogue Ninja"
+
+			// village
+			characterVillage.text = if(character.personal?.affiliation?.first().isOk()) character.personal?.affiliation?.first() else "Traveller"
+
+			// jutsus
+			characterJutsusRv.layoutManager = LinearLayoutManager(requireActivity())
+
+			// Do NOT TRY THIS AT HOME
+			class TempAdapter(private val items : List<String>): RecyclerView.Adapter<TempAdapter.XViewHolder>(){
+				override fun onCreateViewHolder(parent1: ViewGroup, viewType1: Int): XViewHolder {
+					val x = JutsuItemBinding.inflate(LayoutInflater.from(parent1.context) ,parent1 ,false)
+					return XViewHolder(x)
+				}
+
+				override fun onBindViewHolder(holder: XViewHolder, position: Int) {
+					holder.bind(items[position])
+				}
+
+				override fun getItemCount(): Int {
+					return items.size
+				}
+				inner class XViewHolder( private val xBinding : JutsuItemBinding ) : RecyclerView.ViewHolder(xBinding.root){
+					fun bind( x : String ){
+						xBinding.itemName.text = x
+						xBinding.itemImage.setImageResource(R.drawable.placeholder_orange_naruto_sasuke)
+					}
 				}
 			}
-		)
 
-		Glide
-			.with(this)
-			.load(character.images?.first())
-			.dontTransform()
-			.dontAnimate()
-			.into(binding.characterImage)
+			characterJutsusRv.adapter = TempAdapter(character.jutsus!!.take(5))
 
-		binding.characterName.text = character.name?.english ?: NotFound.surpriseMe()
-
-		binding.toolbarPrimaryIcon.setOnClickListener {
-			findNavController().navigateUp()
 		}
 	}
 
@@ -124,7 +197,6 @@ class CharacterDetailFragment : BaseViewBindingFragment<FragmentCharacterDetailB
 
 	private fun subscribeObservers() {
 		viewModel.collapsingToolbarState.observe(this, { state ->
-
 			when (state) {
 				is CollapsingToolbarState.Expanded -> {
 					transitionToExpandedMode()
@@ -136,15 +208,16 @@ class CharacterDetailFragment : BaseViewBindingFragment<FragmentCharacterDetailB
 		})
 	}
 
+	private fun launchWebView() {
+	}
+
 	private fun transitionToExpandedMode() {
 		binding.toolBarTitle.fadeIn()
-//		binding.toolBar.setBackgroundColor(Color.TRANSPARENT)
 		displayToolbarTitle(binding.toolBarTitle, null, true)
 	}
 
 	private fun transitionToCollapsedMode() {
 		binding.toolBarTitle.fadeOut()
-//		binding.toolBar.setBackgroundColor(Color.WHITE)
 		displayToolbarTitle(binding.toolBarTitle, getToolbarTitle(), true)
 	}
 
@@ -154,8 +227,7 @@ class CharacterDetailFragment : BaseViewBindingFragment<FragmentCharacterDetailB
 		else
 			NotFound.surpriseMe()
 
-	@Suppress("all")
-	private fun displayToolbarTitle(textView: TextView, title: String?, useAnimation: Boolean) {
+	private fun displayToolbarTitle(textView: TextView, title: String?, @Suppress("SameParameterValue") useAnimation: Boolean) {
 		if (title != null) {
 			showToolbarTitle(textView, title, useAnimation)
 		} else {

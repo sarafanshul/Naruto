@@ -2,6 +2,7 @@
 <resources>
     <dimen name="connection_status_bar_text_size">16sp</dimen>
     <dimen name="base_padding">4dp</dimen>
+    <dimen name="base_padding_medium">8dp</dimen>
     <dimen name="base_item_image_height">130dp</dimen>
     <dimen name="item_name_padding_end">4dp</dimen>
     <dimen name="item_name_padding_start">4dp</dimen>
@@ -18,11 +19,13 @@
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="default_view_margin">16dp</dimen>
     <dimen name="default_view_margin_negative">-16dp</dimen>
-    <dimen name="toolbar_item_margin">24dp</dimen>
+    <dimen name="toolbar_item_margin">32dp</dimen>
     <dimen name="toolbar_title_margin">32dp</dimen>
     <dimen name="view_between_spacing">7dp</dimen>
     <dimen name="recyclerview_start_end_margins">5dp</dimen>
 
     <dimen name="scrollview_bottom_margin_1">80dp</dimen>
     <dimen name="header_height">170dp</dimen>
+    <dimen name="base_elevation">4dp</dimen>
+    <dimen name="detail_element_margin">35dp</dimen>
 </resources>

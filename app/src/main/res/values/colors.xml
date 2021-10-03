@@ -150,7 +150,7 @@
     <color name="lime">#ccff90</color>
     <color name="pressed_color">#191919</color>
     <color name="selected_color">#191919</color>
-    <color name="focused_color">#BABABA</color>
+    <color name="focused_color">#60BABABA</color>
 
     <color name="ocean_blue">#045de9</color>
     <color name="flame_red">#ff4e00</color>

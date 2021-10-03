@@ -9,6 +9,7 @@ import androidx.navigation.ui.setupWithNavController
 import com.projectdelta.naruto.R
 import com.projectdelta.naruto.databinding.ActivityMainBinding
 import com.projectdelta.naruto.ui.base.BaseViewBindingActivity
+import com.projectdelta.naruto.util.system.lang.toast
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
 
@@ -35,7 +36,12 @@ class MainActivity : BaseViewBindingActivity<ActivityMainBinding>() {
 		binding.bottomPanel.setupWithNavController(navController)
 
 		navController.addOnDestinationChangedListener { _, destination: NavDestination, _ ->
-			// TODO(IMPL)
+//			// TODO(IMPL)
+//			if( destination.id == R.id.characterDetailFragment ){
+//				toast("show bottomNav @Detail")
+//				Timber.w("Force show Bottom Nav , Impl/Fix later")
+//				binding.bottomPanel.visibility = View.VISIBLE
+//			}
 		}
 	}
 

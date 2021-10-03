@@ -1,10 +1,87 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <style name="TextAppearance.Naruto.SearchView.Hint" parent="Widget.AppCompat.AutoCompleteTextView">
+        <item name="android:textColor">@color/material_on_surface_emphasis_medium</item>
+    </style>
+
+    <style name="TextAppearance.Naruto.BottomNavigation" parent="@style/TextAppearance.Naruto.Caption">
+        <item name="android:textAllCaps">true</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/material_on_surface_emphasis_high_type</item>
+    </style>
+
+    <style name="TextAppearance.Naruto.Headline1" parent="TextAppearance.MaterialComponents.Headline1">
+        <item name="fontFamily">?fontFamily</item>
+        <item name="android:fontFamily">?fontFamily</item>
+        <item name="android:textColor">@color/material_on_surface_emphasis_high_type</item>
+    </style>
+
+    <style name="TextAppearance.Naruto.Headline2" parent="TextAppearance.MaterialComponents.Headline2">
+        <item name="fontFamily">?fontFamily</item>
+        <item name="android:fontFamily">?fontFamily</item>
+        <item name="android:textColor">@color/material_on_surface_emphasis_high_type</item>
+    </style>
+
+    <style name="TextAppearance.Naruto.Headline3" parent="TextAppearance.MaterialComponents.Headline3">
+        <item name="fontFamily">?fontFamily</item>
+        <item name="android:fontFamily">?fontFamily</item>
+        <item name="android:textColor">@color/material_on_surface_emphasis_high_type</item>
+    </style>
+
     <style name="TextAppearance.Naruto.Headline4" parent="TextAppearance.MaterialComponents.Headline4">
         <item name="fontFamily">@font/ninja_naruto_font_family</item>
         <item name="android:fontFamily">@font/ninja_naruto_font_family</item>
         <item name="android:textColor">@color/material_on_surface_emphasis_high_type</item>
     </style>
+
+    <style name="TextAppearance.Naruto.Headline5" parent="TextAppearance.MaterialComponents.Headline5">
+        <item name="fontFamily">?fontFamily</item>
+        <item name="android:fontFamily">?fontFamily</item>
+        <item name="android:textColor">@color/material_on_surface_emphasis_high_type</item>
+    </style>
+
+    <style name="TextAppearance.Naruto.Headline6" parent="TextAppearance.MaterialComponents.Headline6">
+        <item name="fontFamily">?fontFamily</item>
+        <item name="android:fontFamily">?fontFamily</item>
+        <item name="android:textColor">@color/material_on_surface_emphasis_high_type</item>
+    </style>
+
+    <style name="TextAppearance.Naruto.Subtitle1" parent="TextAppearance.MaterialComponents.Subtitle1">
+        <item name="fontFamily">?fontFamily</item>
+        <item name="android:fontFamily">?fontFamily</item>
+        <item name="android:textColor">@color/material_on_surface_emphasis_high_type</item>
+    </style>
+
+    <style name="TextAppearance.Naruto.Subtitle2" parent="TextAppearance.MaterialComponents.Subtitle2">
+        <item name="fontFamily">?fontFamily</item>
+        <item name="android:fontFamily">?fontFamily</item>
+        <item name="android:textColor">@color/material_on_surface_emphasis_high_type</item>
+    </style>
+
+    <style name="TextAppearance.Naruto.Body1" parent="TextAppearance.MaterialComponents.Body1">
+        <item name="fontFamily">?fontFamily</item>
+        <item name="android:fontFamily">?fontFamily</item>
+        <item name="android:textColor">@color/material_on_surface_emphasis_high_type</item>
+    </style>
+
+    <style name="TextAppearance.Naruto.Body2" parent="TextAppearance.MaterialComponents.Body2">
+        <item name="fontFamily">?fontFamily</item>
+        <item name="android:fontFamily">?fontFamily</item>
+        <item name="android:textColor">@color/material_on_surface_emphasis_high_type</item>
+    </style>
+
+    <style name="TextAppearance.Naruto.Caption" parent="TextAppearance.MaterialComponents.Caption">
+        <item name="fontFamily">?fontFamily</item>
+        <item name="android:fontFamily">?fontFamily</item>
+        <item name="android:textColor">@color/material_on_surface_emphasis_high_type</item>
+    </style>
+
+    <style name="TextAppearance.Naruto.Overline" parent="TextAppearance.MaterialComponents.Overline">
+        <item name="fontFamily">?fontFamily</item>
+        <item name="android:fontFamily">?fontFamily</item>
+        <item name="android:textColor">@color/material_on_surface_emphasis_high_type</item>
+    </style>
+
 
 </resources>

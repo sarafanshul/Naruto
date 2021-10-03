@@ -43,7 +43,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <com.google.android.material.textview.MaterialTextView
+                <TextView
                     android:id="@+id/character_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -56,13 +56,24 @@
                     android:outlineProvider="background"
                     android:padding="@dimen/base_padding"
                     android:textAppearance="@style/TextAppearance.Naruto.Headline4"
-                    android:textColor="?attr/colorOnPrimary"
                     app:layout_constrainedWidth="true"
                     app:layout_constraintBottom_toBottomOf="@id/character_image"
                     app:layout_constraintEnd_toEndOf="@id/character_image"
                     app:layout_constraintHorizontal_bias="0"
                     app:layout_constraintStart_toStartOf="@id/character_image"
                     tools:text="HOLE IN THE WALL HOLE IN THE WALL HOLE IN THE WALL" />
+
+                <ImageView
+                    android:id="@+id/background_character_name"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:background="@color/rm_grey_blue_900_alpha_45"
+                    android:elevation="@dimen/base_elevation"
+                    app:layout_constraintBottom_toBottomOf="@id/character_name"
+                    app:layout_constraintEnd_toEndOf="@id/character_name"
+                    app:layout_constraintStart_toStartOf="@id/character_name"
+                    app:layout_constraintTop_toTopOf="@id/character_name"
+                    tools:ignore="ContentDescription" />
 
                 <View
                     android:layout_width="match_parent"
@@ -91,7 +102,10 @@
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintLeft_toLeftOf="parent"
+                        app:tint="?colorOnPrimary"
+                        android:padding="@dimen/base_padding"
                         android:id="@+id/toolbar_primary_icon"
+                        android:background="@drawable/btn_background_circle_focused"
                         android:src="@drawable/ic_arrow_back_ios_black_24dp"
                         android:contentDescription="@android:string/cancel" />
 
@@ -113,12 +127,14 @@
                         android:ellipsize="end" />
 
                     <ImageView
-                        app:tint="?colorPrimary"
+                        app:tint="?colorOnPrimary"
                         android:layout_width="@dimen/toolbar_item_margin"
                         android:layout_height="@dimen/toolbar_item_margin"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
+                        android:background="@drawable/btn_background_circle_focused"
+                        android:src="@drawable/ic_public_black_24dp"
                         android:id="@+id/toolbar_secondary_icon"
                         android:layout_marginEnd="@dimen/default_view_margin"
                         android:contentDescription="@string/action_share" />
@@ -137,9 +153,200 @@
         android:overScrollMode="never"
         app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
 
-        <View
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="1000dp"/>
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="@dimen/base_padding_medium"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_marginTop="@dimen/base_padding_medium"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/base_padding"
+                tools:ignore="UselessParent"
+                android:orientation="horizontal">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/character_status"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.33"
+                    android:gravity="center|start"
+                    android:textAppearance="@style/TextAppearance.Naruto.Body1"
+                    android:text="@string/place_holder_text"
+                    android:drawablePadding="@dimen/base_padding"
+                    android:singleLine="true"
+                    android:ellipsize="end"
+                    android:paddingStart="@dimen/base_padding"
+                    android:textColor="@color/lime_green"
+                    android:drawableLeft="@drawable/ic_fiber_manual_record_black_24dp"
+                    app:drawableTint="@color/lime_green"
+                    tools:ignore="RtlHardcoded,RtlSymmetry" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/character_birth"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.33"
+                    android:drawableLeft="@drawable/ic_cake_black_outline_24dp"
+                    android:gravity="center|start"
+                    android:singleLine="true"
+                    android:ellipsize="marquee"
+                    android:drawableTint="@color/navigation_left"
+                    android:textColor="@color/navigation_left"
+                    android:paddingStart="@dimen/base_padding"
+                    android:drawablePadding="@dimen/base_padding"
+                    android:textAppearance="@style/TextAppearance.Naruto.Body1"
+                    android:text="@string/place_holder_text"
+                    tools:ignore="RtlHardcoded,RtlSymmetry"/>
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:drawableLeft="@drawable/ic_transgender_black_24dp"
+                    android:id="@+id/character_sex"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.25"
+                    android:drawablePadding="@dimen/base_padding"
+                    android:gravity="center|start"
+                    android:singleLine="true"
+                    android:paddingStart="@dimen/base_padding"
+                    android:textAppearance="@style/TextAppearance.Naruto.Body1"
+                    android:text="@string/place_holder_text"
+                    tools:ignore="RtlHardcoded,RtlSymmetry"/>
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/detail_element_margin"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/base_padding"
+                    android:layout_weight="0.4"
+                    android:textAppearance="@style/TextAppearance.Naruto.Headline6"
+                    android:text="@string/detail_village"/>
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/character_village"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.6"
+                    android:padding="@dimen/base_padding"
+                    android:drawableLeft="@drawable/ic_place_black_24dp"
+                    android:drawablePadding="@dimen/base_padding_medium"
+                    android:drawableTint="@color/navigation_prev"
+                    android:textColor="@color/navigation_prev"
+                    android:textAppearance="@style/TextAppearance.Naruto.Headline6"
+                    android:text="@string/place_holder_text"
+                    tools:ignore="RtlHardcoded" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/detail_element_margin"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/base_padding"
+                    android:layout_weight="0.4"
+                    android:textAppearance="@style/TextAppearance.Naruto.Headline6"
+                    android:text="@string/detail_clan"/>
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/character_clan"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.6"
+                    android:padding="@dimen/base_padding"
+                    android:drawableLeft="@drawable/ic_groups_black_24dp"
+                    android:drawablePadding="@dimen/base_padding_medium"
+                    android:drawableTint="@color/accent_blue"
+                    android:textColor="@color/accent_blue"
+                    android:textAppearance="@style/TextAppearance.Naruto.Headline6"
+                    android:text="@string/place_holder_text"
+                    tools:ignore="RtlHardcoded" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/detail_element_margin"/>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/base_padding"
+                android:textAppearance="@style/TextAppearance.Naruto.Headline6"
+                android:text="@string/detail_about"/>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/character_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/base_padding"
+                android:textAppearance="@style/TextAppearance.Naruto.Body1"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/detail_element_margin"/>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/base_padding"
+                android:textAppearance="@style/TextAppearance.Naruto.Headline6"
+                android:text="@string/detail_debut"/>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/character_debut"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/base_padding"
+                android:textAppearance="@style/TextAppearance.Naruto.Body1"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/detail_element_margin"/>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/base_padding"
+                android:textAppearance="@style/TextAppearance.Naruto.Headline6"
+                android:text="@string/detail_jutsus"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/character_jutsus_rv"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:listitem="@layout/jutsu_item"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/base_item_image_height"/>
+
+        </LinearLayout>
 
     </androidx.core.widget.NestedScrollView>
 

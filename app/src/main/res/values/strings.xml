@@ -118,5 +118,14 @@
     <string name="action_filter_bi">Orochimaru</string>
     <string name="action_filter_alive">Alive</string>
     <string name="action_filter_dead">Neji</string>
+    <string name="place_holder_text">Placeholder Text</string>
+    <string name="detail_about">About:</string>
+    <string name="detail_debut">Debut:</string>
+    <string name="detail_clan">Clan:</string>
+    <string name="detail_village">Village:</string>
+    <string name="detail_jutsus">Jutsus:</string>
+    <string name="tv_item_range">Range:</string>
+    <string name="tv_item_nature">Nature:</string>
+    <string name="tv_item_type">Type:</string>
 
 </resources>

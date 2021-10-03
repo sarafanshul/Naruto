@@ -5,11 +5,17 @@ import android.animation.AnimatorListenerAdapter
 import android.app.Activity
 import android.content.Context
 import android.graphics.Point
+import android.graphics.PorterDuff
 import android.graphics.drawable.ColorDrawable
 import android.view.View
 import android.view.animation.Animation
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
+import android.widget.TextView
+import androidx.annotation.ColorInt
+import androidx.annotation.ColorRes
+import androidx.annotation.DimenRes
+import androidx.annotation.DrawableRes
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.projectdelta.naruto.util.Constants.CLICK_COLOR_CHANGE_TIME
@@ -178,4 +184,28 @@ fun <T : RecyclerView> T.removeItemDecorations() {
 	while (itemDecorationCount > 0) {
 		removeItemDecorationAt(0)
 	}
+}
+
+/**
+ * Extension function for setting left drawable in [TextView]
+ * uses : `setCompoundDrawablesWithIntrinsicBounds(int left, int top, int right, int bottom)`
+ *
+ * **set 0 where you don't want images**
+ *
+ * [Source](https://stackoverflow.com/a/59652513/11718077)
+ */
+@Suppress("DEPRECATION")
+fun TextView.leftDrawable(@DrawableRes id: Int = 0, @DimenRes sizeRes: Int = 0, @ColorInt color: Int = 0, @ColorRes colorRes: Int = 0) {
+	val drawable = ContextCompat.getDrawable(context, id)
+	if (sizeRes != 0) {
+		val size = resources.getDimensionPixelSize(sizeRes)
+		drawable?.setBounds(0, 0, size, size)
+	}
+	if (color != 0) {
+		drawable?.setColorFilter(color, PorterDuff.Mode.SRC_ATOP)
+	} else if (colorRes != 0) {
+		val colorInt = ContextCompat.getColor(context, colorRes)
+		drawable?.setColorFilter(colorInt, PorterDuff.Mode.SRC_ATOP)
+	}
+	this.setCompoundDrawablesWithIntrinsicBounds(drawable, null, null, null)
 }
