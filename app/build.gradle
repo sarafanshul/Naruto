@@ -102,6 +102,7 @@ dependencies {
     implementation "com.squareup.retrofit2:converter-gson:$retrofit_ver"
     implementation "com.squareup.okhttp3:okhttp:4.9.0"
     implementation 'com.squareup.retrofit2:adapter-rxjava2:2.4.0'
+    implementation "com.squareup.okhttp3:logging-interceptor:4.9.2"
 
     def lifecycle_ver = "2.2.0"
     implementation "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle_ver"

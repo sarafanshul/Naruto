@@ -1,8 +1,10 @@
 package com.projectdelta.naruto.di
 
 import android.app.Application
+import com.projectdelta.naruto.BuildConfig
 import com.projectdelta.naruto.data.remote.ChapterApi
 import com.projectdelta.naruto.data.remote.CharacterApi
+import com.projectdelta.naruto.data.remote.JutsuApi
 import com.projectdelta.naruto.data.remote.VillageApi
 import com.projectdelta.naruto.util.Constants.CONNECTION_TIMEOUT
 import com.projectdelta.naruto.util.Constants.READ_TIMEOUT
@@ -17,6 +19,7 @@ import dagger.hilt.EntryPoint
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
@@ -28,26 +31,36 @@ object NetworkModule {
 
 	@Singleton
 	@Provides
-	fun provideConnectivityManager(application: Application): ConnectivityManager{
+	fun provideConnectivityManager(application: Application): ConnectivityManager {
 		return ConnectivityManagerImpl(application)
 	}
 
 	@EntryPoint
 	@Singleton
 	@InstallIn(SingletonComponent::class)
-	interface ConnectivityManagerProviderEntryPoint{
-		fun connectivityManager() : ConnectivityManager
+	interface ConnectivityManagerProviderEntryPoint {
+		fun connectivityManager(): ConnectivityManager
 	}
 
 	@Singleton
 	@Provides
-	fun provideOkHttpClient(): OkHttpClient {
-		return OkHttpClient.Builder()
-			.connectTimeout(CONNECTION_TIMEOUT, TimeUnit.SECONDS)
-			.readTimeout(READ_TIMEOUT, TimeUnit.SECONDS)
-			.writeTimeout(WRITE_TIMEOUT, TimeUnit.SECONDS)
-			.retryOnConnectionFailure(false)
-			.build()
+	fun provideLoggingInterceptor(): HttpLoggingInterceptor {
+		return HttpLoggingInterceptor().apply {
+			level = HttpLoggingInterceptor.Level.HEADERS
+		}
+	}
+
+	@Singleton
+	@Provides
+	fun provideOkHttpClient(loggingInterceptor: HttpLoggingInterceptor): OkHttpClient {
+		return OkHttpClient.Builder().apply {
+			connectTimeout(CONNECTION_TIMEOUT, TimeUnit.SECONDS)
+			readTimeout(READ_TIMEOUT, TimeUnit.SECONDS)
+			writeTimeout(WRITE_TIMEOUT, TimeUnit.SECONDS)
+			retryOnConnectionFailure(false)
+			if (BuildConfig.DEBUG)
+				addNetworkInterceptor(loggingInterceptor)
+		}.build()
 	}
 
 	@Singleton
@@ -82,6 +95,14 @@ object NetworkModule {
 		return retrofitBuilder
 			.build()
 			.create(VillageApi::class.java)
+	}
+
+	@Singleton
+	@Provides
+	fun provideJutsuApiService(retrofitBuilder: Retrofit.Builder): JutsuApi {
+		return retrofitBuilder
+			.build()
+			.create(JutsuApi::class.java)
 	}
 
 }

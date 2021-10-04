@@ -7,16 +7,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.doOnPreDraw
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.engine.DiskCacheStrategy
-import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.transition.MaterialContainerTransform
 import com.google.android.material.transition.MaterialFadeThrough
@@ -24,7 +21,6 @@ import com.projectdelta.naruto.R
 import com.projectdelta.naruto.data.model.entity.character.Character
 import com.projectdelta.naruto.data.model.entity.character.Character.Companion.DECEASED
 import com.projectdelta.naruto.databinding.FragmentCharacterDetailBinding
-import com.projectdelta.naruto.databinding.JutsuItemBinding
 import com.projectdelta.naruto.ui.base.BaseViewBindingFragment
 import com.projectdelta.naruto.util.CollapsingToolbarState
 import com.projectdelta.naruto.util.Constants.COLLAPSING_TOOLBAR_VISIBILITY_THRESHOLD
@@ -33,6 +29,8 @@ import com.projectdelta.naruto.util.NotFound
 import com.projectdelta.naruto.util.callback.TodoCallback
 import com.projectdelta.naruto.util.system.lang.*
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 
 /**
  * (for collapsing toolbar)[https://stackoverflow.com/questions/40472680/add-collapsing-toolbar-with-image]
@@ -49,6 +47,10 @@ class CharacterDetailFragment : BaseViewBindingFragment<FragmentCharacterDetailB
 
 	lateinit var character : Character
 
+	private var jutsuListAdapter : JutsuListAdapter? = null
+
+	private var job : Job? = null
+
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
 		viewModel
@@ -60,6 +62,15 @@ class CharacterDetailFragment : BaseViewBindingFragment<FragmentCharacterDetailB
 		savedInstanceState: Bundle?
 	): View {
 		// Inflate the layout for this fragment
+		val args: CharacterDetailFragmentArgs by navArgs()
+		character = args.characterData
+
+		jutsuListAdapter = JutsuListAdapter()
+
+		job = viewLifecycleOwner.lifecycleScope.launch {
+			viewModel.setJutsus(character.jutsus!!.take(6))
+		}
+
 		_binding = FragmentCharacterDetailBinding.inflate(layoutInflater)
 		return binding.root
 	}
@@ -70,13 +81,16 @@ class CharacterDetailFragment : BaseViewBindingFragment<FragmentCharacterDetailB
 		view.doOnPreDraw {
 			startPostponedEnterTransition()
 		}
+
 		prepareTransitions()
 
-		val args: CharacterDetailFragmentArgs by navArgs()
-		character = args.characterData
-
 		initUI()
+
 		subscribeObservers()
+
+		viewModel.jutsuList.observe(viewLifecycleOwner ,{ data ->
+			jutsuListAdapter?.submitList(data)
+		})
 
 	}
 
@@ -94,6 +108,10 @@ class CharacterDetailFragment : BaseViewBindingFragment<FragmentCharacterDetailB
 					}
 				}
 			)
+
+			// jutsus
+			characterJutsusRv.layoutManager = LinearLayoutManager(requireActivity())
+			characterJutsusRv.adapter = jutsuListAdapter
 
 			Glide
 				.with(this@CharacterDetailFragment)
@@ -144,33 +162,6 @@ class CharacterDetailFragment : BaseViewBindingFragment<FragmentCharacterDetailB
 			// village
 			characterVillage.text = if(character.personal?.affiliation?.first().isOk()) character.personal?.affiliation?.first() else "Traveller"
 
-			// jutsus
-			characterJutsusRv.layoutManager = LinearLayoutManager(requireActivity())
-
-			// Do NOT TRY THIS AT HOME
-			class TempAdapter(private val items : List<String>): RecyclerView.Adapter<TempAdapter.XViewHolder>(){
-				override fun onCreateViewHolder(parent1: ViewGroup, viewType1: Int): XViewHolder {
-					val x = JutsuItemBinding.inflate(LayoutInflater.from(parent1.context) ,parent1 ,false)
-					return XViewHolder(x)
-				}
-
-				override fun onBindViewHolder(holder: XViewHolder, position: Int) {
-					holder.bind(items[position])
-				}
-
-				override fun getItemCount(): Int {
-					return items.size
-				}
-				inner class XViewHolder( private val xBinding : JutsuItemBinding ) : RecyclerView.ViewHolder(xBinding.root){
-					fun bind( x : String ){
-						xBinding.itemName.text = x
-						xBinding.itemImage.setImageResource(R.drawable.placeholder_orange_naruto_sasuke)
-					}
-				}
-			}
-
-			characterJutsusRv.adapter = TempAdapter(character.jutsus!!.take(5))
-
 		}
 	}
 
@@ -196,7 +187,7 @@ class CharacterDetailFragment : BaseViewBindingFragment<FragmentCharacterDetailB
 	}
 
 	private fun subscribeObservers() {
-		viewModel.collapsingToolbarState.observe(this, { state ->
+		viewModel.collapsingToolbarState.observe(viewLifecycleOwner, { state ->
 			when (state) {
 				is CollapsingToolbarState.Expanded -> {
 					transitionToExpandedMode()
@@ -257,6 +248,14 @@ class CharacterDetailFragment : BaseViewBindingFragment<FragmentCharacterDetailB
 		} else {
 			textView.visible()
 		}
+	}
+
+	override fun onDestroy() {
+		jutsuListAdapter = null
+		job?.cancel()
+		if( _binding != null )
+			binding.characterJutsusRv.adapter = null
+		super.onDestroy()
 	}
 
 }
