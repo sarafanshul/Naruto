@@ -1,5 +1,6 @@
 package com.projectdelta.naruto.ui.main
 
+import android.graphics.Color
 import android.os.Bundle
 import android.view.View
 import androidx.activity.viewModels
@@ -9,7 +10,6 @@ import androidx.navigation.ui.setupWithNavController
 import com.projectdelta.naruto.R
 import com.projectdelta.naruto.databinding.ActivityMainBinding
 import com.projectdelta.naruto.ui.base.BaseViewBindingActivity
-import com.projectdelta.naruto.util.system.lang.toast
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
 
@@ -36,21 +36,23 @@ class MainActivity : BaseViewBindingActivity<ActivityMainBinding>() {
 		binding.bottomPanel.setupWithNavController(navController)
 
 		navController.addOnDestinationChangedListener { _, destination: NavDestination, _ ->
-//			// TODO(IMPL)
-//			if( destination.id == R.id.characterDetailFragment ){
-//				toast("show bottomNav @Detail")
-//				Timber.w("Force show Bottom Nav , Impl/Fix later")
-//				binding.bottomPanel.visibility = View.VISIBLE
-//			}
+			if( destination.id == R.id.characterDetailFragment ){
+				makeTransparentStatusBar(true)
+			}else{
+				makeTransparentStatusBar(false)
+			}
 		}
 	}
-
 
 	private fun initUI() {
 		connectivityManager.isNetworkAvailable.observe(this , { coms ->
 			when( coms ){
-				true -> binding.connectionTv.visibility = View.GONE
+				true -> {
+					binding.connectionTv.visibility = View.GONE
+					window.statusBarColor = Color.TRANSPARENT
+				}
 				false -> {
+					window.statusBarColor = getColor(R.color.matte_red)
 					binding.connectionTv.visibility = View.VISIBLE
 					Timber.w("No Internet connection!")
 				}

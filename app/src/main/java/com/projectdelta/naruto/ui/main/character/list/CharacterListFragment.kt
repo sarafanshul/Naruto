@@ -42,8 +42,6 @@ class CharacterListFragment : BaseViewBindingFragment<FragmentCharacterListBindi
 
 	private var adapter: CharacterListAdapter? = null
 
-	private var job : Job? = null
-
 	private var settingsSheet : CharacterSettingSheet? = null
 
 	override fun onCreate(savedInstanceState: Bundle?) {
@@ -210,7 +208,6 @@ class CharacterListFragment : BaseViewBindingFragment<FragmentCharacterListBindi
 	}
 
 	override fun onDestroy() {
-		job?.cancel()
 		adapter = null
 		if(_binding != null)
 			binding.characterRv.adapter = null

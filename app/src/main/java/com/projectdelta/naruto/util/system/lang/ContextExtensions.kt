@@ -285,7 +285,7 @@ fun Context.isOnline(): Boolean {
 /**
  * Returns the theme resources
  */
-
+@Deprecated("returns faded color", ReplaceWith("Context.getResourceColor") ,DeprecationLevel.ERROR)
 fun Context.getColorFromAttr(
 	@AttrRes attrColor: Int,
 	typedValue: TypedValue = TypedValue(),

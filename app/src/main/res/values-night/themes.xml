@@ -10,9 +10,12 @@
         <item name="colorSecondaryVariant">@color/teal_200</item>
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
-        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
+        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorToolbar</item>
         <!-- Customize your theme here. -->
+
         <item name="fontFamily">@font/product_sans_font_family</item>
+
+        <item name="colorToolbar">@color/black</item>
 
         <item name="colorControlHighlight">@color/ripple_colored_default</item>
         <item name="rippleColorToolbar">?attr/colorControlHighlight</item>

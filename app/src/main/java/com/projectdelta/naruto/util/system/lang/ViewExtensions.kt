@@ -17,6 +17,9 @@ import androidx.annotation.ColorRes
 import androidx.annotation.DimenRes
 import androidx.annotation.DrawableRes
 import androidx.core.content.ContextCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updateLayoutParams
+import androidx.core.view.updatePadding
 import androidx.recyclerview.widget.RecyclerView
 import com.projectdelta.naruto.util.Constants.CLICK_COLOR_CHANGE_TIME
 import com.projectdelta.naruto.util.callback.TodoCallback
@@ -208,4 +211,15 @@ fun TextView.leftDrawable(@DrawableRes id: Int = 0, @DimenRes sizeRes: Int = 0, 
 		drawable?.setColorFilter(colorInt, PorterDuff.Mode.SRC_ATOP)
 	}
 	this.setCompoundDrawablesWithIntrinsicBounds(drawable, null, null, null)
+}
+
+fun View.setTopPaddingForStatusBar() {
+	this.setOnApplyWindowInsetsListener { v, insets ->
+		val insetsCompat = WindowInsetsCompat.toWindowInsetsCompat(insets)
+		val systemWindow = insetsCompat.getInsets(
+			WindowInsetsCompat.Type.statusBars()
+		)
+		v.updatePadding(top = systemWindow.top)
+		insets
+	}
 }

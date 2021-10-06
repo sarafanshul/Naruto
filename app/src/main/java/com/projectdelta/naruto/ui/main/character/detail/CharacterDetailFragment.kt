@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.core.view.doOnPreDraw
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -26,10 +25,8 @@ import com.projectdelta.naruto.util.CollapsingToolbarState
 import com.projectdelta.naruto.util.Constants.COLLAPSING_TOOLBAR_VISIBILITY_THRESHOLD
 import com.projectdelta.naruto.util.Constants.TRANSITION_CHARACTER
 import com.projectdelta.naruto.util.NotFound
-import com.projectdelta.naruto.util.callback.TodoCallback
 import com.projectdelta.naruto.util.system.lang.*
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
 /**
@@ -49,8 +46,6 @@ class CharacterDetailFragment : BaseViewBindingFragment<FragmentCharacterDetailB
 
 	private var jutsuListAdapter : JutsuListAdapter? = null
 
-	private var job : Job? = null
-
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
 		viewModel
@@ -67,7 +62,7 @@ class CharacterDetailFragment : BaseViewBindingFragment<FragmentCharacterDetailB
 
 		jutsuListAdapter = JutsuListAdapter()
 
-		job = viewLifecycleOwner.lifecycleScope.launch {
+		jobs += viewLifecycleOwner.lifecycleScope.launch {
 			viewModel.setJutsus(character.jutsus!!.take(6))
 		}
 
@@ -100,7 +95,7 @@ class CharacterDetailFragment : BaseViewBindingFragment<FragmentCharacterDetailB
 			layoutCharacterDetail.transitionName = TRANSITION_CHARACTER.plus(character.id)
 
 			appBar.addOnOffsetChangedListener(
-				AppBarLayout.OnOffsetChangedListener{ _ ,offset ->
+				AppBarLayout.OnOffsetChangedListener{ barLayout ,offset ->
 					if (offset < COLLAPSING_TOOLBAR_VISIBILITY_THRESHOLD) {
 						viewModel.setCollapsingToolbarState(CollapsingToolbarState.Collapsed())
 					} else {
@@ -218,41 +213,8 @@ class CharacterDetailFragment : BaseViewBindingFragment<FragmentCharacterDetailB
 		else
 			NotFound.surpriseMe()
 
-	private fun displayToolbarTitle(textView: TextView, title: String?, @Suppress("SameParameterValue") useAnimation: Boolean) {
-		if (title != null) {
-			showToolbarTitle(textView, title, useAnimation)
-		} else {
-			hideToolbarTitle(textView, useAnimation)
-		}
-	}
-
-	private fun hideToolbarTitle(textView: TextView, animation: Boolean) {
-		if (animation) {
-			textView.fadeOut(
-				object : TodoCallback {
-					override fun execute() {
-						textView.text = ""
-					}
-				}
-			)
-		} else {
-			textView.text = ""
-			textView.gone()
-		}
-	}
-
-	private fun showToolbarTitle(textView: TextView, title: String, animation: Boolean) {
-		textView.text = title
-		if (animation) {
-			textView.fadeIn()
-		} else {
-			textView.visible()
-		}
-	}
-
 	override fun onDestroy() {
 		jutsuListAdapter = null
-		job?.cancel()
 		if( _binding != null )
 			binding.characterJutsusRv.adapter = null
 		super.onDestroy()

@@ -1,12 +1,18 @@
 package com.projectdelta.naruto.ui.base
 
+import android.graphics.Color
 import android.os.Bundle
+import android.view.View
+import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
+import com.projectdelta.naruto.R
 import com.projectdelta.naruto.data.preference.PreferenceManager
 import com.projectdelta.naruto.di.NetworkModule
 import com.projectdelta.naruto.di.PreferenceModule
 import com.projectdelta.naruto.util.networking.connectivity.ConnectivityManager
+import com.projectdelta.naruto.util.system.lang.getResourceColor
 import dagger.hilt.android.EntryPointAccessors
+
 
 abstract class BaseActivity : AppCompatActivity() {
 
@@ -38,6 +44,17 @@ abstract class BaseActivity : AppCompatActivity() {
 		connectivityManager = connectivityManagerHiltEntryPoint.connectivityManager()
 		connectivityManager.registerConnectionObserver()
 
+	}
+
+	/**
+	 * Only works if `android:fitsSystemWindows="true"`
+	 */
+	protected open fun makeTransparentStatusBar(isTransparent: Boolean) {
+		if (isTransparent) {
+			window.statusBarColor = Color.TRANSPARENT
+		} else {
+			window.statusBarColor = getResourceColor(R.attr.colorToolbar)
+		}
 	}
 
 	override fun onDestroy() {
