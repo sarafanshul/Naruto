@@ -1,7 +1,10 @@
+@file:Suppress("unused")
+
 package com.projectdelta.naruto.util.system.lang
 
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
+import android.animation.ObjectAnimator
 import android.app.Activity
 import android.content.Context
 import android.graphics.Point
@@ -16,11 +19,14 @@ import androidx.annotation.ColorInt
 import androidx.annotation.ColorRes
 import androidx.annotation.DimenRes
 import androidx.annotation.DrawableRes
+import androidx.core.animation.doOnEnd
 import androidx.core.content.ContextCompat
 import androidx.core.view.WindowInsetsCompat
-import androidx.core.view.updateLayoutParams
+import androidx.core.view.marginBottom
 import androidx.core.view.updatePadding
+import androidx.interpolator.view.animation.LinearOutSlowInInterpolator
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.projectdelta.naruto.util.Constants.CLICK_COLOR_CHANGE_TIME
 import com.projectdelta.naruto.util.callback.TodoCallback
 import kotlinx.coroutines.CoroutineScope
@@ -221,5 +227,40 @@ fun View.setTopPaddingForStatusBar() {
 		)
 		v.updatePadding(top = systemWindow.top)
 		insets
+	}
+}
+
+/**
+ * Slide Up and Down for bottom nav with animations ,[slideUp] and [slideDown] uses [translationObjectY]
+ * to get interpolator object animator.
+ * Sourced from [here](https://stackoverflow.com/a/65251040/11718077)
+ */
+fun View.translationObjectY(
+	startY: Float,
+	endY: Float,
+	duration: Long = 200L
+) : ObjectAnimator {
+	return ObjectAnimator.ofFloat(this, "translationY", startY, endY).apply {
+		this.duration = duration
+		interpolator = LinearOutSlowInInterpolator()
+		start()
+	}
+}
+fun BottomNavigationView.slideDown(todoCallback: TodoCallback? = null){
+	if (translationY == 0f) {
+		translationObjectY(0f, height.toFloat() + marginBottom.toFloat()).apply {
+			doOnEnd {
+				todoCallback?.execute()
+			}
+		}
+	}
+}
+fun BottomNavigationView.slideUp(todoCallback: TodoCallback? = null){
+	if( translationY == height.toFloat() + marginBottom.toFloat() ){
+		translationObjectY(height.toFloat() + marginBottom.toFloat(), 0f).apply {
+			doOnEnd {
+				todoCallback?.execute()
+			}
+		}
 	}
 }

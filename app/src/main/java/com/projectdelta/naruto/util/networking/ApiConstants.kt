@@ -4,6 +4,8 @@ package com.projectdelta.naruto.util.networking
 object ApiConstants {
 	const val BASE_URL = "http://10.0.2.2:8080/"
 
+	const val FANDOM_URL = "https://naruto.fandom.com/wiki/"
+
 	const val JUTSU_URL = "jutsu/"
 	const val VILLAGE_URL = "village/"
 	const val CHAPTER_URL = "chapter/"
@@ -22,9 +24,11 @@ object ApiConstants {
 	const val SUB_URL_LIKE_PAGED = "like_paged"
 	const val SUB_URL_ORDER_BY_MEMBERS = "order_by_members"
 	const val SUB_URL_ORDER_BY_JUTSUS = "order_by_jutsus"
+	const val SUB_URL_JUTSU_FILTER = "jutsus_filtered"
 
 	const val QUERY_PAGE = "page"
 	const val QUERY_SORT = "sort"
 	const val QUERY_REVERSE = "reverse"
 	const val QUERY_NAME = "name"
+	const val QUERY_ID = "id"
 }

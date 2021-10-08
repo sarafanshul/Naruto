@@ -9,10 +9,10 @@ import com.projectdelta.naruto.R
 import com.projectdelta.naruto.data.preference.PreferenceManager
 import com.projectdelta.naruto.di.NetworkModule
 import com.projectdelta.naruto.di.PreferenceModule
+import com.projectdelta.naruto.ui.web.WebViewActivity
 import com.projectdelta.naruto.util.networking.connectivity.ConnectivityManager
 import com.projectdelta.naruto.util.system.lang.getResourceColor
 import dagger.hilt.android.EntryPointAccessors
-
 
 abstract class BaseActivity : AppCompatActivity() {
 
@@ -48,6 +48,7 @@ abstract class BaseActivity : AppCompatActivity() {
 
 	/**
 	 * Only works if `android:fitsSystemWindows="true"`
+	 * TODO replace with Window.setNavigationBarTransparentCompat
 	 */
 	protected open fun makeTransparentStatusBar(isTransparent: Boolean) {
 		if (isTransparent) {
@@ -56,6 +57,8 @@ abstract class BaseActivity : AppCompatActivity() {
 			window.statusBarColor = getResourceColor(R.attr.colorToolbar)
 		}
 	}
+
+	fun launchWebView(url : String) = startActivity(WebViewActivity.newIntent(this , url))
 
 	override fun onDestroy() {
 		super.onDestroy()

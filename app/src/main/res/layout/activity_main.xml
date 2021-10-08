@@ -46,7 +46,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
-        android:background="@color/flame_red"
+        android:background="@color/naruto_orange"
         app:hideOnScroll="true"
         app:itemIconTint="@drawable/navigation_view_selector"
         app:itemTextColor="@color/white"

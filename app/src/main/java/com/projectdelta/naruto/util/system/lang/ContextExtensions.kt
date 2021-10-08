@@ -1,3 +1,5 @@
+@file:Suppress("unused")
+
 package com.projectdelta.naruto.util.system.lang
 
 import android.annotation.SuppressLint
@@ -82,6 +84,7 @@ fun Context.toast(
  * @param text the text to display.
  * @param duration the duration of the toast. Defaults to short.
  */
+@Suppress("DEPRECATION")
 @SuppressLint("ResourceAsColor")
 fun Context.darkToast(
 	text: String?,
@@ -103,6 +106,7 @@ fun Context.darkToast(
  * @param text the text to display.
  * @param duration the duration of the toast. Defaults to short.
  */
+@Suppress("DEPRECATION")
 fun Context.customToast(
 	text: String?,
 	duration: Int = Toast.LENGTH_SHORT,

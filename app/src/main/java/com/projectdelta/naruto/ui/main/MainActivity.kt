@@ -10,6 +10,8 @@ import androidx.navigation.ui.setupWithNavController
 import com.projectdelta.naruto.R
 import com.projectdelta.naruto.databinding.ActivityMainBinding
 import com.projectdelta.naruto.ui.base.BaseViewBindingActivity
+import com.projectdelta.naruto.util.system.lang.slideDown
+import com.projectdelta.naruto.util.system.lang.slideUp
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
 
@@ -27,8 +29,20 @@ class MainActivity : BaseViewBindingActivity<ActivityMainBinding>() {
 
 		setupNavController()
 
+		registerObservers()
+
 		initUI()
 
+	}
+
+	private fun registerObservers() {
+		viewModel.bottomNavVisibility.observe(this, { integer: Int ->
+			when( integer ){
+				View.GONE -> binding.bottomPanel.slideDown()
+				View.VISIBLE -> binding.bottomPanel.slideUp()
+				else -> throw IllegalStateException("Only GONE & VISIBLE state supported!")
+			}
+		})
 	}
 
 	private fun setupNavController() {
@@ -38,15 +52,17 @@ class MainActivity : BaseViewBindingActivity<ActivityMainBinding>() {
 		navController.addOnDestinationChangedListener { _, destination: NavDestination, _ ->
 			if( destination.id == R.id.characterDetailFragment ){
 				makeTransparentStatusBar(true)
+				viewModel.hideBottomNav()
 			}else{
 				makeTransparentStatusBar(false)
+				viewModel.showBottomNav()
 			}
 		}
 	}
 
 	private fun initUI() {
-		connectivityManager.isNetworkAvailable.observe(this , { coms ->
-			when( coms ){
+		connectivityManager.isNetworkAvailable.observe(this , { comms ->
+			when( comms ){
 				true -> {
 					binding.connectionTv.visibility = View.GONE
 					window.statusBarColor = Color.TRANSPARENT

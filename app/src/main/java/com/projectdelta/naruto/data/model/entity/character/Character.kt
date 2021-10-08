@@ -40,7 +40,5 @@ data class Character(
 			FEMALE("Female"),
 			BI("Various")
 		}
-
-		const val DECEASED = "Deceased"
 	}
 }

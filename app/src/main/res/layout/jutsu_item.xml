@@ -6,6 +6,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:foreground="?android:attr/selectableItemBackground"
     app:cardCornerRadius="0dp"
+    android:layout_marginHorizontal="8dp"
+    android:layout_marginVertical="@dimen/base_padding"
     app:cardElevation="@dimen/base_elevation">
 
     <androidx.constraintlayout.widget.ConstraintLayout

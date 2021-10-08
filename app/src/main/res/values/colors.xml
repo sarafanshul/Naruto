@@ -130,13 +130,6 @@
     <color name="navigation_menu">#CC95818D</color>
     <color name="navigation_right">#CCA6CFD5</color>
     <color name="navigation_left">#CC7D1128</color>
-    
-<!--    Naruto Colors-->
-    <color name="naruto_yellow">#fbe407</color>
-    <color name="naruto_black">#0b0b0b</color>
-    <color name="naruto_yellow_200">#ffe182</color>
-    <color name="naruto_orange">#f2a30b</color>
-    <color name="naruto_blue">#0c2fdf</color>
 
     <color name="mat_black">#191919</color>
     <color name="diesel">#020001</color>
@@ -161,6 +154,14 @@
     <color name="lime_green">#03fc34</color>
     <color name="maroon">#ca18e7</color>
     <color name="yellow">#F4B400</color>
+
+    <!--    Naruto Colors-->
+    <color name="naruto_yellow">#fbe407</color>
+    <color name="naruto_black">#0b0b0b</color>
+    <color name="naruto_yellow_200">#ffe182</color>
+    <color name="naruto_orange">#FF7133</color>
+    <color name="naruto_orange_accent">#FF4E00</color>
+    <color name="naruto_blue">#0c2fdf</color>
 
     <color name="matte_red">#B33F40</color>
     <color name="danger">@android:color/holo_red_dark</color>

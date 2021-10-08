@@ -1,12 +1,15 @@
 package com.projectdelta.naruto.data.remote
 
 import com.projectdelta.naruto.data.model.entity.character.Character
+import com.projectdelta.naruto.data.model.entity.jutsu.Jutsu
 import com.projectdelta.naruto.util.networking.ApiConstants.CHARACTER_URL
+import com.projectdelta.naruto.util.networking.ApiConstants.QUERY_ID
 import com.projectdelta.naruto.util.networking.ApiConstants.QUERY_NAME
 import com.projectdelta.naruto.util.networking.ApiConstants.QUERY_PAGE
 import com.projectdelta.naruto.util.networking.ApiConstants.QUERY_REVERSE
 import com.projectdelta.naruto.util.networking.ApiConstants.QUERY_SORT
 import com.projectdelta.naruto.util.networking.ApiConstants.SUB_URL_CORE
+import com.projectdelta.naruto.util.networking.ApiConstants.SUB_URL_JUTSU_FILTER
 import com.projectdelta.naruto.util.networking.ApiConstants.SUB_URL_LIKE_PAGED
 import com.projectdelta.naruto.util.networking.ApiConstants.SUB_URL_PAGE
 import com.projectdelta.naruto.util.networking.ApiConstants.SUB_URL_POWER
@@ -66,4 +69,13 @@ interface CharacterApi {
 		@Query(QUERY_PAGE) pageNumber: Int ,
 		@Query(QUERY_SORT) sortParam: String
 	):ApiResult<PageResult<Character?>>
+
+	/**
+	 * Gets character's jutsu filtered by : name.kanji ,range ,type
+	 * @param id Character id , basically [Character.id]
+	 */
+	@GET(CHARACTER_URL + SUB_URL_JUTSU_FILTER)
+	suspend fun getCharacterJutsuFiltered(
+		@Query(QUERY_ID) id : String
+	):ApiResult<List<Jutsu?>>
 }

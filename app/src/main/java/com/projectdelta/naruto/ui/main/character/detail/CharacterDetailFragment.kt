@@ -13,18 +13,21 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.transition.MaterialContainerTransform
 import com.google.android.material.transition.MaterialFadeThrough
 import com.projectdelta.naruto.R
 import com.projectdelta.naruto.data.model.entity.character.Character
-import com.projectdelta.naruto.data.model.entity.character.Character.Companion.DECEASED
 import com.projectdelta.naruto.databinding.FragmentCharacterDetailBinding
 import com.projectdelta.naruto.ui.base.BaseViewBindingFragment
+import com.projectdelta.naruto.ui.main.MainActivity
 import com.projectdelta.naruto.util.CollapsingToolbarState
 import com.projectdelta.naruto.util.Constants.COLLAPSING_TOOLBAR_VISIBILITY_THRESHOLD
 import com.projectdelta.naruto.util.Constants.TRANSITION_CHARACTER
 import com.projectdelta.naruto.util.NotFound
+import com.projectdelta.naruto.util.networking.ApiConstants.FANDOM_URL
 import com.projectdelta.naruto.util.system.lang.*
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -63,7 +66,7 @@ class CharacterDetailFragment : BaseViewBindingFragment<FragmentCharacterDetailB
 		jutsuListAdapter = JutsuListAdapter()
 
 		jobs += viewLifecycleOwner.lifecycleScope.launch {
-			viewModel.setJutsus(character.jutsus!!.take(6))
+			viewModel.setJutsus(character.id)
 		}
 
 		_binding = FragmentCharacterDetailBinding.inflate(layoutInflater)
@@ -95,7 +98,7 @@ class CharacterDetailFragment : BaseViewBindingFragment<FragmentCharacterDetailB
 			layoutCharacterDetail.transitionName = TRANSITION_CHARACTER.plus(character.id)
 
 			appBar.addOnOffsetChangedListener(
-				AppBarLayout.OnOffsetChangedListener{ barLayout ,offset ->
+				AppBarLayout.OnOffsetChangedListener{ _ ,offset ->
 					if (offset < COLLAPSING_TOOLBAR_VISIBILITY_THRESHOLD) {
 						viewModel.setCollapsingToolbarState(CollapsingToolbarState.Collapsed())
 					} else {
@@ -111,8 +114,12 @@ class CharacterDetailFragment : BaseViewBindingFragment<FragmentCharacterDetailB
 			Glide
 				.with(this@CharacterDetailFragment)
 				.load(character.images?.first())
-				.dontTransform()
-				.dontAnimate()
+				.apply(
+					RequestOptions()
+						.placeholder(R.drawable.placeholder_white_leaf)
+						.diskCacheStrategy(DiskCacheStrategy.DATA)
+				)
+				.thumbnail(0.25f)
 				.into(characterImage)
 
 			characterName.text = "${character.name?.english}\n${character.name?.kanji}"
@@ -127,7 +134,7 @@ class CharacterDetailFragment : BaseViewBindingFragment<FragmentCharacterDetailB
 
 			// status
 			characterStatus.text = character.personal?.status
-			if( character.personal?.status == DECEASED ){
+			if( character.personal?.status != Character.Companion.CharacterStatus.ALIVE.value ){
 				characterStatus.compoundDrawables.first().setTint(Color.RED)
 				characterStatus.setTextColor(Color.RED)
 			}
@@ -195,6 +202,7 @@ class CharacterDetailFragment : BaseViewBindingFragment<FragmentCharacterDetailB
 	}
 
 	private fun launchWebView() {
+		(requireActivity() as MainActivity).launchWebView( FANDOM_URL + character.id)
 	}
 
 	private fun transitionToExpandedMode() {
@@ -215,7 +223,7 @@ class CharacterDetailFragment : BaseViewBindingFragment<FragmentCharacterDetailB
 
 	override fun onDestroy() {
 		jutsuListAdapter = null
-		if( _binding != null )
+		if (_binding != null)
 			binding.characterJutsusRv.adapter = null
 		super.onDestroy()
 	}

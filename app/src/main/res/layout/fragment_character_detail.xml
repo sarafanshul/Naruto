@@ -125,7 +125,7 @@
                         app:layout_constraintRight_toLeftOf="@id/toolbar_secondary_icon"
                         app:layout_constraintHorizontal_bias="0"
                         android:id="@+id/tool_bar_title"
-                        android:textColor="@color/flame_red"
+                        android:textColor="@color/naruto_orange_accent"
                         android:layout_marginStart="@dimen/toolbar_title_margin"
                         android:layout_marginEnd="@dimen/default_view_margin"
                         android:gravity="center_vertical"
