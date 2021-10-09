@@ -1,4 +1,4 @@
-package com.projectdelta.naruto.ui.main.episode
+package com.projectdelta.naruto.ui.main.episode.list
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

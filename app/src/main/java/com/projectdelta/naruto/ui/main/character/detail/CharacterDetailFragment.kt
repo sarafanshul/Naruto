@@ -1,5 +1,6 @@
 package com.projectdelta.naruto.ui.main.character.detail
 
+import android.annotation.SuppressLint
 import android.content.res.Configuration
 import android.graphics.Color
 import android.os.Bundle
@@ -30,6 +31,7 @@ import com.projectdelta.naruto.util.NotFound
 import com.projectdelta.naruto.util.networking.ApiConstants.FANDOM_URL
 import com.projectdelta.naruto.util.system.lang.*
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 /**
@@ -52,6 +54,18 @@ class CharacterDetailFragment : BaseViewBindingFragment<FragmentCharacterDetailB
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
 		viewModel
+
+		val args: CharacterDetailFragmentArgs by navArgs()
+		character = args.characterData
+
+		jutsuListAdapter = JutsuListAdapter()
+	}
+
+	override fun onStart() {
+		super.onStart()
+		jobs += viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
+			viewModel.setJutsus(character.id)
+		}
 	}
 
 	override fun onCreateView(
@@ -59,16 +73,6 @@ class CharacterDetailFragment : BaseViewBindingFragment<FragmentCharacterDetailB
 		container: ViewGroup?,
 		savedInstanceState: Bundle?
 	): View {
-		// Inflate the layout for this fragment
-		val args: CharacterDetailFragmentArgs by navArgs()
-		character = args.characterData
-
-		jutsuListAdapter = JutsuListAdapter()
-
-		jobs += viewLifecycleOwner.lifecycleScope.launch {
-			viewModel.setJutsus(character.id)
-		}
-
 		_binding = FragmentCharacterDetailBinding.inflate(layoutInflater)
 		return binding.root
 	}
@@ -92,6 +96,7 @@ class CharacterDetailFragment : BaseViewBindingFragment<FragmentCharacterDetailB
 
 	}
 
+	@SuppressLint("SetTextI18n")
 	private fun initUI() {
 
 		binding.apply {
@@ -221,10 +226,14 @@ class CharacterDetailFragment : BaseViewBindingFragment<FragmentCharacterDetailB
 		else
 			NotFound.surpriseMe()
 
-	override fun onDestroy() {
-		jutsuListAdapter = null
+	override fun onDestroyView() {
 		if (_binding != null)
 			binding.characterJutsusRv.adapter = null
+		super.onDestroyView()
+	}
+
+	override fun onDestroy() {
+		jutsuListAdapter = null
 		super.onDestroy()
 	}
 

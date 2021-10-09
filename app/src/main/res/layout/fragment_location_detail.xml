@@ -1,0 +1,270 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:animateLayoutChanges="true"
+    android:fitsSystemWindows="true"
+    android:id="@+id/layout_location_detail"
+    tools:context=".ui.main.location.detail.LocationDetailFragment">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?colorToolbar"
+        android:fitsSystemWindows="true"
+        android:id="@+id/app_bar">
+
+        <com.google.android.material.appbar.CollapsingToolbarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:expandedTitleGravity="top"
+            app:contentScrim="?colorToolbar"
+            app:statusBarScrim="?colorToolbar"
+            android:fitsSystemWindows="true"
+            app:layout_collapseMode="parallax"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fitsSystemWindows="true"
+                android:clipToPadding="true"
+                app:layout_collapseMode="parallax">
+
+                <ImageView
+                    android:id="@+id/village_image"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:adjustViewBounds="true"
+                    android:fitsSystemWindows="true"
+                    android:contentDescription="@string/item_image_description"
+                    android:elevation="@dimen/base_padding"
+                    android:maxHeight="440dp"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/jinchuriki"
+                    app:layout_collapseMode="parallax"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/village_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:elevation="8dp"
+                    android:ellipsize="end"
+                    android:maxLines="4"
+                    android:outlineProvider="background"
+                    android:padding="@dimen/base_padding"
+                    android:textAppearance="@style/TextAppearance.Naruto.Headline4"
+                    app:layout_constrainedWidth="true"
+                    android:textColor="@color/md_white_1000"
+                    app:layout_constraintBottom_toBottomOf="@id/village_image"
+                    app:layout_constraintEnd_toEndOf="@id/village_image"
+                    app:layout_constraintHorizontal_bias="0"
+                    app:layout_constraintStart_toStartOf="@id/village_image"
+                    tools:text="HOLE IN THE WALL HOLE IN THE WALL HOLE IN THE WALL" />
+
+                <ImageView
+                    android:id="@+id/background_village_name"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:background="@color/rm_grey_blue_900_alpha_45"
+                    android:elevation="@dimen/base_elevation"
+                    app:layout_constraintBottom_toBottomOf="@id/village_name"
+                    app:layout_constraintEnd_toEndOf="@id/village_name"
+                    app:layout_constraintStart_toStartOf="@id/village_name"
+                    app:layout_constraintTop_toTopOf="@id/village_name"
+                    tools:ignore="ContentDescription" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/light_grey"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="1.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.appcompat.widget.Toolbar
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/toolbar_height"
+                android:id="@+id/tool_bar"
+                app:layout_collapseMode="pin">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/toolbar_height">
+
+                    <ImageView
+                        android:layout_width="@dimen/toolbar_item_margin"
+                        android:layout_height="@dimen/toolbar_item_margin"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:tint="?colorOnPrimary"
+                        android:padding="@dimen/base_padding"
+                        android:id="@+id/toolbar_primary_icon"
+                        android:background="@drawable/btn_background_circle_focused"
+                        android:src="@drawable/ic_arrow_back_ios_black_24dp"
+                        android:contentDescription="@android:string/cancel" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintLeft_toRightOf="@id/toolbar_primary_icon"
+                        app:layout_constraintRight_toLeftOf="@id/toolbar_secondary_icon"
+                        app:layout_constraintHorizontal_bias="0"
+                        android:id="@+id/tool_bar_title"
+                        android:textColor="@color/naruto_orange_accent"
+                        android:layout_marginStart="@dimen/toolbar_title_margin"
+                        android:layout_marginEnd="@dimen/default_view_margin"
+                        android:gravity="center_vertical"
+                        android:textSize="20sp"
+                        android:maxLines="1"
+                        android:ellipsize="end" />
+
+                    <ImageView
+                        app:tint="?colorOnPrimary"
+                        android:layout_width="@dimen/toolbar_item_margin"
+                        android:layout_height="@dimen/toolbar_item_margin"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        android:background="@drawable/btn_background_circle_focused"
+                        android:src="@drawable/ic_public_black_24dp"
+                        android:id="@+id/toolbar_secondary_icon"
+                        android:layout_marginEnd="@dimen/default_view_margin"
+                        android:contentDescription="@string/action_share" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.appcompat.widget.Toolbar>
+
+        </com.google.android.material.appbar.CollapsingToolbarLayout>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:overScrollMode="never"
+        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="@dimen/base_padding_medium"
+            android:orientation="vertical">
+
+            <com.google.android.material.textview.MaterialTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/base_padding"
+                android:layout_marginTop="@dimen/base_padding"
+                android:textAppearance="@style/TextAppearance.Naruto.Headline5"
+                android:id="@+id/name_romaji"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/detail_element_margin"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/base_padding"
+                    android:layout_weight="0.4"
+                    android:textAppearance="@style/TextAppearance.Naruto.Headline6"
+                    android:text="@string/detail_country"/>
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/village_country"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.6"
+                    android:padding="@dimen/base_padding"
+                    android:drawableLeft="@drawable/ic_public_black_24dp"
+                    android:drawablePadding="@dimen/base_padding_medium"
+                    android:drawableTint="@color/accent_blue"
+                    android:textColor="@color/accent_blue"
+                    android:textAppearance="@style/TextAppearance.Naruto.Headline6"
+                    android:text="@string/place_holder_text"
+                    tools:ignore="RtlHardcoded" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/detail_element_margin"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/base_padding"
+                    android:layout_weight="0.4"
+                    android:layout_gravity="center"
+                    android:textAppearance="@style/TextAppearance.Naruto.Headline6"
+                    android:text="@string/detail_leader"/>
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/village_leaders"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.6"
+                    android:padding="@dimen/base_padding"
+                    android:drawableLeft="@drawable/ic_military_tech_black_24dp"
+                    android:drawablePadding="@dimen/base_padding_medium"
+                    android:drawableTint="@color/rm_red_add"
+                    android:textColor="@color/rm_red_add"
+                    android:textAppearance="@style/TextAppearance.Naruto.Headline6"
+                    android:text="@string/place_holder_text"
+                    tools:ignore="RtlHardcoded" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/detail_element_margin"/>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/base_padding"
+                android:textAppearance="@style/TextAppearance.Naruto.Headline6"
+                android:text="@string/detail_about"/>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/village_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/base_padding"
+                android:textAppearance="@style/TextAppearance.Naruto.Body1"/>
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

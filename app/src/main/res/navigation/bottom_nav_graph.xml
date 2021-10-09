@@ -7,14 +7,18 @@
 
     <fragment
         android:id="@+id/episodeListFragment"
-        android:name="com.projectdelta.naruto.ui.main.episode.EpisodeListFragment"
+        android:name="com.projectdelta.naruto.ui.main.episode.list.EpisodeListFragment"
         android:label="fragment_episode_list"
         tools:layout="@layout/fragment_episode_list" />
     <fragment
         android:id="@+id/locationListFragment"
-        android:name="com.projectdelta.naruto.ui.main.location.LocationListFragment"
+        android:name="com.projectdelta.naruto.ui.main.location.list.LocationListFragment"
         android:label="fragment_location_list"
-        tools:layout="@layout/fragment_location_list" />
+        tools:layout="@layout/fragment_location_list" >
+        <action
+            android:id="@+id/action_locationListFragment_to_locationDetailFragment"
+            app:destination="@id/locationDetailFragment" />
+    </fragment>
     <fragment
         android:id="@+id/characterListFragment"
         android:name="com.projectdelta.naruto.ui.main.character.list.CharacterListFragment"
@@ -32,5 +36,14 @@
         <argument
             android:name="characterData"
             app:argType="com.projectdelta.naruto.data.model.entity.character.Character" />
+    </fragment>
+    <fragment
+        android:id="@+id/locationDetailFragment"
+        android:name="com.projectdelta.naruto.ui.main.location.detail.LocationDetailFragment"
+        android:label="fragment_location_detail"
+        tools:layout="@layout/fragment_location_detail" >
+        <argument
+            android:name="villageData"
+            app:argType="com.projectdelta.naruto.data.model.entity.location.Village" />
     </fragment>
 </navigation>

@@ -22,7 +22,6 @@ import com.projectdelta.naruto.data.model.entity.character.Character
 import com.projectdelta.naruto.databinding.FragmentCharacterListBinding
 import com.projectdelta.naruto.ui.base.BaseViewBindingFragment
 import com.projectdelta.naruto.ui.main.MainActivity
-import com.projectdelta.naruto.ui.main.character.CharacterViewModel
 import com.projectdelta.naruto.util.Constants.TRANSITION_CHARACTER
 import com.projectdelta.naruto.util.callback.BaseModelItemClickCallback
 import com.projectdelta.naruto.util.system.lang.safeNavigate
@@ -48,6 +47,12 @@ class CharacterListFragment : BaseViewBindingFragment<FragmentCharacterListBindi
 		super.onCreate(savedInstanceState)
 		// Access viewModel so that it gets initialized on the main thread
 		viewModel
+
+		adapter = CharacterListAdapter( object : BaseModelItemClickCallback{
+			override fun onItemClick(item: BaseModel, itemCard: CardView) {
+				navigateCharacterDetail(item as Character, itemCard as MaterialCardView)
+			}
+		} )
 	}
 
 	override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -71,11 +76,6 @@ class CharacterListFragment : BaseViewBindingFragment<FragmentCharacterListBindi
 
 		setMenu()
 
-		adapter = CharacterListAdapter( object : BaseModelItemClickCallback{
-			override fun onItemClick(item: BaseModel, itemCard: CardView) {
-				navigateCharacterDetail(item as Character, itemCard as MaterialCardView)
-			}
-		} )
 		binding.characterRv.layoutManager = LinearLayoutManager(requireActivity())
 
 		binding.characterRv.adapter = adapter
@@ -143,7 +143,7 @@ class CharacterListFragment : BaseViewBindingFragment<FragmentCharacterListBindi
 	}
 
 	/*
-	For now Search only support submit to update data
+	For now Search disables sort and filter
 	 */
 	private fun setSearchBar() {
 		val searchView : SearchView? = binding.toolbar.menu.findItem(R.id.action_search).actionView as SearchView?
@@ -207,15 +207,14 @@ class CharacterListFragment : BaseViewBindingFragment<FragmentCharacterListBindi
 		}
 	}
 
-	override fun onDestroy() {
-		adapter = null
-		if(_binding != null)
-			binding.characterRv.adapter = null
-		super.onDestroy()
+	override fun onDestroyView() {
+		binding.characterRv.adapter = null
+		settingsSheet = null
+		super.onDestroyView()
 	}
 
-	override fun onDestroyView() {
-		super.onDestroyView()
-		settingsSheet = null
+	override fun onDestroy() {
+		adapter = null
+		super.onDestroy()
 	}
 }

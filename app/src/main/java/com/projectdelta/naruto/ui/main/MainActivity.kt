@@ -50,7 +50,7 @@ class MainActivity : BaseViewBindingActivity<ActivityMainBinding>() {
 		binding.bottomPanel.setupWithNavController(navController)
 
 		navController.addOnDestinationChangedListener { _, destination: NavDestination, _ ->
-			if( destination.id == R.id.characterDetailFragment ){
+			if( destination.id in listOf(R.id.characterDetailFragment ,R.id.locationDetailFragment ) ){
 				makeTransparentStatusBar(true)
 				viewModel.hideBottomNav()
 			}else{

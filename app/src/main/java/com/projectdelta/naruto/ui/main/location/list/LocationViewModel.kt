@@ -1,6 +1,8 @@
-package com.projectdelta.naruto.ui.main.location
+package com.projectdelta.naruto.ui.main.location.list
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
@@ -17,8 +19,8 @@ class LocationViewModel @Inject constructor(
 	private val repository: VillageRepository
 ) : ViewModel() {
 
-	private var getLocationPagedData : Flow<PagingData<Village>>? = null
-	fun getLocationPaged() : Flow<PagingData<Village>> {
+	private var getLocationPagedData : LiveData<PagingData<Village>>? = null
+	fun getLocationPaged() : LiveData<PagingData<Village>> {
 		if( getLocationPagedData == null )
 			getLocationPagedData = repository
 				.getVillagePaged()
@@ -28,6 +30,7 @@ class LocationViewModel @Inject constructor(
 					}
 				}
 				.cachedIn(viewModelScope)
+				.asLiveData()
 		return getLocationPagedData!!
 	}
 

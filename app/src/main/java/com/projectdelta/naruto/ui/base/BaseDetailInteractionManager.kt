@@ -1,10 +1,10 @@
-package com.projectdelta.naruto.ui.main.character.detail
+package com.projectdelta.naruto.ui.base
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.projectdelta.naruto.util.CollapsingToolbarState
 
-class CharacterDetailInteractionManager {
+class BaseDetailInteractionManager {
 
 	private val _collapsingToolbarState: MutableLiveData<CollapsingToolbarState> =
 		MutableLiveData(CollapsingToolbarState.Expanded()) // start as Expanded
@@ -16,4 +16,5 @@ class CharacterDetailInteractionManager {
 		if (state.toString() != _collapsingToolbarState.value.toString())
 			_collapsingToolbarState.value = state
 	}
+
 }

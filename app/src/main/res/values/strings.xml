@@ -127,5 +127,9 @@
     <string name="tv_item_range">Range:</string>
     <string name="tv_item_nature">Nature:</string>
     <string name="tv_item_type">Type:</string>
+    <string name="tv_item_country">Country:</string>
+    <string name="tv_item_leader">Leader:</string>
+    <string name="detail_country">Country:</string>
+    <string name="detail_leader">Leaders:</string>
 
 </resources>

@@ -1,4 +1,4 @@
-package com.projectdelta.naruto.ui.main.location
+package com.projectdelta.naruto.ui.main.episode.list
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.projectdelta.naruto.databinding.FragmentLocationListBinding
+import com.projectdelta.naruto.databinding.FragmentEpisodeListBinding
 import com.projectdelta.naruto.ui.base.BaseViewBindingFragment
 import com.projectdelta.naruto.ui.main.MainActivity
 import dagger.hilt.android.AndroidEntryPoint
@@ -17,16 +17,16 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class LocationListFragment : BaseViewBindingFragment<FragmentLocationListBinding>() {
+class EpisodeListFragment : BaseViewBindingFragment<FragmentEpisodeListBinding>() {
 
 	companion object {
 		@JvmStatic
-		fun newInstance() = LocationListFragment()
+		fun newInstance() = EpisodeListFragment()
 	}
 
-	private val viewModel : LocationViewModel by activityViewModels()
+	private val viewModel : EpisodeViewModel by activityViewModels()
 
-	private var adapter : LocationListAdapter? = null
+	private var adapter : EpisodeListAdapter? = null
 
 	private var job : Job? = null
 
@@ -37,7 +37,7 @@ class LocationListFragment : BaseViewBindingFragment<FragmentLocationListBinding
 	}
 
 	override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-		_binding = FragmentLocationListBinding.inflate(layoutInflater)
+		_binding = FragmentEpisodeListBinding.inflate(layoutInflater)
 		return binding.root
 	}
 
@@ -45,20 +45,21 @@ class LocationListFragment : BaseViewBindingFragment<FragmentLocationListBinding
 		super.onViewCreated(view, savedInstanceState)
 
 		initUI()
+
 	}
 
 	private fun initUI() {
-		adapter = LocationListAdapter()
-		binding.locationRv.layoutManager = LinearLayoutManager(requireActivity())
+		adapter = EpisodeListAdapter()
+		binding.episodeRv.layoutManager = LinearLayoutManager(requireActivity())
 
-		binding.locationRv.adapter = adapter
-		job = viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO){
-			viewModel.getLocationPaged().collectLatest { villages ->
-				adapter?.submitData(villages)
+		binding.episodeRv.adapter = adapter
+		job = viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
+			viewModel.getChapterSortedPaged().collectLatest { episodes ->
+				adapter?.submitData(episodes)
 			}
 		}
 
-		(requireActivity() as MainActivity).connectivityManager.isNetworkAvailable.observe(viewLifecycleOwner , connectionWatcher@{ x ->
+		(requireActivity() as MainActivity).connectivityManager.isNetworkAvailable.observe(viewLifecycleOwner , connectionWatcher@{x ->
 			when(x){
 				true -> {
 					adapter?.retry()
@@ -72,7 +73,7 @@ class LocationListFragment : BaseViewBindingFragment<FragmentLocationListBinding
 		job?.cancel()
 		adapter = null
 		if(_binding != null)
-			binding.locationRv.adapter = null
+			binding.episodeRv.adapter = null
 		super.onDestroy()
 	}
 

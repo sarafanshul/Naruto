@@ -1,24 +1,24 @@
-package com.projectdelta.naruto.ui.main.location
+package com.projectdelta.naruto.ui.main.episode.list
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.projectdelta.naruto.data.model.entity.location.Village
-import com.projectdelta.naruto.databinding.LocationItemBinding
+import com.projectdelta.naruto.data.model.entity.chapter.Chapter
+import com.projectdelta.naruto.databinding.EpisodeItemBinding
 import com.projectdelta.naruto.util.callback.BaseModelDiffUtilCallback
 import com.projectdelta.naruto.util.system.lang.isOk
 
-class LocationListAdapter :
-	PagingDataAdapter<Village ,LocationListAdapter.LayoutViewHolder>(BaseModelDiffUtilCallback()){
+class EpisodeListAdapter :
+	PagingDataAdapter<Chapter , EpisodeListAdapter.LayoutViewHolder>(BaseModelDiffUtilCallback()){
 
 	inner class LayoutViewHolder(
-		private val binding : LocationItemBinding
+		private val binding : EpisodeItemBinding
 	) : RecyclerView.ViewHolder(binding.root){
 
-		fun bind(location : Village){
+		fun bind(episode : Chapter){
 			with(binding){
-				twName.text = if (location.name?.english.isOk()) location.name?.english else "test not found"
+				twName.text = if (episode.name?.english.isOk()) episode.name?.english else "test not found"
 			}
 		}
 
@@ -30,7 +30,7 @@ class LocationListAdapter :
 
 	override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LayoutViewHolder {
 		return LayoutViewHolder(
-			LocationItemBinding.inflate(
+			EpisodeItemBinding.inflate(
 				LayoutInflater.from(parent.context) ,parent ,false
 			)
 		)

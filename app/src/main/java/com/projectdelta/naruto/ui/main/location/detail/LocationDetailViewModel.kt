@@ -1,10 +1,8 @@
-package com.projectdelta.naruto.ui.main.character.detail
+package com.projectdelta.naruto.ui.main.location.detail
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.projectdelta.naruto.data.model.entity.jutsu.Jutsu
-import com.projectdelta.naruto.data.repository.CharacterRepository
 import com.projectdelta.naruto.ui.base.BaseDetailInteractionManager
 import com.projectdelta.naruto.util.CollapsingToolbarState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -12,19 +10,9 @@ import javax.inject.Inject
 
 @Suppress("unused" , "MemberVisibilityCanBePrivate")
 @HiltViewModel
-class CharacterDetailViewModel @Inject constructor(
-	private val repository: CharacterRepository
-) : ViewModel() {
+class LocationDetailViewModel @Inject constructor() : ViewModel() {
 
 	private val interactionManager = BaseDetailInteractionManager()
-
-	var jutsuList : MutableLiveData<List<Jutsu>> = MutableLiveData(listOf())
-	suspend fun setJutsus( id : String ){
-		if( jutsuList.value?.size == 0 ) {
-			val result = repository.getCharacterJutsuFiltered(id).filterNotNull()
-			jutsuList.postValue(result)
-		}
-	}
 
 	val collapsingToolbarState : LiveData<CollapsingToolbarState>
 		get() = interactionManager.collapsingToolbarState
