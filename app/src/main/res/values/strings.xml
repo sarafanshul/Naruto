@@ -131,5 +131,10 @@
     <string name="tv_item_leader">Leader:</string>
     <string name="detail_country">Country:</string>
     <string name="detail_leader">Leaders:</string>
+    <string name="tv_item_air_date">Air Date:</string>
+    <string name="tv_item_arc">Arc:</string>
+    <string name="tv_item_op">Opening:</string>
+    <string name="filler">FILLER</string>
+    <string name="action_search_range">Search Range</string>
 
 </resources>

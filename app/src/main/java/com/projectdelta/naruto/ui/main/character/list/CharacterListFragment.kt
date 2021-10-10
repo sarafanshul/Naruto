@@ -87,7 +87,9 @@ class CharacterListFragment : BaseViewBindingFragment<FragmentCharacterListBindi
 		(requireActivity() as MainActivity).connectivityManager.isNetworkAvailable.observe(viewLifecycleOwner , connectionWatcher@{ x ->
 			when(x){
 				true -> onNetworkReconnect()
-				false -> { }
+				false -> {
+					// TODO( SET MENU ITEMS UN-CLICKABLE )
+				}
 			}
 		})
 

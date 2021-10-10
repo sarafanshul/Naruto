@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/action_search_range"
+        android:icon="@drawable/ic_filter_tilt_shift_black_24dp"
+        android:title="@string/action_search_range"
+        app:showAsAction="collapseActionView|ifRoom" />
+
+    <item
+        android:id="@+id/action_filter"
+        android:icon="@drawable/ic_filter_list_24dp"
+        android:title="@string/action_filter"
+        app:showAsAction="ifRoom" />
+
+</menu>

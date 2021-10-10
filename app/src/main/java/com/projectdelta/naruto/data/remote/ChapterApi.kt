@@ -16,4 +16,5 @@ interface ChapterApi {
 		@Query(QUERY_PAGE) pageNumber: Int
 	): ApiResult<PageResult<Chapter?>>
 
+	
 }

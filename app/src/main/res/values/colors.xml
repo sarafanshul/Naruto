@@ -33,6 +33,7 @@
     <color name="rm_white_50">#FFFFFF</color>
     <color name="rm_white_off">#fbfbfb</color>
     <color name="rm_red_add">#ee6862</color>
+    <color name="rm_red_add_alpha_60">#99EE6862</color>
     <color name="black_translucent_20">#33000000</color>
 
     <!-- Blue Theme -->
