@@ -1,7 +1,6 @@
 package com.projectdelta.naruto.ui.main.location.detail
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.projectdelta.naruto.ui.base.BaseDetailInteractionManager
 import com.projectdelta.naruto.util.CollapsingToolbarState

@@ -136,5 +136,7 @@
     <string name="tv_item_op">Opening:</string>
     <string name="filler">FILLER</string>
     <string name="action_search_range">Search Range</string>
+    <string name="action_filter_cannon">Cannon</string>
+    <string name="action_sort_air_date">Air date</string>
 
 </resources>

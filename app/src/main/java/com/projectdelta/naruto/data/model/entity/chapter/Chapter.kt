@@ -17,6 +17,11 @@ data class Chapter(
 
 	companion object {
 		private const val serialVersionUID = 1L
+
+		const val MAX_EPISODE_NUMBER = 740
+
+		const val SEASON_1_END = 220 // inclusive
+
 	}
 
 }

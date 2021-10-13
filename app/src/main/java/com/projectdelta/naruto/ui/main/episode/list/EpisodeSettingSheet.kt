@@ -1,4 +1,4 @@
-package com.projectdelta.naruto.ui.main.character.list
+package com.projectdelta.naruto.ui.main.episode.list
 
 import android.app.Activity
 import android.content.Context
@@ -6,12 +6,12 @@ import android.util.AttributeSet
 import android.view.View
 import com.projectdelta.naruto.R
 import com.projectdelta.naruto.data.preference.PreferenceManager
+import com.projectdelta.naruto.util.NotFound
 import com.projectdelta.naruto.widgets.ExtendedNavigationView
-import com.projectdelta.naruto.widgets.ExtendedNavigationView.Item.TriStateGroup.State
 import com.projectdelta.naruto.widgets.sheet.TabbedBottomSheetDialog
 
 @Suppress("unused", "JoinDeclarationAndAssignment")
-class CharacterSettingSheet (
+class EpisodeSettingSheet (
 	fActivity : Activity,
 	private val preferenceManager: PreferenceManager,
 	onGroupClickListener: (ExtendedNavigationView.Group) -> Unit
@@ -41,7 +41,7 @@ class CharacterSettingSheet (
 
 
 	/**
-	 * Filters group (unread, downloaded, ...).
+	 * Filters group (cannon, ...).
 	 */
 	@Suppress("ImplicitNullableNothingType")
 	inner class Filter @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null) :
@@ -57,47 +57,38 @@ class CharacterSettingSheet (
 		 * Returns true if there's at least one filter from [FilterGroup] active.
 		 */
 		fun hasActiveFilters(): Boolean {
-			return filterGroup.items.filterIsInstance<Item.TriStateGroup>().any { it.state != State.IGNORE.value }
+			return filterGroup.items.filterIsInstance<Item.CheckboxGroup>().any { it.checked }
 		}
 
 		inner class FilterGroup : Group {
 
-			private val female = Item.TriStateGroup(R.string.action_filter_female, this)
-			private val alive = Item.TriStateGroup(R.string.action_filter_alive, this)
+			private val cannon = Item.CheckboxGroup(R.string.action_filter_cannon, this)
 
 			override val header = null
-			override val items: List<Item> = listOf( female  ,alive )
+			override val items: List<Item> = listOf( cannon )
 			override val footer = null
 
 			override fun initModels() {
-				female.state = preferenceManager.filterFemale()
-				alive.state = preferenceManager.filterAlive()
+				cannon.checked = preferenceManager.filterCannon()
 			}
 
 			override fun onItemClicked(item: Item) {
-				item as Item.TriStateGroup
-				val newState = when (item.state) {
-					State.IGNORE.value -> State.INCLUDE.value
-					State.INCLUDE.value -> State.EXCLUDE.value
-					State.EXCLUDE.value -> State.IGNORE.value
-					else -> throw Exception("Unknown State")
-				}
-				item.state = newState
+				item as Item.CheckboxGroup
+				val newState = ! item.checked
+				item.checked = newState
 				when (item) {
-					female -> preferenceManager.setFilterFemale(newState)
-					alive -> preferenceManager.setFilterAlive(newState)
+					cannon -> preferenceManager.setFilterCannon(newState)
 					else -> {
 						throw IllegalStateException("Unknown arg clicked!")
 					}
 				}
-
 				adapter.notifyItemChanged(item)
 			}
 		}
 	}
 
 	/**
-	 * Sorting group (alphabetically, by last read, ...) and ascending or descending.
+	 * Sorting group (episode number, ...).
 	 */
 	@Suppress("ImplicitNullableNothingType")
 	inner class Sort @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null) :
@@ -117,19 +108,14 @@ class CharacterSettingSheet (
 
 		inner class SortGroup : Group {
 
-			private val alphabetically = Item.MultiSort(R.string.action_sort_alpha, this)
-			private val power = Item.MultiSort(R.string.action_sort_power, this)
-			private val debut = Item.MultiSort(R.string.action_sort_debut, this)
+			private val airDate = Item.MultiSort(R.string.action_sort_air_date, this)
 
 			override val header = null
-			override val items = listOf(alphabetically, power, debut)
+			override val items = listOf(airDate)
 			override val footer = null
 
 			override fun initModels() {
-				alphabetically.state = preferenceManager.sortAlphabetically()
-				power.state = preferenceManager.sortPower()
-				debut.state = preferenceManager.sortDebut()
-
+				airDate.state = preferenceManager.sortAirDate()
 			}
 
 			override fun onItemClicked(item: Item) {
@@ -149,12 +135,9 @@ class CharacterSettingSheet (
 
 				item.group.items.forEach { adapter.notifyItemChanged(it) }
 
-				preferenceManager.resetSorting()
 				when(item){
-					alphabetically -> preferenceManager.setSortAlphabetically(item.state)
-					power -> preferenceManager.setSortPower(item.state)
-					debut -> preferenceManager.setSortDebut(item.state)
-					else -> throw IllegalStateException("Unknown sort selected !")
+					airDate -> preferenceManager.setSortAirDate(item.state)
+					else -> throw NotFound.TheFuckHappened("Unknown sort selected !")
 				}
 			}
 

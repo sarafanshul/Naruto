@@ -8,7 +8,6 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
 import com.bumptech.glide.request.RequestOptions
-import com.projectdelta.naruto.R
 import com.projectdelta.naruto.data.model.entity.jutsu.Jutsu
 import com.projectdelta.naruto.databinding.JutsuItemBinding
 import com.projectdelta.naruto.util.callback.BaseModelDiffUtilCallback

@@ -2,8 +2,6 @@ package com.projectdelta.naruto.ui.base
 
 import android.graphics.Color
 import android.os.Bundle
-import android.view.View
-import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import com.projectdelta.naruto.R
 import com.projectdelta.naruto.data.preference.PreferenceManager

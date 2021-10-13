@@ -9,4 +9,6 @@ object NotFound {
 
 	fun surpriseMe() = TextOnlyEmoticons.random()
 
+	class TheFuckHappened( why : String = "" ) : IllegalStateException(why)
+
 }

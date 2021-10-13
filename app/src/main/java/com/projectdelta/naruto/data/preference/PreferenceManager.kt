@@ -2,9 +2,11 @@ package com.projectdelta.naruto.data.preference
 
 import android.content.Context
 import android.content.SharedPreferences
+import com.projectdelta.naruto.data.model.entity.chapter.Chapter.Companion.MAX_EPISODE_NUMBER
 import com.projectdelta.naruto.widgets.ExtendedNavigationView.Item
 import com.projectdelta.naruto.data.preference.PreferenceKeys as Keys
 
+@Suppress("unused")
 class PreferenceManager(
 	private val context: Context,
 	private val preferences: SharedPreferences
@@ -51,5 +53,17 @@ class PreferenceManager(
 		preferences.edit().putInt(Keys.SORT_POWER ,Item.MultiSort.SORT_NONE).apply()
 		preferences.edit().putInt(Keys.SORT_DEBUT ,Item.MultiSort.SORT_NONE).apply()
 	}
+
+	fun rangeEpisodeStart() = preferences.getInt(Keys.RANGE_EP_ST ,0)
+	fun setRangeEpisodeStart( newValue: Int ) = preferences.edit().putInt(Keys.RANGE_EP_ST ,newValue).apply()
+
+	fun rangeEpisodeEnd() = preferences.getInt(Keys.RANGE_EP_ED , MAX_EPISODE_NUMBER)
+	fun setRangeEpisodeEnd( newValue: Int ) = preferences.edit().putInt(Keys.RANGE_EP_ED ,newValue).apply()
+
+	fun filterCannon() = preferences.getBoolean(Keys.FILTER_CANNON ,false)
+	fun setFilterCannon( newValue: Boolean ) = preferences.edit().putBoolean(Keys.FILTER_CANNON ,newValue).apply()
+
+	fun sortAirDate() = preferences.getInt(Keys.SORT_AIR_DATE ,Item.MultiSort.SORT_NONE)
+	fun setSortAirDate( newValue: Int ) = preferences.edit().putInt(Keys.SORT_AIR_DATE ,newValue).apply()
 
 }

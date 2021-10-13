@@ -135,6 +135,20 @@
 <!--        <item name="android:textColor">?attr/colorOnToolbar</item>-->
 <!--    </style>-->
 
+    <style name="Widget.Naruto.RangeSlider" parent="Widget.MaterialComponents.Slider">
+        <item name="labelStyle">@style/Widget.Naruto.RangeSlider.ToolTip</item>
+        <item name="materialThemeOverlay">@style/ThemeOverlay.Slider</item>
+    </style>
+
+    <style name="Widget.Naruto.RangeSlider.ToolTip" parent="Widget.MaterialComponents.Tooltip">
+        <item name="backgroundTint">@color/naruto_orange_accent</item>
+    </style>
+
+    <style name="ThemeOverlay.Slider" parent="">
+        <item name="colorPrimary">@color/naruto_orange</item>
+        <item name="colorOnPrimary">@color/white</item>
+    </style>
+
 
 
 </resources>

@@ -13,23 +13,31 @@ import com.projectdelta.naruto.R
 import com.projectdelta.naruto.data.model.entity.chapter.Chapter
 import com.projectdelta.naruto.databinding.EpisodeItemBinding
 import com.projectdelta.naruto.util.Constants
+import com.projectdelta.naruto.util.NotFound
 import com.projectdelta.naruto.util.callback.BaseModelDiffUtilCallback
+import com.projectdelta.naruto.util.callback.BaseModelItemClickCallback
+import java.text.SimpleDateFormat
+import java.util.*
 
-class EpisodeListAdapter :
+class EpisodeListAdapter(
+	private val clickCallback: BaseModelItemClickCallback
+) :
 	PagingDataAdapter<Chapter , EpisodeListAdapter.LayoutViewHolder>(BaseModelDiffUtilCallback()){
+
+	val dateFormat = SimpleDateFormat( "dd MMMM yy", Locale.ENGLISH )
 
 	inner class LayoutViewHolder(
 		private val binding : EpisodeItemBinding
 	) : RecyclerView.ViewHolder(binding.root){
 
 		@SuppressLint("SetTextI18n")
-		fun bind(chapter : Chapter){
+		fun bind(chapter : Chapter ,clickCallback: BaseModelItemClickCallback){
 			with(binding){
 
 				val context = root.context
 
 				root.setOnClickListener {
-//					clickCallback.onItemClick(character ,characterItem)
+					clickCallback.onItemClick(chapter ,episodeItem)
 				}
 
 				episodeItem.transitionName = Constants.TRANSITION_EPISODE.plus(chapter.id)
@@ -43,12 +51,12 @@ class EpisodeListAdapter :
 					)
 					.into(itemImage)
 
-				itemName.text = "${chapter.episode?.series} #${chapter.episode?.episode}"
+				itemName.text = "${chapter.episode?.series?.split(" ")?.last()} #${chapter.episode?.episode?.toInt()}"
 
 				itemKanjiValue.text = chapter.name?.kanji
 				itemOpValue.text = chapter.music?.opening
 				itemArcValue.text = chapter.arc
-				itemDebutValue.text = chapter.date?.japanese.toString()
+				itemDebutValue.text = if(chapter.date?.japanese != null) dateFormat.format(chapter.date.japanese) else NotFound.surpriseMe()
 				itemEpisodeNameValue.text = chapter.name?.english
 
 				itemFiller.visibility = if( ! chapter.manga?.chapters.isNullOrEmpty() ) View.GONE else View.VISIBLE
@@ -58,7 +66,7 @@ class EpisodeListAdapter :
 	}
 
 	override fun onBindViewHolder(holder: LayoutViewHolder, position: Int) {
-		holder.bind(getItem(position)!!)
+		holder.bind(getItem(position)!! ,clickCallback)
 	}
 
 	override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LayoutViewHolder {

@@ -7,7 +7,8 @@ import androidx.paging.map
 import com.projectdelta.naruto.data.model.entity.character.Character
 import com.projectdelta.naruto.data.preference.PreferenceManager
 import com.projectdelta.naruto.data.repository.CharacterRepository
-import com.projectdelta.naruto.util.DataPrefBus
+import com.projectdelta.naruto.util.NotFound
+import com.projectdelta.naruto.util.PrefBus.CharacterDataPrefBus
 import com.projectdelta.naruto.widgets.ExtendedNavigationView
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -23,7 +24,7 @@ class CharacterViewModel @Inject constructor(
 	private val preferenceManager: PreferenceManager
 ):ViewModel() {
 
-	private val currentDataPref = MutableLiveData( DataPrefBus(0 ,{true} ,"") )
+	private val currentDataPref = MutableLiveData(CharacterDataPrefBus(0, { true }, ""))
 
 	init {
 		getUpdatePrefDataSort()
@@ -97,8 +98,8 @@ class CharacterViewModel @Inject constructor(
 	) : Flow<PagingData<Character>> {
 		return repository
 			.getCharacterLikePaged(name ,sortParam ,filters)
-			.map { paginData ->
-				paginData.map {
+			.map { pagingData ->
+				pagingData.map {
 					it
 				}
 			}
@@ -120,7 +121,7 @@ class CharacterViewModel @Inject constructor(
 			preferenceManager.sortDebut() != ExtendedNavigationView.Item.MultiSort.SORT_NONE -> {
 				1000 + preferenceManager.sortDebut()
 			}
-			else -> throw IllegalStateException("WTF@ViewModel!")
+			else -> throw NotFound.TheFuckHappened("WTF@ViewModel!")
 		}
 		currentDataPref.value = cur
 	}

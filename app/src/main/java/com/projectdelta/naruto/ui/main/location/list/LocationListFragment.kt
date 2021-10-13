@@ -9,7 +9,6 @@ import androidx.cardview.widget.CardView
 import androidx.core.view.doOnPreDraw
 import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -24,9 +23,6 @@ import com.projectdelta.naruto.util.Constants.TRANSITION_LOCATION
 import com.projectdelta.naruto.util.callback.BaseModelItemClickCallback
 import com.projectdelta.naruto.util.system.lang.safeNavigate
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class LocationListFragment : BaseViewBindingFragment<FragmentLocationListBinding>() {

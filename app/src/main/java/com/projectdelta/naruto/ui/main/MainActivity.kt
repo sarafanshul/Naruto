@@ -10,6 +10,7 @@ import androidx.navigation.ui.setupWithNavController
 import com.projectdelta.naruto.R
 import com.projectdelta.naruto.databinding.ActivityMainBinding
 import com.projectdelta.naruto.ui.base.BaseViewBindingActivity
+import com.projectdelta.naruto.util.NotFound
 import com.projectdelta.naruto.util.system.lang.slideDown
 import com.projectdelta.naruto.util.system.lang.slideUp
 import dagger.hilt.android.AndroidEntryPoint
@@ -40,7 +41,7 @@ class MainActivity : BaseViewBindingActivity<ActivityMainBinding>() {
 			when( integer ){
 				View.GONE -> binding.bottomPanel.slideDown()
 				View.VISIBLE -> binding.bottomPanel.slideUp()
-				else -> throw IllegalStateException("Only GONE & VISIBLE state supported!")
+				else -> throw NotFound.TheFuckHappened("Only GONE & VISIBLE state supported!")
 			}
 		})
 	}
@@ -50,7 +51,11 @@ class MainActivity : BaseViewBindingActivity<ActivityMainBinding>() {
 		binding.bottomPanel.setupWithNavController(navController)
 
 		navController.addOnDestinationChangedListener { _, destination: NavDestination, _ ->
-			if( destination.id in listOf(R.id.characterDetailFragment ,R.id.locationDetailFragment ) ){
+			if( destination.id in listOf(
+					R.id.characterDetailFragment ,
+					R.id.locationDetailFragment ,
+					R.id.episodeDetailFragment)
+			){
 				makeTransparentStatusBar(true)
 				viewModel.hideBottomNav()
 			}else{

@@ -10,7 +10,6 @@ import androidx.paging.map
 import com.projectdelta.naruto.data.model.entity.location.Village
 import com.projectdelta.naruto.data.repository.VillageRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 

@@ -25,10 +25,18 @@ object ApiConstants {
 	const val SUB_URL_ORDER_BY_MEMBERS = "order_by_members"
 	const val SUB_URL_ORDER_BY_JUTSUS = "order_by_jutsus"
 	const val SUB_URL_JUTSU_FILTER = "jutsus_filtered"
+	const val SUB_URL_IZANAMI = "izanami"
 
 	const val QUERY_PAGE = "page"
 	const val QUERY_SORT = "sort"
 	const val QUERY_REVERSE = "reverse"
 	const val QUERY_NAME = "name"
 	const val QUERY_ID = "id"
+	const val QUERY_RANGE_L = "rangeL"
+	const val QUERY_RANGE_R = "rangeR"
+	const val QUERY_CANNON = "cannon"
+
+	const val SORT_ASC = 1
+	const val SORT_DESC = -1
+
 }
