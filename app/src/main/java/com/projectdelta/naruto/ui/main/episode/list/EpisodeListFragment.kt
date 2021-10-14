@@ -187,7 +187,7 @@ class EpisodeListFragment : BaseViewBindingFragment<FragmentEpisodeListBinding>(
 
 	private fun navigateEpisodeDetail(chapter: Chapter, card: CardView) {
 		val extras = FragmentNavigatorExtras(
-			card to TRANSITION_EPISODE
+			card to TRANSITION_EPISODE.plus(chapter.id)
 		)
 		val action =
 			EpisodeListFragmentDirections.actionEpisodeListFragmentToEpisodeDetailFragment(

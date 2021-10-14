@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <style name="Divider">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">1dp</item>
+        <item name="android:layout_marginLeft">20dp</item>
+        <item name="android:layout_marginRight">20dp</item>
+        <item name="android:background">@color/rm_grey_blue_900_alpha_60</item>
+    </style>
+
     <!--TextView style for character item name-->
     <style name="Widget.TextView.Item.Name" parent="Widget.MaterialComponents.TextView">
         <item name="android:background">@color/rm_grey_blue_900_alpha_60</item>

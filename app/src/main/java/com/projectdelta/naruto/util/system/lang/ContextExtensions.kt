@@ -211,6 +211,7 @@ val Context.keyguardManager: KeyguardManager
 /**
  * Convenience method to acquire a partial wake lock.
  */
+@SuppressLint("WakelockTimeout")
 fun Context.acquireWakeLock(tag: String): PowerManager.WakeLock {
 	val wakeLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "$tag:WakeLock")
 	wakeLock.acquire()
@@ -267,7 +268,7 @@ fun Context.isServiceRunning(serviceClass: Class<*>): Boolean {
 /**
  * Returns if a network connection is available or not. [For more info](https://stackoverflow.com/a/58605532)
  */
-@SuppressLint("ObsoleteSdkInt")
+@Suppress("DEPRECATION" ,"ObsoleteSdkInt")
 fun Context.isOnline(): Boolean {
 	val cm = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
 	if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {

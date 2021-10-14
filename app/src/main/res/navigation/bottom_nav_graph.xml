@@ -40,6 +40,9 @@
         <argument
             android:name="characterData"
             app:argType="com.projectdelta.naruto.data.model.entity.character.Character" />
+        <action
+            android:id="@+id/action_characterDetailFragment_to_episodeDetailFragment"
+            app:destination="@id/episodeDetailFragment" />
     </fragment>
     <fragment
         android:id="@+id/locationDetailFragment"

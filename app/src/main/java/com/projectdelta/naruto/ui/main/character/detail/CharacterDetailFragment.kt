@@ -7,9 +7,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.cardview.widget.CardView
 import androidx.core.view.doOnPreDraw
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -20,6 +22,7 @@ import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.transition.MaterialContainerTransform
 import com.google.android.material.transition.MaterialFadeThrough
 import com.projectdelta.naruto.R
+import com.projectdelta.naruto.data.model.entity.chapter.Chapter
 import com.projectdelta.naruto.data.model.entity.character.Character
 import com.projectdelta.naruto.databinding.FragmentCharacterDetailBinding
 import com.projectdelta.naruto.ui.base.BaseViewBindingFragment
@@ -27,12 +30,16 @@ import com.projectdelta.naruto.ui.main.MainActivity
 import com.projectdelta.naruto.util.CollapsingToolbarState
 import com.projectdelta.naruto.util.Constants.COLLAPSING_TOOLBAR_VISIBILITY_THRESHOLD
 import com.projectdelta.naruto.util.Constants.TRANSITION_CHARACTER
+import com.projectdelta.naruto.util.Constants.TRANSITION_EPISODE
 import com.projectdelta.naruto.util.NotFound
 import com.projectdelta.naruto.util.networking.ApiConstants.FANDOM_URL
 import com.projectdelta.naruto.util.system.lang.*
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import timber.log.Timber
+import java.text.SimpleDateFormat
+import java.util.*
 
 /**
  * (for collapsing toolbar)[https://stackoverflow.com/questions/40472680/add-collapsing-toolbar-with-image]
@@ -65,6 +72,9 @@ class CharacterDetailFragment : BaseViewBindingFragment<FragmentCharacterDetailB
 		super.onStart()
 		jobs += viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
 			viewModel.setJutsus(character.id)
+		}
+		jobs += viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
+			viewModel.setChapter(character.id)
 		}
 	}
 
@@ -99,7 +109,7 @@ class CharacterDetailFragment : BaseViewBindingFragment<FragmentCharacterDetailB
 	@SuppressLint("SetTextI18n")
 	private fun initUI() {
 
-		binding.apply {
+		with(binding) {
 			layoutCharacterDetail.transitionName = TRANSITION_CHARACTER.plus(character.id)
 
 			appBar.addOnOffsetChangedListener(
@@ -160,8 +170,46 @@ class CharacterDetailFragment : BaseViewBindingFragment<FragmentCharacterDetailB
 			characterDescription.text = character.description
 
 			// debut
-			characterDebut.text = "Manga : ${character.debut?.manga?.name} #${character.debut?.manga?.chapter}" + "\n" +
-					"Anime : ${character.debut?.anime?.name} #${character.debut?.anime?.episode}"
+			viewModel.chapter.observe(viewLifecycleOwner){ chapter ->
+				Timber.d(chapter.toString())
+				if( chapter != null ) {
+					val dateFormat = SimpleDateFormat("dd MMMM yy", Locale.ENGLISH)
+					characterDebut.episodeItem.visibility = View.VISIBLE
+					characterDebutHead.visibility = View.VISIBLE
+					with(characterDebut) {
+						episodeItem.transitionName = TRANSITION_EPISODE.plus(chapter.id)
+						Glide.with(this@CharacterDetailFragment)
+							.load(chapter.images?.first())
+							.apply(
+								RequestOptions()
+									.placeholder(R.drawable.placeholder_white_leaf)
+									.diskCacheStrategy(DiskCacheStrategy.DATA)
+							)
+							.into(itemImage)
+
+						itemName.text = "${
+							chapter.episode?.series?.split(" ")?.last()
+						} #${chapter.episode?.episode?.toInt()}"
+
+						itemKanjiValue.text = chapter.name?.kanji
+						itemOpValue.text = chapter.music?.opening
+						itemArcValue.text = chapter.arc
+						itemDebutValue.text =
+							if (chapter.date?.japanese != null) dateFormat.format(chapter.date.japanese) else NotFound.surpriseMe()
+						itemEpisodeNameValue.text = chapter.name?.english
+
+						itemFiller.visibility =
+							if (!chapter.manga?.chapters.isNullOrEmpty()) View.GONE else View.VISIBLE
+					}
+				}
+				else{
+					characterDebut.episodeItem.visibility = View.GONE
+					characterDebutHead.visibility = View.GONE
+				}
+			}
+			characterDebut.episodeItem.setOnClickListener {
+				navigateEpisodeDetail(viewModel.chapter.value!! ,characterDebut.episodeItem)
+			}
 
 			// clan
 			characterClan.text = if(character.personal?.clan?.first().isOk()) character.personal?.clan?.first() else "Rogue Ninja"
@@ -204,6 +252,17 @@ class CharacterDetailFragment : BaseViewBindingFragment<FragmentCharacterDetailB
 				}
 			}
 		})
+	}
+
+	private fun navigateEpisodeDetail(chapter: Chapter, card: CardView) {
+		val extras = FragmentNavigatorExtras(
+			card to TRANSITION_EPISODE.plus(chapter.id)
+		)
+		val action =
+			CharacterDetailFragmentDirections.actionCharacterDetailFragmentToEpisodeDetailFragment(
+				chapter
+			)
+		safeNavigate(action ,extras)
 	}
 
 	private fun launchWebView() {

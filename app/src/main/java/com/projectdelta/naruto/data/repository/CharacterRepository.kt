@@ -3,6 +3,7 @@ package com.projectdelta.naruto.data.repository
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
+import com.projectdelta.naruto.data.model.entity.chapter.Chapter
 import com.projectdelta.naruto.data.model.entity.character.Character
 import com.projectdelta.naruto.data.model.entity.jutsu.Jutsu
 import com.projectdelta.naruto.data.remote.CharacterApi
@@ -79,6 +80,13 @@ class CharacterRepository @Inject constructor(
 
 	suspend fun getCharacterJutsuFiltered(id : String) : List<Jutsu?> {
 		return when(val result : ApiResult<List<Jutsu?>> = characterApi.getCharacterJutsuFiltered(id)){
+			is ApiResult.Success -> result.data
+			else -> emptyList()
+		}
+	}
+
+	suspend fun getCharacterDebutChapter( id : String ) : List<Chapter?>{
+		return when( val result : ApiResult<List<Chapter?>> = characterApi.getCharacterDebutChapter(id) ){
 			is ApiResult.Success -> result.data
 			else -> emptyList()
 		}

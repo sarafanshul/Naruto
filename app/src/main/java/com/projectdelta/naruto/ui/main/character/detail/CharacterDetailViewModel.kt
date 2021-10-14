@@ -1,24 +1,20 @@
 package com.projectdelta.naruto.ui.main.character.detail
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import com.projectdelta.naruto.data.model.entity.chapter.Chapter
 import com.projectdelta.naruto.data.model.entity.jutsu.Jutsu
 import com.projectdelta.naruto.data.repository.CharacterRepository
-import com.projectdelta.naruto.ui.base.BaseDetailInteractionManager
-import com.projectdelta.naruto.util.CollapsingToolbarState
+import com.projectdelta.naruto.ui.base.BaseDetailViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import timber.log.Timber
 import javax.inject.Inject
 
-@Suppress("unused" , "MemberVisibilityCanBePrivate")
 @HiltViewModel
 class CharacterDetailViewModel @Inject constructor(
 	private val repository: CharacterRepository
-) : ViewModel() {
+) : BaseDetailViewModel() {
 
-	private val interactionManager = BaseDetailInteractionManager()
-
-	var jutsuList : MutableLiveData<List<Jutsu>> = MutableLiveData(listOf())
+	val jutsuList : MutableLiveData<List<Jutsu>> = MutableLiveData(listOf())
 	suspend fun setJutsus( id : String ){
 		if( jutsuList.value?.size == 0 ) {
 			val result = repository.getCharacterJutsuFiltered(id).filterNotNull()
@@ -26,17 +22,14 @@ class CharacterDetailViewModel @Inject constructor(
 		}
 	}
 
-	val collapsingToolbarState : LiveData<CollapsingToolbarState>
-		get() = interactionManager.collapsingToolbarState
-
-	fun setCollapsingToolbarState(state: CollapsingToolbarState) {
-		interactionManager.setCollapsingToolbarState(state)
+	val chapter : MutableLiveData<Chapter?> = MutableLiveData(null)
+	suspend fun setChapter( id : String ){
+		if( chapter.value == null ){
+			val result = repository.getCharacterDebutChapter(id)
+			if( ! result.isNullOrEmpty() )
+				chapter.postValue(result.first())
+		}
+		Timber.d(chapter.value.toString())
 	}
-
-	fun isToolbarCollapsed() =
-		collapsingToolbarState.value is CollapsingToolbarState.Collapsed
-
-	fun isToolbarExpanded() =
-		collapsingToolbarState.value is CollapsingToolbarState.Expanded
 
 }

@@ -12,7 +12,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.projectdelta.naruto.R
 import com.projectdelta.naruto.data.model.entity.chapter.Chapter
 import com.projectdelta.naruto.databinding.EpisodeItemBinding
-import com.projectdelta.naruto.util.Constants
+import com.projectdelta.naruto.util.Constants.TRANSITION_EPISODE
 import com.projectdelta.naruto.util.NotFound
 import com.projectdelta.naruto.util.callback.BaseModelDiffUtilCallback
 import com.projectdelta.naruto.util.callback.BaseModelItemClickCallback
@@ -40,7 +40,7 @@ class EpisodeListAdapter(
 					clickCallback.onItemClick(chapter ,episodeItem)
 				}
 
-				episodeItem.transitionName = Constants.TRANSITION_EPISODE.plus(chapter.id)
+				episodeItem.transitionName = TRANSITION_EPISODE.plus(chapter.id)
 
 				Glide.with(context)
 					.load(chapter.images?.first())

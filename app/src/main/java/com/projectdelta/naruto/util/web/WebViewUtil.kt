@@ -1,3 +1,5 @@
+@file:Suppress("unused")
+
 package com.projectdelta.naruto.util.web
 
 import android.annotation.SuppressLint

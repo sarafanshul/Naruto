@@ -79,7 +79,7 @@ class LocationDetailFragment : BaseViewBindingFragment<FragmentLocationDetailBin
 
 	@SuppressLint("SetTextI18n")
 	private fun initUI() {
-		binding.apply {
+		with(binding) {
 			layoutLocationDetail.transitionName = TRANSITION_LOCATION.plus(village.id)
 
 			appBar.addOnOffsetChangedListener(

@@ -138,5 +138,7 @@
     <string name="action_search_range">Search Range</string>
     <string name="action_filter_cannon">Cannon</string>
     <string name="action_sort_air_date">Air date</string>
+    <string name="detail_arc">Arc:</string>
+    <string name="detail_music">Music:</string>
 
 </resources>

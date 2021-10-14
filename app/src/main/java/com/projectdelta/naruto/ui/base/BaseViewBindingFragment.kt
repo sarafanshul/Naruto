@@ -8,9 +8,9 @@ abstract class BaseViewBindingFragment<VB : ViewBinding> : BaseFragment() {
 	val binding: VB
 		get() = _binding!!
 
-	override fun onDestroy() {
-		super.onDestroy()
+	override fun onDestroyView() {
 		_binding = null
+		super.onDestroyView()
 	}
 
 }

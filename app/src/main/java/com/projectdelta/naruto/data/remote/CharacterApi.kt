@@ -1,5 +1,6 @@
 package com.projectdelta.naruto.data.remote
 
+import com.projectdelta.naruto.data.model.entity.chapter.Chapter
 import com.projectdelta.naruto.data.model.entity.character.Character
 import com.projectdelta.naruto.data.model.entity.jutsu.Jutsu
 import com.projectdelta.naruto.util.networking.ApiConstants.CHARACTER_URL
@@ -9,6 +10,7 @@ import com.projectdelta.naruto.util.networking.ApiConstants.QUERY_PAGE
 import com.projectdelta.naruto.util.networking.ApiConstants.QUERY_REVERSE
 import com.projectdelta.naruto.util.networking.ApiConstants.QUERY_SORT
 import com.projectdelta.naruto.util.networking.ApiConstants.SUB_URL_CORE
+import com.projectdelta.naruto.util.networking.ApiConstants.SUB_URL_DEBUT_CHAPTER
 import com.projectdelta.naruto.util.networking.ApiConstants.SUB_URL_JUTSU_FILTER
 import com.projectdelta.naruto.util.networking.ApiConstants.SUB_URL_LIKE_PAGED
 import com.projectdelta.naruto.util.networking.ApiConstants.SUB_URL_PAGE
@@ -78,4 +80,10 @@ interface CharacterApi {
 	suspend fun getCharacterJutsuFiltered(
 		@Query(QUERY_ID) id : String
 	):ApiResult<List<Jutsu?>>
+
+	@GET(CHARACTER_URL + SUB_URL_DEBUT_CHAPTER)
+	suspend fun getCharacterDebutChapter(
+		@Query(QUERY_ID) id : String
+	):ApiResult<List<Chapter?>>
+
 }

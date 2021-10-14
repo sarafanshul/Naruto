@@ -57,7 +57,7 @@ object NetworkModule {
 			connectTimeout(CONNECTION_TIMEOUT, TimeUnit.SECONDS)
 			readTimeout(READ_TIMEOUT, TimeUnit.SECONDS)
 			writeTimeout(WRITE_TIMEOUT, TimeUnit.SECONDS)
-			retryOnConnectionFailure(false)
+			retryOnConnectionFailure(true) // change to false if paging issue
 			if (BuildConfig.DEBUG)
 				addNetworkInterceptor(loggingInterceptor)
 		}.build()

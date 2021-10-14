@@ -317,17 +317,15 @@
 
             <com.google.android.material.textview.MaterialTextView
                 android:layout_width="match_parent"
+                android:id="@+id/character_debut_head"
                 android:layout_height="wrap_content"
                 android:padding="@dimen/base_padding"
                 android:textAppearance="@style/TextAppearance.Naruto.Headline6"
                 android:text="@string/detail_debut"/>
 
-            <com.google.android.material.textview.MaterialTextView
+            <include
                 android:id="@+id/character_debut"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="@dimen/base_padding"
-                android:textAppearance="@style/TextAppearance.Naruto.Body1"/>
+                layout="@layout/episode_item"/>
 
             <View
                 android:layout_width="match_parent"
