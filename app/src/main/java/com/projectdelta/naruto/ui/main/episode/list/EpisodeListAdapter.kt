@@ -52,6 +52,7 @@ class EpisodeListAdapter(
 					.into(itemImage)
 
 				itemName.text = "${chapter.episode?.series?.split(" ")?.last()} #${chapter.episode?.episode?.toInt()}"
+				itemName.isSelected = true
 
 				itemKanjiValue.text = chapter.name?.kanji
 				itemOpValue.text = chapter.music?.opening

@@ -40,6 +40,8 @@
             style="@style/Widget.TextView.Item.Name"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:singleLine="true"
+            android:ellipsize="marquee"
             android:text="@string/tv_item_name"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/guideline2"
