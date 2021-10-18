@@ -26,4 +26,4 @@ jobs:
         API_BASE_URL: ${{ secrets.API_BASE_URL }}
       run: echo API_BASE_URL=$API_BASE_URL > ./local.properties
     - name: Build with Gradle
-      run: ./gradlew assemble --stacktrace
+      run: ./gradlew assembleDebug --stacktrace
