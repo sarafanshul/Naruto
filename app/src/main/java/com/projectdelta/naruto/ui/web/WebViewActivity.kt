@@ -5,7 +5,6 @@ import android.content.Intent
 import android.content.pm.ApplicationInfo
 import android.graphics.Bitmap
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.webkit.WebChromeClient
@@ -33,7 +32,6 @@ class WebViewActivity : BaseViewBindingActivity<ActivityWebViewBinding>() {
 		private const val URL_KEY = "URL_KEY"
 		private const val SOURCE_KEY = "SOURCE_KEY"
 		private const val TITLE_KEY = "TITLE_KEY"
-		private const val TAG = "WebViewActivity"
 
 		fun newIntent(
 			context: Context,
@@ -138,7 +136,7 @@ class WebViewActivity : BaseViewBindingActivity<ActivityWebViewBinding>() {
 			}
 
 			binding.webview.loadUrl(url, headers)
-			Log.d(TAG, "onCreate: LoadUrl : $url")
+			Timber.d("onCreate: LoadUrl : $url")
 		}
 	}
 

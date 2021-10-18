@@ -5,10 +5,10 @@ package com.projectdelta.naruto.util.web
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.pm.PackageManager
-import android.util.Log
 import android.webkit.CookieManager
 import android.webkit.WebSettings
 import android.webkit.WebView
+import timber.log.Timber
 
 object WebViewUtil {
 	private const val TAG = "WebViewUtil"
@@ -22,7 +22,7 @@ object WebViewUtil {
 			// is not installed
 			CookieManager.getInstance()
 		} catch (e: Throwable) {
-			Log.e(TAG, "supportsWebView: WebView not installed", e)
+			Timber.e(e, "supportsWebView: WebView not installed")
 			return false
 		}
 
