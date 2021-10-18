@@ -2,7 +2,9 @@ package com.projectdelta.naruto.ui.base
 
 import android.graphics.Color
 import android.os.Bundle
+import androidx.annotation.IntegerRes
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import com.projectdelta.naruto.R
 import com.projectdelta.naruto.data.preference.PreferenceManager
 import com.projectdelta.naruto.di.NetworkModule
@@ -42,6 +44,7 @@ abstract class BaseActivity : AppCompatActivity() {
 		connectivityManager = connectivityManagerHiltEntryPoint.connectivityManager()
 		connectivityManager.registerConnectionObserver()
 
+		applyAppTheme(preferenceManager.getAppTheme())
 	}
 
 	/**
@@ -61,6 +64,21 @@ abstract class BaseActivity : AppCompatActivity() {
 	override fun onDestroy() {
 		super.onDestroy()
 		connectivityManager.unregisterConnectionObserver()
+	}
+
+	companion object {
+		fun AppCompatActivity.applyAppTheme( @IntegerRes theme: Int) {
+			when (theme) {
+				R.style.Theme_Naruto -> {
+//					AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+					setTheme(R.style.Theme_Naruto)
+				}
+				else -> {
+					throw Exception("Invalid theme found")
+				}
+			}
+
+		}
 	}
 
 }

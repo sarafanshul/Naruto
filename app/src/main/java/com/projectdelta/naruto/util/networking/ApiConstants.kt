@@ -1,8 +1,10 @@
 package com.projectdelta.naruto.util.networking
 
+import com.projectdelta.naruto.BuildConfig
+
 @Suppress("unused")
 object ApiConstants {
-	const val BASE_URL = "http://10.0.2.2:8080/"
+	const val BASE_URL = BuildConfig.API_BASE_URL
 
 	const val FANDOM_URL = "https://naruto.fandom.com/wiki/"
 

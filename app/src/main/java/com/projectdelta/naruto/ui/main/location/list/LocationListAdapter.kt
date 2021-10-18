@@ -38,7 +38,7 @@ class LocationListAdapter(
 						.load(village.image)
 						.apply(
 							RequestOptions()
-								.placeholder(R.drawable.placeholder_white_leaf)
+								.placeholder(R.drawable.jinchuriki)
 								.diskCacheStrategy(DiskCacheStrategy.DATA)
 						)
 						.into(itemImage)

@@ -6,12 +6,16 @@
         android:id="@+id/action_search_range"
         android:icon="@drawable/ic_filter_tilt_shift_black_24dp"
         android:title="@string/action_search_range"
+        android:iconTint="?colorOnToolbar"
+        app:iconTint="?colorOnToolbar"
         app:showAsAction="collapseActionView|ifRoom" />
 
     <item
         android:id="@+id/action_filter"
         android:icon="@drawable/ic_filter_list_24dp"
         android:title="@string/action_filter"
+        android:iconTint="?colorOnToolbar"
+        app:iconTint="?colorOnToolbar"
         app:showAsAction="ifRoom" />
 
 </menu>

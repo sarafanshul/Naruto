@@ -159,6 +159,7 @@
             android:layout_marginStart="@dimen/base_padding"
             android:textAppearance="?attr/textAppearanceSubtitle1"
             android:textSize="@dimen/item_text_size"
+            android:paddingBottom="@dimen/base_padding"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/guideline2"

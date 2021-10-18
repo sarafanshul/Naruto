@@ -6,12 +6,16 @@
         android:id="@+id/action_search"
         android:icon="@drawable/ic_search_24dp"
         android:title="@string/action_search"
+        android:iconTint="?colorOnToolbar"
+        app:iconTint="?colorOnToolbar"
         app:actionViewClass="androidx.appcompat.widget.SearchView"
         app:showAsAction="collapseActionView|ifRoom" />
 
     <item
         android:id="@+id/action_filter"
         android:icon="@drawable/ic_filter_list_24dp"
+        android:iconTint="?colorOnToolbar"
+        app:iconTint="?colorOnToolbar"
         android:title="@string/action_filter"
         app:showAsAction="ifRoom" />
 

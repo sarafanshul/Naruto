@@ -17,7 +17,9 @@ android {
         minSdkVersion 28
         targetSdkVersion 30
         versionCode 1
-        versionName "1.0"
+        versionName "1.0.1"
+
+        buildConfigField "String", "API_BASE_URL", "\""+getApiKeys()+"\""
 
         javaCompileOptions {
             annotationProcessorOptions {
@@ -35,6 +37,7 @@ android {
     buildTypes {
         release {
             minifyEnabled false
+            shrinkResources = false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
@@ -45,6 +48,12 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
+}
+
+def getApiKeys() {
+    Properties properties = new Properties()
+    properties.load(project.rootProject.file('local.properties').newDataInputStream())
+    return properties.getProperty("API_BASE_URL");
 }
 
 dependencies {

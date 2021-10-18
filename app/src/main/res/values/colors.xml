@@ -157,11 +157,12 @@
     <color name="yellow">#F4B400</color>
 
     <!--    Naruto Colors-->
-    <color name="naruto_yellow">#fbe407</color>
+    <color name="naruto_yellow">#ED9D0B</color>
     <color name="naruto_black">#0b0b0b</color>
     <color name="naruto_yellow_200">#ffe182</color>
-    <color name="naruto_orange">#FF7133</color>
-    <color name="naruto_orange_accent">#FF4E00</color>
+    <color name="naruto_orange">#F96209</color>
+    <color name="naruto_orange_accent">#F94001</color>
+    <color name="naruto_orange_light">#F68A06</color>
     <color name="naruto_blue">#0c2fdf</color>
 
     <color name="matte_red">#B33F40</color>

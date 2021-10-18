@@ -98,6 +98,7 @@ class LocationDetailFragment : BaseViewBindingFragment<FragmentLocationDetailBin
 				.load(village.image)
 				.apply(
 					RequestOptions()
+						.placeholder(R.drawable.jinchuriki)
 						.diskCacheStrategy(DiskCacheStrategy.DATA)
 				)
 				.thumbnail(0.25f)

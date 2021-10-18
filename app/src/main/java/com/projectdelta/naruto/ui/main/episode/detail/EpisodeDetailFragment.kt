@@ -97,7 +97,7 @@ class EpisodeDetailFragment : BaseViewBindingFragment<FragmentEpisodeDetailBindi
 				.load(episode.images?.first())
 				.apply(
 					RequestOptions()
-						.placeholder(R.drawable.placeholder_white_leaf)
+						.placeholder(R.drawable.placeholder_naruto_ep)
 						.diskCacheStrategy(DiskCacheStrategy.DATA)
 				)
 				.thumbnail(0.25f)

@@ -46,7 +46,7 @@ class EpisodeListAdapter(
 					.load(chapter.images?.first())
 					.apply(
 						RequestOptions()
-							.placeholder(R.drawable.placeholder_white_leaf)
+							.placeholder(R.drawable.placeholder_naruto_ep)
 							.diskCacheStrategy(DiskCacheStrategy.DATA)
 					)
 					.into(itemImage)
@@ -55,10 +55,14 @@ class EpisodeListAdapter(
 				itemName.isSelected = true
 
 				itemKanjiValue.text = chapter.name?.kanji
+				itemKanjiValue.isSelected = true
 				itemOpValue.text = chapter.music?.opening
+				itemOpValue.isSelected = true
 				itemArcValue.text = chapter.arc
+				itemArcValue.isSelected = true
 				itemDebutValue.text = if(chapter.date?.japanese != null) dateFormat.format(chapter.date.japanese) else NotFound.surpriseMe()
 				itemEpisodeNameValue.text = chapter.name?.english
+				itemEpisodeNameValue.isSelected = true
 
 				itemFiller.visibility = if( ! chapter.manga?.chapters.isNullOrEmpty() ) View.GONE else View.VISIBLE
 			}

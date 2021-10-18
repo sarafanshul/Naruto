@@ -2,6 +2,8 @@ package com.projectdelta.naruto.data.preference
 
 import android.content.Context
 import android.content.SharedPreferences
+import androidx.annotation.IntegerRes
+import com.projectdelta.naruto.R
 import com.projectdelta.naruto.data.model.entity.chapter.Chapter.Companion.MAX_EPISODE_NUMBER
 import com.projectdelta.naruto.widgets.ExtendedNavigationView.Item
 import com.projectdelta.naruto.data.preference.PreferenceKeys as Keys
@@ -65,5 +67,8 @@ class PreferenceManager(
 
 	fun sortAirDate() = preferences.getInt(Keys.SORT_AIR_DATE ,Item.MultiSort.SORT_NONE)
 	fun setSortAirDate( newValue: Int ) = preferences.edit().putInt(Keys.SORT_AIR_DATE ,newValue).apply()
+
+	fun getAppTheme() = preferences.getInt(Keys.APP_THEME , R.style.Theme_Naruto)
+	fun setAppTheme( @IntegerRes newValue: Int ) = preferences.edit().putInt(Keys.APP_THEME ,newValue).apply()
 
 }

@@ -16,8 +16,8 @@
             android:layout_width="match_parent"
             android:id="@+id/toolbar"
             android:layout_height="?attr/actionBarSize"
-            android:background="?colorOnPrimary"
-            app:title="@string/locations"
+            android:background="?colorToolbar"
+            app:title="@string/episodes"
             app:menu="@menu/episode"/>
 
     </com.google.android.material.appbar.AppBarLayout>

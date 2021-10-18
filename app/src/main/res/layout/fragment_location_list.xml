@@ -16,7 +16,7 @@
             android:layout_width="match_parent"
             android:id="@+id/toolbar"
             android:layout_height="?attr/actionBarSize"
-            android:background="?colorOnPrimary"
+            android:background="?colorToolbar"
             app:title="@string/locations"/>
 
     </com.google.android.material.appbar.AppBarLayout>

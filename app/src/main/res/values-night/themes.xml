@@ -2,20 +2,24 @@
     <!-- Base application theme. -->
     <style name="Theme.Naruto" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/purple_200</item>
-        <item name="colorPrimaryVariant">@color/purple_700</item>
-        <item name="colorOnPrimary">@color/black</item>
+        <item name="colorPrimary">@color/naruto_orange</item>
+        <item name="colorPrimaryVariant">@color/naruto_orange_light</item>
+        <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/teal_200</item>
         <item name="colorSecondaryVariant">@color/teal_200</item>
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorToolbar</item>
+        <item name="android:navigationBarColor">?colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
+
+        <item name="rippleColor">@color/naruto_orange_light</item>
 
         <item name="fontFamily">@font/product_sans_font_family</item>
 
-        <item name="colorToolbar">@color/black</item>
+        <item name="colorToolbar">@color/eerie_black</item>
+        <item name="colorOnToolbar">@color/white</item>
 
         <item name="colorControlHighlight">@color/ripple_colored_default</item>
         <item name="rippleColorToolbar">?attr/colorControlHighlight</item>

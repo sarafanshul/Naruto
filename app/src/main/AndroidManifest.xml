@@ -14,8 +14,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Naruto">
-        <activity android:name=".ui.web.WebViewActivity"></activity>
-        <activity android:name=".ui.main.MainActivity">
+        <activity android:name=".ui.web.WebViewActivity" />
+        <activity android:name=".ui.main.MainActivity"
+            android:theme="@style/Theme.Naruto.Splash">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

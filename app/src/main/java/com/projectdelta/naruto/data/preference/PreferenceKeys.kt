@@ -3,6 +3,7 @@ package com.projectdelta.naruto.data.preference
 @Suppress("unused")
 object PreferenceKeys {
 
+	const val APP_THEME = "app_theme"
 	const val FILTER_CANNON = "filter_cannon"
 	const val FILTER_STATUS = "filter_status"
 	const val FILTER_GENDER = "filter_gender"

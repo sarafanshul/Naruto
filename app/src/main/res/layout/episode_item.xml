@@ -74,6 +74,8 @@
             android:layout_marginStart="@dimen/base_padding"
             android:textSize="@dimen/item_text_size"
             android:text="@string/not_found"
+            android:singleLine="true"
+            android:ellipsize="marquee"
             android:textAppearance="?attr/textAppearanceSubtitle1"
             app:layout_constraintStart_toStartOf="@+id/guideline3"
             app:layout_constraintTop_toTopOf="parent" />
@@ -98,6 +100,8 @@
             android:layout_marginStart="@dimen/base_padding"
             android:textSize="@dimen/item_text_size"
             android:text="@string/not_found"
+            android:singleLine="true"
+            android:ellipsize="marquee"
             android:textAppearance="?attr/textAppearanceSubtitle1"
             app:layout_constraintStart_toStartOf="@+id/guideline3"
             app:layout_constraintTop_toBottomOf="@id/item_kanji" />
@@ -123,6 +127,8 @@
             android:textAppearance="?attr/textAppearanceSubtitle1"
             android:textSize="@dimen/item_text_size"
             android:text="@string/not_found"
+            android:singleLine="true"
+            android:ellipsize="marquee"
             app:layout_constraintStart_toStartOf="@+id/guideline3"
             app:layout_constraintTop_toBottomOf="@+id/item_op" />
 
@@ -164,7 +170,7 @@
             android:gravity="center"
             android:padding="@dimen/base_padding"
             android:textStyle="italic"
-            android:textColor="@color/wet_asphalt"
+            android:textColor="?colorSecondaryVariant"
             android:textAppearance="?attr/textAppearanceHeadline6"
             android:text="@string/place_holder_text"
             android:textSize="@dimen/item_text_size"
