@@ -46,12 +46,6 @@ jobs:
     needs: [ unit_tests, android_tests ]
     runs-on: ubuntu-latest
     steps:
-    - name: Decode Keystore
-      id: decode_keystore
-      uses: timheuer/base64-to-file@v1
-      with:
-        fileName: 'keystore/NarutoKeyStore.jks'
-        encodedString: ${{ secrets.KEYSTORE }}
     - uses: actions/checkout@v2
     - name: Setup Java
       uses: actions/setup-java@v2
@@ -64,7 +58,14 @@ jobs:
       env:
         API_BASE_URL: ${{ secrets.API_BASE_URL }}
       run: echo API_BASE_URL=$API_BASE_URL > ./local.properties
-    - name: build prod
+    - name: Decode Keystore
+      id: decode_keystore
+      uses: timheuer/base64-to-file@v1
+      with:
+        fileDir: '/app/'
+        fileName: 'NarutoKeyStore.jks'
+        encodedString: ${{ secrets.KEYSTORE }}
+    - name: Build Release Artifact
       run: ./gradlew app:assembleRelease --stacktrace
       env:
         SIGNING_KEY_ALIAS: ${{ secrets.SIGNING_KEY_ALIAS }}
