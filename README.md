@@ -53,8 +53,31 @@ UI is utilising a dual-theme approach, allowing users to choose from light or da
 ## Architecture
 NarutoDex is based on MVVM architecture and a repository pattern.
 
-![architecture](.\assets\architecture\mvvm.png)
+![architecture](/assets/architecture/mvvm.png)
 
 ## API
 NarutoDex using the [NarutoDB](https://github.com/sarafanshul/NarutoDB) for constructing RESTful API.<br>
 NarutoDB provides a RESTful API interface to highly detailed objects built from thousands of lines of data related to Naruto.
+
+## Authors
+[Anshul](https://github.com/sarafanshul)
+
+## Find this repository useful? :heart:
+__[follow](https://github.com/sarafanshul)__ me for my next creations! 🤩
+
+# License
+```xml
+Designed and developed by 2020 sarafanshul (Anshul Saraf)
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+   http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+```
