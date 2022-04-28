@@ -268,7 +268,7 @@ fun Context.isServiceRunning(serviceClass: Class<*>): Boolean {
 /**
  * Returns if a network connection is available or not. [For more info](https://stackoverflow.com/a/58605532)
  */
-@Suppress("DEPRECATION" ,"ObsoleteSdkInt")
+@Suppress("DEPRECATION", "ObsoleteSdkInt")
 fun Context.isOnline(): Boolean {
 	val cm = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
 	if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -290,7 +290,7 @@ fun Context.isOnline(): Boolean {
 /**
  * Returns the theme resources
  */
-@Deprecated("returns faded color", ReplaceWith("Context.getResourceColor") ,DeprecationLevel.ERROR)
+@Deprecated("returns faded color", ReplaceWith("Context.getResourceColor"), DeprecationLevel.ERROR)
 fun Context.getColorFromAttr(
 	@AttrRes attrColor: Int,
 	typedValue: TypedValue = TypedValue(),

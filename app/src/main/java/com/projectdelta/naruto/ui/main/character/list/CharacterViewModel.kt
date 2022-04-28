@@ -1,6 +1,10 @@
 package com.projectdelta.naruto.ui.main.character.list
 
-import androidx.lifecycle.*
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asLiveData
+import androidx.lifecycle.switchMap
+import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import androidx.paging.map
@@ -20,9 +24,9 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CharacterViewModel @Inject constructor(
-	private val repository: CharacterRepository ,
+	private val repository: CharacterRepository,
 	private val preferenceManager: PreferenceManager
-):ViewModel() {
+) : ViewModel() {
 
 	private val currentDataPref = MutableLiveData(CharacterDataPrefBus(0, { true }, ""))
 
@@ -32,12 +36,11 @@ class CharacterViewModel @Inject constructor(
 	}
 
 	@ExperimentalCoroutinesApi
-	var data = currentDataPref.switchMap { (sort ,filters ,query) ->
-		if( query.length > 2 ){
+	var data = currentDataPref.switchMap { (sort, filters, query) ->
+		if (query.length > 2) {
 			characterLikePage(query)
 				.cachedIn(viewModelScope).asLiveData()
-		}
-		else {
+		} else {
 			when (sort) {
 				in 0..99 -> { // alpha
 					var sortParam = Character.Companion.SortCharacter.BY_NAME_ASC
@@ -64,11 +67,11 @@ class CharacterViewModel @Inject constructor(
 	}
 
 	fun characterDataByPowerPaged(
-		reverse : Boolean ,
-		filters : suspend (Character) -> Boolean
-	):Flow<PagingData<Character>> {
+		reverse: Boolean,
+		filters: suspend (Character) -> Boolean
+	): Flow<PagingData<Character>> {
 		return repository
-			.getCharactersSortedByPowerPaged(reverse ,filters)
+			.getCharactersSortedByPowerPaged(reverse, filters)
 			.map { pagingData ->
 				pagingData.map {
 					it
@@ -78,11 +81,11 @@ class CharacterViewModel @Inject constructor(
 	}
 
 	private fun characterDataPaged(
-		sortParam : Character.Companion.SortCharacter,
-		filters : suspend (Character) -> Boolean
+		sortParam: Character.Companion.SortCharacter,
+		filters: suspend (Character) -> Boolean
 	): Flow<PagingData<Character>> {
 		return repository
-			.getCoreCharacters( sortParam , filters)
+			.getCoreCharacters(sortParam, filters)
 			.map { pagingData ->
 				pagingData.map {
 					it
@@ -92,12 +95,12 @@ class CharacterViewModel @Inject constructor(
 	}
 
 	private fun characterLikePage(
-		name : String ,
-		sortParam: Character.Companion.SortCharacter = Character.Companion.SortCharacter.NA ,
-		filters: suspend (Character) -> Boolean = {true}
-	) : Flow<PagingData<Character>> {
+		name: String,
+		sortParam: Character.Companion.SortCharacter = Character.Companion.SortCharacter.NA,
+		filters: suspend (Character) -> Boolean = { true }
+	): Flow<PagingData<Character>> {
 		return repository
-			.getCharacterLikePaged(name ,sortParam ,filters)
+			.getCharacterLikePaged(name, sortParam, filters)
 			.map { pagingData ->
 				pagingData.map {
 					it
@@ -127,9 +130,9 @@ class CharacterViewModel @Inject constructor(
 	}
 
 	// naive function to trigger change in filters
-	fun triggerFilters(){
-		 val filters : suspend (it : Character) -> Boolean = {
-			when(preferenceManager.filterAlive()){
+	fun triggerFilters() {
+		val filters: suspend (it: Character) -> Boolean = {
+			when (preferenceManager.filterAlive()) {
 				ExtendedNavigationView.Item.TriStateGroup.State.INCLUDE.value -> {
 					it.personal?.status == Character.Companion.CharacterStatus.ALIVE.value
 				}
@@ -137,7 +140,7 @@ class CharacterViewModel @Inject constructor(
 					it.personal?.status != Character.Companion.CharacterStatus.ALIVE.value
 				}
 				else -> true
-			} && when( preferenceManager.filterFemale() ){
+			} && when (preferenceManager.filterFemale()) {
 				ExtendedNavigationView.Item.TriStateGroup.State.INCLUDE.value -> {
 					it.personal?.sex == Character.Companion.CharacterSex.FEMALE.value
 				}
@@ -152,8 +155,8 @@ class CharacterViewModel @Inject constructor(
 		currentDataPref.value = cur
 	}
 
-	fun updateQuery( query : String ){
-		if( (query.length <= 2 && query != "") || currentDataPref.value?.query == query) // not empty for resetting
+	fun updateQuery(query: String) {
+		if ((query.length <= 2 && query != "") || currentDataPref.value?.query == query) // not empty for resetting
 			return
 		val cur = currentDataPref.value
 		cur?.query = query

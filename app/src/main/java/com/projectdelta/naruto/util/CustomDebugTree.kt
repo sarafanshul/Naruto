@@ -5,7 +5,7 @@ import android.util.Log
 import timber.log.Timber
 import kotlin.math.min
 
-class CustomDebugTree: Timber.DebugTree() {
+class CustomDebugTree : Timber.DebugTree() {
 
 	companion object {
 		private const val MAX_LOG_LENGTH = 4000

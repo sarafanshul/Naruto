@@ -26,7 +26,10 @@ object PreferenceModule {
 
 	@Singleton
 	@Provides
-	fun providesPreferenceManager(application: Application, sharedPreferences: SharedPreferences ): PreferenceManager {
+	fun providesPreferenceManager(
+		application: Application,
+		sharedPreferences: SharedPreferences
+	): PreferenceManager {
 		return PreferenceManager(application, sharedPreferences)
 	}
 

@@ -7,7 +7,8 @@ import android.view.ViewGroup
 import com.projectdelta.naruto.databinding.CommonTabbedSheetBinding
 import com.projectdelta.naruto.widgets.ViewPagerAdapter
 
-abstract class TabbedBottomSheetDialog(private val activity: Activity) : BaseBottomSheetDialog(activity) {
+abstract class TabbedBottomSheetDialog(private val activity: Activity) :
+	BaseBottomSheetDialog(activity) {
 
 	lateinit var binding: CommonTabbedSheetBinding
 

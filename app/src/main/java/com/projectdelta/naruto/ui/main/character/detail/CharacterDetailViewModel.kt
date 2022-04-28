@@ -14,19 +14,19 @@ class CharacterDetailViewModel @Inject constructor(
 	private val repository: CharacterRepository
 ) : BaseDetailViewModel() {
 
-	val jutsuList : MutableLiveData<List<Jutsu>> = MutableLiveData(listOf())
-	suspend fun setJutsus( id : String ){
-		if( jutsuList.value?.size == 0 ) {
+	val jutsuList: MutableLiveData<List<Jutsu>> = MutableLiveData(listOf())
+	suspend fun setJutsus(id: String) {
+		if (jutsuList.value?.size == 0) {
 			val result = repository.getCharacterJutsuFiltered(id).filterNotNull()
 			jutsuList.postValue(result)
 		}
 	}
 
-	val chapter : MutableLiveData<Chapter?> = MutableLiveData(null)
-	suspend fun setChapter( id : String ){
-		if( chapter.value == null ){
+	val chapter: MutableLiveData<Chapter?> = MutableLiveData(null)
+	suspend fun setChapter(id: String) {
+		if (chapter.value == null) {
 			val result = repository.getCharacterDebutChapter(id)
-			if( ! result.isNullOrEmpty() )
+			if (!result.isNullOrEmpty())
 				chapter.postValue(result.first())
 		}
 		Timber.d(chapter.value.toString())

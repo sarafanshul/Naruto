@@ -6,4 +6,4 @@ data class JutsuManga(
 	val name: String? = null,
 	val volume: Double? = null,
 	val chapter: Double? = null,
-): Serializable
+) : Serializable

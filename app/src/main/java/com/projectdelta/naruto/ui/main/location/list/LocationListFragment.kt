@@ -32,23 +32,27 @@ class LocationListFragment : BaseViewBindingFragment<FragmentLocationListBinding
 		fun newInstance() = LocationListFragment()
 	}
 
-	private val viewModel : LocationViewModel by activityViewModels()
+	private val viewModel: LocationViewModel by activityViewModels()
 
-	private var adapter : LocationListAdapter? = null
+	private var adapter: LocationListAdapter? = null
 
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
 		// Access viewModel so that it gets initialized on the main thread
 		viewModel
 
-		adapter = LocationListAdapter( object : BaseModelItemClickCallback{
+		adapter = LocationListAdapter(object : BaseModelItemClickCallback {
 			override fun onItemClick(item: BaseModel, itemCard: CardView) {
-				navigateVillageDetail(item as Village ,itemCard)
+				navigateVillageDetail(item as Village, itemCard)
 			}
 		})
 	}
 
-	override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+	override fun onCreateView(
+		inflater: LayoutInflater,
+		container: ViewGroup?,
+		savedInstanceState: Bundle?
+	): View {
 		_binding = FragmentLocationListBinding.inflate(layoutInflater)
 		return binding.root
 	}
@@ -69,31 +73,33 @@ class LocationListFragment : BaseViewBindingFragment<FragmentLocationListBinding
 
 		binding.locationRv.adapter = adapter
 
-		viewModel.getLocationPaged().observe(viewLifecycleOwner ,{
-			adapter?.submitData(viewLifecycleOwner.lifecycle ,it)
+		viewModel.getLocationPaged().observe(viewLifecycleOwner, {
+			adapter?.submitData(viewLifecycleOwner.lifecycle, it)
 		})
 
 		adapter?.addLoadStateListener { state ->
 			binding.progressBar.isVisible = state.source.refresh is LoadState.Loading
-			if( state.source.refresh is LoadState.NotLoading &&
-				state.append.endOfPaginationReached && adapter?.itemCount!! < 1) {
+			if (state.source.refresh is LoadState.NotLoading &&
+				state.append.endOfPaginationReached && adapter?.itemCount!! < 1
+			) {
 				binding.emptyView.visibility = View.VISIBLE
 				binding.locationRv.isVisible = false
-			}
-			else {
+			} else {
 				binding.emptyView.visibility = View.GONE
 				binding.locationRv.isVisible = true
 			}
 		}
 
-		(requireActivity() as MainActivity).connectivityManager.isNetworkAvailable.observe(viewLifecycleOwner , connectionWatcher@{ x ->
-			when(x){
-				true -> {
-					onNetworkReconnect()
+		(requireActivity() as MainActivity).connectivityManager.isNetworkAvailable.observe(
+			viewLifecycleOwner,
+			connectionWatcher@{ x ->
+				when (x) {
+					true -> {
+						onNetworkReconnect()
+					}
+					false -> {}
 				}
-				false -> { }
-			}
-		})
+			})
 	}
 
 	private fun onNetworkReconnect() {
@@ -106,9 +112,9 @@ class LocationListFragment : BaseViewBindingFragment<FragmentLocationListBinding
 		)
 		val action =
 			LocationListFragmentDirections.actionLocationListFragmentToLocationDetailFragment(
-			village
-		)
-		safeNavigate(action ,extras)
+				village
+			)
+		safeNavigate(action, extras)
 	}
 
 	private fun prepareTransitions() {

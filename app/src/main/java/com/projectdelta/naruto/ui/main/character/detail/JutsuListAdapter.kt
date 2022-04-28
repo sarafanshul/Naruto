@@ -12,11 +12,11 @@ import com.projectdelta.naruto.data.model.entity.jutsu.Jutsu
 import com.projectdelta.naruto.databinding.JutsuItemBinding
 import com.projectdelta.naruto.util.callback.BaseModelDiffUtilCallback
 
-class JutsuListAdapter:
-	ListAdapter<Jutsu,JutsuListAdapter.LayoutViewHolder>(BaseModelDiffUtilCallback()){
+class JutsuListAdapter :
+	ListAdapter<Jutsu, JutsuListAdapter.LayoutViewHolder>(BaseModelDiffUtilCallback()) {
 
 	override fun onCreateViewHolder(parent1: ViewGroup, viewType1: Int): LayoutViewHolder {
-		val binding = JutsuItemBinding.inflate(LayoutInflater.from(parent1.context) ,parent1 ,false)
+		val binding = JutsuItemBinding.inflate(LayoutInflater.from(parent1.context), parent1, false)
 		return LayoutViewHolder(binding)
 	}
 
@@ -24,12 +24,12 @@ class JutsuListAdapter:
 		holder.bind(getItem(position))
 	}
 
-	inner class LayoutViewHolder( private val binding : JutsuItemBinding) :
-		RecyclerView.ViewHolder(binding.root){
+	inner class LayoutViewHolder(private val binding: JutsuItemBinding) :
+		RecyclerView.ViewHolder(binding.root) {
 
-		fun bind( jutsu : Jutsu ){
+		fun bind(jutsu: Jutsu) {
 
-			with(binding){
+			with(binding) {
 
 				Glide.with(root.context)
 					.load(jutsu.image)

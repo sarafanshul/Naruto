@@ -18,22 +18,22 @@ import com.projectdelta.naruto.util.system.lang.isOk
 
 class LocationListAdapter(
 	private val clickCallback: BaseModelItemClickCallback
-) : PagingDataAdapter<Village , LocationListAdapter.LayoutViewHolder>(BaseModelDiffUtilCallback()){
+) : PagingDataAdapter<Village, LocationListAdapter.LayoutViewHolder>(BaseModelDiffUtilCallback()) {
 
 	inner class LayoutViewHolder(
-		private val binding : LocationItemBinding
-	) : RecyclerView.ViewHolder(binding.root){
+		private val binding: LocationItemBinding
+	) : RecyclerView.ViewHolder(binding.root) {
 
-		fun bind(village: Village ,clickCallback: BaseModelItemClickCallback){
-			with(binding){
+		fun bind(village: Village, clickCallback: BaseModelItemClickCallback) {
+			with(binding) {
 				val context = root.context
 
 				root.setOnClickListener {
-					clickCallback.onItemClick(village ,locationItem)
+					clickCallback.onItemClick(village, locationItem)
 				}
 				locationItem.transitionName = TRANSITION_LOCATION.plus(village.id)
 
-				if( village.image.isOk() )
+				if (village.image.isOk())
 					Glide.with(context)
 						.load(village.image)
 						.apply(
@@ -56,13 +56,13 @@ class LocationListAdapter(
 	}
 
 	override fun onBindViewHolder(holder: LayoutViewHolder, position: Int) {
-		holder.bind(getItem(position)!! ,clickCallback)
+		holder.bind(getItem(position)!!, clickCallback)
 	}
 
 	override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LayoutViewHolder {
 		return LayoutViewHolder(
 			LocationItemBinding.inflate(
-				LayoutInflater.from(parent.context) ,parent ,false
+				LayoutInflater.from(parent.context), parent, false
 			)
 		)
 	}

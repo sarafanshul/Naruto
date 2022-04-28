@@ -15,7 +15,7 @@ data class PageResult<T : BaseModel?>(
 	@SerializedName("numberOfElements") var numberOfElements: Int,
 	@SerializedName("first") var first: Boolean,
 	@SerializedName("empty") var empty: Boolean
-){
+) {
 	companion object {
 		data class CustomResponsePageable(
 			@SerializedName("sort") var sort: CustomResponseSort,
@@ -25,6 +25,7 @@ data class PageResult<T : BaseModel?>(
 			@SerializedName("unpaged") var unpaged: Boolean,
 			@SerializedName("paged") var paged: Boolean
 		)
+
 		data class CustomResponseSort(
 			@SerializedName("sorted") var sorted: Boolean,
 			@SerializedName("unsorted") var unsorted: Boolean,

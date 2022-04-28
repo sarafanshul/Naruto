@@ -41,16 +41,16 @@ class LocationDetailFragment : BaseViewBindingFragment<FragmentLocationDetailBin
 		fun newInstance() = LocationDetailFragment()
 	}
 
-	private val viewModel : LocationDetailViewModel by viewModels()
+	private val viewModel: LocationDetailViewModel by viewModels()
 
-	lateinit var village : Village
+	lateinit var village: Village
 
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
 
 		viewModel
 
-		val args : LocationDetailFragmentArgs by navArgs()
+		val args: LocationDetailFragmentArgs by navArgs()
 		village = args.villageData
 
 	}
@@ -83,7 +83,7 @@ class LocationDetailFragment : BaseViewBindingFragment<FragmentLocationDetailBin
 			layoutLocationDetail.transitionName = TRANSITION_LOCATION.plus(village.id)
 
 			appBar.addOnOffsetChangedListener(
-				AppBarLayout.OnOffsetChangedListener{ _, offset ->
+				AppBarLayout.OnOffsetChangedListener { _, offset ->
 					if (offset < Constants.COLLAPSING_TOOLBAR_VISIBILITY_THRESHOLD) {
 						viewModel.setCollapsingToolbarState(CollapsingToolbarState.Collapsed())
 					} else {
@@ -92,17 +92,17 @@ class LocationDetailFragment : BaseViewBindingFragment<FragmentLocationDetailBin
 				}
 			)
 
-			if( village.image != null )
-			Glide
-				.with(this@LocationDetailFragment)
-				.load(village.image)
-				.apply(
-					RequestOptions()
-						.placeholder(R.drawable.jinchuriki)
-						.diskCacheStrategy(DiskCacheStrategy.DATA)
-				)
-				.thumbnail(0.25f)
-				.into(villageImage)
+			if (village.image != null)
+				Glide
+					.with(this@LocationDetailFragment)
+					.load(village.image)
+					.apply(
+						RequestOptions()
+							.placeholder(R.drawable.jinchuriki)
+							.diskCacheStrategy(DiskCacheStrategy.DATA)
+					)
+					.thumbnail(0.25f)
+					.into(villageImage)
 
 			villageName.text = "${village.name?.english}\n${village.name?.kanji}"
 
@@ -112,7 +112,8 @@ class LocationDetailFragment : BaseViewBindingFragment<FragmentLocationDetailBin
 
 			nameRomaji.text = village.name?.romaji
 
-			villageLeaders.text = village.data?.leader?.joinToString("\n") { it } ?: NotFound.surpriseMe()
+			villageLeaders.text =
+				village.data?.leader?.joinToString("\n") { it } ?: NotFound.surpriseMe()
 
 			toolbarPrimaryIcon.setOnClickListener {
 				findNavController().navigateUp()
@@ -159,7 +160,7 @@ class LocationDetailFragment : BaseViewBindingFragment<FragmentLocationDetailBin
 	}
 
 	private fun launchWebView() {
-		(requireActivity() as MainActivity).launchWebView( ApiConstants.FANDOM_URL + village.id)
+		(requireActivity() as MainActivity).launchWebView(ApiConstants.FANDOM_URL + village.id)
 	}
 
 	private fun transitionToExpandedMode() {
@@ -173,7 +174,7 @@ class LocationDetailFragment : BaseViewBindingFragment<FragmentLocationDetailBin
 	}
 
 	private fun getToolbarTitle(): String =
-		if( village.name?.english!!.isOk())
+		if (village.name?.english!!.isOk())
 			village.name?.english?.chop(45)!!
 		else
 			NotFound.surpriseMe()

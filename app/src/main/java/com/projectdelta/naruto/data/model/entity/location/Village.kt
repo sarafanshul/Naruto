@@ -10,4 +10,4 @@ data class Village(
 	val image: String? = null,
 	val data: VillageData? = null,
 	val statistic: VillageStatistic? = null,
-) : BaseModel() , Serializable
+) : BaseModel(), Serializable

@@ -1,6 +1,10 @@
 package com.projectdelta.naruto.ui.main.episode.list
 
-import androidx.lifecycle.*
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asLiveData
+import androidx.lifecycle.switchMap
+import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import androidx.paging.map
@@ -19,17 +23,17 @@ import javax.inject.Inject
 
 @HiltViewModel
 class EpisodeViewModel @Inject constructor(
-	private val repository : ChapterRepository ,
+	private val repository: ChapterRepository,
 	private val preferenceManager: PreferenceManager
-) : ViewModel(){
+) : ViewModel() {
 
-	val rangeEpSt : Int
+	val rangeEpSt: Int
 		get() = preferenceManager.rangeEpisodeStart()
 
-	val rangeEpEd : Int
+	val rangeEpEd: Int
 		get() = preferenceManager.rangeEpisodeEnd()
 
-	private val cannon : Boolean
+	private val cannon: Boolean
 		get() = preferenceManager.filterCannon()
 
 	private val currentDataPref = MutableLiveData(EpisodeDataPrefBus())
@@ -40,7 +44,7 @@ class EpisodeViewModel @Inject constructor(
 		onRangeChanged()
 	}
 
-	var data = currentDataPref.switchMap { ( rangeL ,rangeR ,cannon ,sort ) ->
+	var data = currentDataPref.switchMap { (rangeL, rangeR, cannon, sort) ->
 		getChapterRangedOrdered(rangeL, rangeR, cannon, sort)
 			.cachedIn(viewModelScope)
 			.asLiveData()
@@ -48,11 +52,11 @@ class EpisodeViewModel @Inject constructor(
 
 
 	private fun getChapterRangedOrdered(
-		rangeL : Int,
-		rangeR : Int,
-		cannon : Boolean,
-		sort : Int
-	): Flow<PagingData<Chapter>>{
+		rangeL: Int,
+		rangeR: Int,
+		cannon: Boolean,
+		sort: Int
+	): Flow<PagingData<Chapter>> {
 		return repository
 			.getChapterRangedOrdered(rangeL, rangeR, cannon, sort)
 			.map { pagingData ->
@@ -65,8 +69,8 @@ class EpisodeViewModel @Inject constructor(
 
 	fun updateEpisodeRange(values: List<Float>) {
 		Timber.d(values.toMutableList().toString())
-		preferenceManager.setRangeEpisodeStart( values.first().toInt() )
-		preferenceManager.setRangeEpisodeEnd( values.last().toInt() )
+		preferenceManager.setRangeEpisodeStart(values.first().toInt())
+		preferenceManager.setRangeEpisodeEnd(values.last().toInt())
 
 		onRangeChanged()
 	}
@@ -86,7 +90,7 @@ class EpisodeViewModel @Inject constructor(
 
 	fun onSortChanged() {
 		val cur = currentDataPref.value
-		cur?.sort = when( preferenceManager.sortAirDate() ){
+		cur?.sort = when (preferenceManager.sortAirDate()) {
 			ExtendedNavigationView.Item.MultiSort.SORT_DESC -> SORT_DESC
 			else -> SORT_ASC
 		}

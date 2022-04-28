@@ -9,11 +9,15 @@ import com.projectdelta.naruto.util.system.lang.gone
 import com.projectdelta.naruto.util.system.lang.visible
 import kotlinx.coroutines.Job
 
-abstract class BaseFragment : Fragment(){
+abstract class BaseFragment : Fragment() {
 
 	protected val jobs = mutableListOf<Job>()
 
-	protected fun displayToolbarTitle(textView: TextView, title: String?, @Suppress("SameParameterValue") useAnimation: Boolean) {
+	protected fun displayToolbarTitle(
+		textView: TextView,
+		title: String?,
+		@Suppress("SameParameterValue") useAnimation: Boolean
+	) {
 		if (title != null) {
 			showToolbarTitle(textView, title, useAnimation)
 		} else {

@@ -83,6 +83,7 @@ fun View.fadeIn() {
 			.setListener(null)
 	}
 }
+
 /**
  * A easy View Fade In / Out sourced from [here](https://github.com/mitchtabian/Clean-Notes/blob/ea8f6c95c57685aed42b3b1286aecb33cc2bbf77/app/src/main/java/com/codingwithmitch/cleannotes/framework/presentation/common/ViewExtensions.kt#L47)
  * @param todoCallback a callback for doing something when animation ends
@@ -204,7 +205,12 @@ fun <T : RecyclerView> T.removeItemDecorations() {
  * [Source](https://stackoverflow.com/a/59652513/11718077)
  */
 @Suppress("DEPRECATION")
-fun TextView.leftDrawable(@DrawableRes id: Int = 0, @DimenRes sizeRes: Int = 0, @ColorInt color: Int = 0, @ColorRes colorRes: Int = 0) {
+fun TextView.leftDrawable(
+	@DrawableRes id: Int = 0,
+	@DimenRes sizeRes: Int = 0,
+	@ColorInt color: Int = 0,
+	@ColorRes colorRes: Int = 0
+) {
 	val drawable = ContextCompat.getDrawable(context, id)
 	if (sizeRes != 0) {
 		val size = resources.getDimensionPixelSize(sizeRes)
@@ -239,14 +245,15 @@ fun View.translationObjectY(
 	startY: Float,
 	endY: Float,
 	duration: Long = 200L
-) : ObjectAnimator {
+): ObjectAnimator {
 	return ObjectAnimator.ofFloat(this, "translationY", startY, endY).apply {
 		this.duration = duration
 		interpolator = LinearOutSlowInInterpolator()
 		start()
 	}
 }
-fun BottomNavigationView.slideDown(todoCallback: TodoCallback? = null){
+
+fun BottomNavigationView.slideDown(todoCallback: TodoCallback? = null) {
 	if (translationY == 0f) {
 		translationObjectY(0f, height.toFloat() + marginBottom.toFloat()).apply {
 			doOnEnd {
@@ -255,8 +262,9 @@ fun BottomNavigationView.slideDown(todoCallback: TodoCallback? = null){
 		}
 	}
 }
-fun BottomNavigationView.slideUp(todoCallback: TodoCallback? = null){
-	if( translationY == height.toFloat() + marginBottom.toFloat() ){
+
+fun BottomNavigationView.slideUp(todoCallback: TodoCallback? = null) {
+	if (translationY == height.toFloat() + marginBottom.toFloat()) {
 		translationObjectY(height.toFloat() + marginBottom.toFloat(), 0f).apply {
 			doOnEnd {
 				todoCallback?.execute()

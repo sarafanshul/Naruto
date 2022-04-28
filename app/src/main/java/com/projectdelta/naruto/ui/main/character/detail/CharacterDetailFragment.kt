@@ -52,11 +52,11 @@ class CharacterDetailFragment : BaseViewBindingFragment<FragmentCharacterDetailB
 		fun newInstance() = CharacterDetailFragment()
 	}
 
-	private val viewModel : CharacterDetailViewModel by viewModels()
+	private val viewModel: CharacterDetailViewModel by viewModels()
 
-	lateinit var character : Character
+	lateinit var character: Character
 
-	private var jutsuListAdapter : JutsuListAdapter? = null
+	private var jutsuListAdapter: JutsuListAdapter? = null
 
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
@@ -100,7 +100,7 @@ class CharacterDetailFragment : BaseViewBindingFragment<FragmentCharacterDetailB
 
 		subscribeObservers()
 
-		viewModel.jutsuList.observe(viewLifecycleOwner ,{ data ->
+		viewModel.jutsuList.observe(viewLifecycleOwner, { data ->
 			jutsuListAdapter?.submitList(data)
 		})
 
@@ -113,7 +113,7 @@ class CharacterDetailFragment : BaseViewBindingFragment<FragmentCharacterDetailB
 			layoutCharacterDetail.transitionName = TRANSITION_CHARACTER.plus(character.id)
 
 			appBar.addOnOffsetChangedListener(
-				AppBarLayout.OnOffsetChangedListener{ _ ,offset ->
+				AppBarLayout.OnOffsetChangedListener { _, offset ->
 					if (offset < COLLAPSING_TOOLBAR_VISIBILITY_THRESHOLD) {
 						viewModel.setCollapsingToolbarState(CollapsingToolbarState.Collapsed())
 					} else {
@@ -149,7 +149,7 @@ class CharacterDetailFragment : BaseViewBindingFragment<FragmentCharacterDetailB
 
 			// status
 			characterStatus.text = character.personal?.status
-			if( character.personal?.status != Character.Companion.CharacterStatus.ALIVE.value ){
+			if (character.personal?.status != Character.Companion.CharacterStatus.ALIVE.value) {
 				characterStatus.compoundDrawables.first().setTint(Color.RED)
 				characterStatus.setTextColor(Color.RED)
 			}
@@ -160,7 +160,7 @@ class CharacterDetailFragment : BaseViewBindingFragment<FragmentCharacterDetailB
 
 			// sex
 			characterSex.text = character.personal?.sex
-			when(character.personal?.sex){
+			when (character.personal?.sex) {
 				"Male" -> characterSex.leftDrawable(R.drawable.ic_male_black_24dp)
 				"Female" -> characterSex.leftDrawable(R.drawable.ic_female_black_24dp)
 				else -> characterSex.leftDrawable(R.drawable.ic_transgender_black_24dp)
@@ -170,9 +170,9 @@ class CharacterDetailFragment : BaseViewBindingFragment<FragmentCharacterDetailB
 			characterDescription.text = character.description
 
 			// debut
-			viewModel.chapter.observe(viewLifecycleOwner){ chapter ->
+			viewModel.chapter.observe(viewLifecycleOwner) { chapter ->
 				Timber.d(chapter.toString())
-				if( chapter != null ) {
+				if (chapter != null) {
 					val dateFormat = SimpleDateFormat("dd MMMM yy", Locale.ENGLISH)
 					characterDebut.episodeItem.visibility = View.VISIBLE
 					characterDebutHead.visibility = View.VISIBLE
@@ -201,21 +201,24 @@ class CharacterDetailFragment : BaseViewBindingFragment<FragmentCharacterDetailB
 						itemFiller.visibility =
 							if (!chapter.manga?.chapters.isNullOrEmpty()) View.GONE else View.VISIBLE
 					}
-				}
-				else{
+				} else {
 					characterDebut.episodeItem.visibility = View.GONE
 					characterDebutHead.visibility = View.GONE
 				}
 			}
 			characterDebut.episodeItem.setOnClickListener {
-				navigateEpisodeDetail(viewModel.chapter.value!! ,characterDebut.episodeItem)
+				navigateEpisodeDetail(viewModel.chapter.value!!, characterDebut.episodeItem)
 			}
 
 			// clan
-			characterClan.text = if(character.personal?.clan?.first().isOk()) character.personal?.clan?.first() else "Rogue Ninja"
+			characterClan.text = if (character.personal?.clan?.first()
+					.isOk()
+			) character.personal?.clan?.first() else "Rogue Ninja"
 
 			// village
-			characterVillage.text = if(character.personal?.affiliation?.first().isOk()) character.personal?.affiliation?.first() else "Traveller"
+			characterVillage.text = if (character.personal?.affiliation?.first()
+					.isOk()
+			) character.personal?.affiliation?.first() else "Traveller"
 
 		}
 	}
@@ -262,11 +265,11 @@ class CharacterDetailFragment : BaseViewBindingFragment<FragmentCharacterDetailB
 			CharacterDetailFragmentDirections.actionCharacterDetailFragmentToEpisodeDetailFragment(
 				chapter
 			)
-		safeNavigate(action ,extras)
+		safeNavigate(action, extras)
 	}
 
 	private fun launchWebView() {
-		(requireActivity() as MainActivity).launchWebView( FANDOM_URL + character.id)
+		(requireActivity() as MainActivity).launchWebView(FANDOM_URL + character.id)
 	}
 
 	private fun transitionToExpandedMode() {
@@ -280,7 +283,7 @@ class CharacterDetailFragment : BaseViewBindingFragment<FragmentCharacterDetailB
 	}
 
 	private fun getToolbarTitle(): String =
-		if( character.name?.english!!.isOk())
+		if (character.name?.english!!.isOk())
 			character.name?.english?.chop(45)!!
 		else
 			NotFound.surpriseMe()

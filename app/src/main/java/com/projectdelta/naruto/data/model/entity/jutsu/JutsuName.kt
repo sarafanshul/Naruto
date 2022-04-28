@@ -7,4 +7,4 @@ data class JutsuName(
 	val kanji: String? = null,
 	val romaji: String? = null,
 	val other: String? = null,
-): Serializable
+) : Serializable

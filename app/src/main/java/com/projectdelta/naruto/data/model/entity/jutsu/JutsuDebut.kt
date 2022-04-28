@@ -10,4 +10,4 @@ data class JutsuDebut(
 	val game: String? = null,
 	val ova: String? = null,
 	val appears: List<String>? = null,
-): Serializable
+) : Serializable

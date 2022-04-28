@@ -44,25 +44,44 @@ open class ExtendedNavigationView @JvmOverloads constructor(
 		/**
 		 * A checkbox.
 		 */
-		open class Checkbox(val resTitle: Int, var checked: Boolean = false, var enabled: Boolean = true) : Item()
+		open class Checkbox(
+			val resTitle: Int,
+			var checked: Boolean = false,
+			var enabled: Boolean = true
+		) : Item()
 
 		/**
 		 * A checkbox belonging to a group. The group must handle selections and restrictions.
 		 */
-		class CheckboxGroup(resTitle: Int, override val group: Group, checked: Boolean = false, enabled: Boolean = true) :
+		class CheckboxGroup(
+			resTitle: Int,
+			override val group: Group,
+			checked: Boolean = false,
+			enabled: Boolean = true
+		) :
 			Checkbox(resTitle, checked, enabled), GroupedItem
 
 		/**
 		 * A radio belonging to a group (a sole radio makes no sense). The group must handle
 		 * selections and restrictions.
 		 */
-		class Radio(val resTitle: Int, override val group: Group, var checked: Boolean = false, var enabled: Boolean = true) :
+		class Radio(
+			val resTitle: Int,
+			override val group: Group,
+			var checked: Boolean = false,
+			var enabled: Boolean = true
+		) :
 			Item(), GroupedItem
 
 		/**
 		 * An item with which needs more than two states (selected/deselected).
 		 */
-		abstract class MultiState(val resTitle: Int, var state: Int = 0, var enabled: Boolean = true, var isVisible: Boolean = true) : Item() {
+		abstract class MultiState(
+			val resTitle: Int,
+			var state: Int = 0,
+			var enabled: Boolean = true,
+			var isVisible: Boolean = true
+		) : Item() {
 
 			/**
 			 * Returns the drawable associated to every possible each state.
@@ -75,7 +94,11 @@ open class ExtendedNavigationView @JvmOverloads constructor(
 			 * @param context any context.
 			 * @param resId the vector resource to load and tint
 			 */
-			fun tintVector(context: Context, resId: Int, @AttrRes colorAttrRes: Int = R.attr.colorAccent): Drawable {
+			fun tintVector(
+				context: Context,
+				resId: Int,
+				@AttrRes colorAttrRes: Int = R.attr.colorAccent
+			): Drawable {
 				return AppCompatResources.getDrawable(context, resId)!!.apply {
 					setTint(context.getResourceColor(if (enabled) colorAttrRes else R.attr.colorControlNormal))
 				}
@@ -86,7 +109,12 @@ open class ExtendedNavigationView @JvmOverloads constructor(
 		 * An item with which needs more than two states (selected/deselected) belonging to a group.
 		 * The group must handle selections and restrictions.
 		 */
-		abstract class MultiStateGroup(resTitle: Int, override val group: Group, state: Int = 0, enabled: Boolean = true) :
+		abstract class MultiStateGroup(
+			resTitle: Int,
+			override val group: Group,
+			state: Int = 0,
+			enabled: Boolean = true
+		) :
 			MultiState(resTitle, state, enabled), GroupedItem
 
 		/**
@@ -123,7 +151,11 @@ open class ExtendedNavigationView @JvmOverloads constructor(
 
 			override fun getStateDrawable(context: Context): Drawable {
 				return when (state) {
-					State.IGNORE.value -> tintVector(context, R.drawable.ic_check_box_outline_blank_24dp, R.attr.colorControlNormal)
+					State.IGNORE.value -> tintVector(
+						context,
+						R.drawable.ic_check_box_outline_blank_24dp,
+						R.attr.colorControlNormal
+					)
 					State.INCLUDE.value -> tintVector(context, R.drawable.ic_check_box_24dp)
 					State.EXCLUDE.value -> tintVector(context, R.drawable.ic_check_box_x_24dp)
 					else -> throw Exception("Unknown state")

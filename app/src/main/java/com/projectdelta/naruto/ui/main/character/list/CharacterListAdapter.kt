@@ -18,19 +18,19 @@ import com.projectdelta.naruto.util.callback.BaseModelItemClickCallback
 
 class CharacterListAdapter(
 	private val clickCallback: BaseModelItemClickCallback
-) : PagingDataAdapter<Character , CharacterListAdapter.LayoutViewHolder>(BaseModelDiffUtilCallback()) {
+) : PagingDataAdapter<Character, CharacterListAdapter.LayoutViewHolder>(BaseModelDiffUtilCallback()) {
 
 	inner class LayoutViewHolder(
-		private val binding : CharacterItemBinding
-	) : RecyclerView.ViewHolder(binding.root){
+		private val binding: CharacterItemBinding
+	) : RecyclerView.ViewHolder(binding.root) {
 
 		@SuppressLint("SetTextI18n")
-		fun bind(character: Character ,clickCallback: BaseModelItemClickCallback){
-			with(binding){
+		fun bind(character: Character, clickCallback: BaseModelItemClickCallback) {
+			with(binding) {
 				val context = root.context
 
 				root.setOnClickListener {
-					clickCallback.onItemClick(character ,characterItem)
+					clickCallback.onItemClick(character, characterItem)
 				}
 
 				characterItem.transitionName = TRANSITION_CHARACTER.plus(character.id)
@@ -39,36 +39,38 @@ class CharacterListAdapter(
 					.load(character.images?.first())
 					.apply(
 						RequestOptions()
-						.placeholder(R.drawable.placeholder_white_leaf)
-						.diskCacheStrategy(DiskCacheStrategy.DATA)
+							.placeholder(R.drawable.placeholder_white_leaf)
+							.diskCacheStrategy(DiskCacheStrategy.DATA)
 					)
 					.into(itemImage)
 
 				itemName.text = character.name?.english
 				itemKanjiValue.text = character.name?.kanji
 				itemGenderValue.text = character.personal?.sex ?: NotFound.surpriseMe()
-				val debut = if(character.debut?.anime?.name == "Naruto Shippūden" ) "Shippūden" else character.debut?.anime?.name
+				val debut =
+					if (character.debut?.anime?.name == "Naruto Shippūden") "Shippūden" else character.debut?.anime?.name
 				itemDebutValue.text = "$debut #${character.debut?.anime?.episode}"
 				itemStatusValue.text = character.personal?.status ?: NotFound.surpriseMe()
-				if( character.personal?.status == "Alive" )
+				if (character.personal?.status == "Alive")
 					itemStatusValue.setTextColor(context.getColor(R.color.rm_green_600))
 				else
 					itemStatusValue.setTextColor(context.getColor(R.color.rm_red_add))
 
-				itemAffiliationValue.text = character.personal?.affiliation?.first() ?: "Side Character!"
+				itemAffiliationValue.text =
+					character.personal?.affiliation?.first() ?: "Side Character!"
 			}
 		}
 
 	}
 
 	override fun onBindViewHolder(holder: LayoutViewHolder, position: Int) {
-		holder.bind(getItem(position)!! ,clickCallback)
+		holder.bind(getItem(position)!!, clickCallback)
 	}
 
 	override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LayoutViewHolder {
 		return LayoutViewHolder(
 			CharacterItemBinding.inflate(
-				LayoutInflater.from(parent.context) ,parent ,false
+				LayoutInflater.from(parent.context), parent, false
 			)
 		)
 	}

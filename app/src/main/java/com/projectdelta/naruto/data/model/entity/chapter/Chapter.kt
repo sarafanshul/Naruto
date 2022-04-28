@@ -13,7 +13,7 @@ data class Chapter(
 	val manga: ChapterManga? = null,
 	val music: ChapterMusic? = null,
 	val date: ChapterAirDate? = null,
-) : BaseModel() , Serializable {
+) : BaseModel(), Serializable {
 
 	companion object {
 		private const val serialVersionUID = 1L

@@ -41,26 +41,30 @@ class EpisodeListFragment : BaseViewBindingFragment<FragmentEpisodeListBinding>(
 		fun newInstance() = EpisodeListFragment()
 	}
 
-	private val viewModel : EpisodeViewModel by activityViewModels()
+	private val viewModel: EpisodeViewModel by activityViewModels()
 
-	private var adapter : EpisodeListAdapter? = null
+	private var adapter: EpisodeListAdapter? = null
 
-	private var searchSheet : MaterialDialog? = null
-	private var settingsSheet : EpisodeSettingSheet? = null
+	private var searchSheet: MaterialDialog? = null
+	private var settingsSheet: EpisodeSettingSheet? = null
 
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
 		// Access viewModel so that it gets initialized on the main thread
 		viewModel
 
-		adapter = EpisodeListAdapter( object : BaseModelItemClickCallback{
+		adapter = EpisodeListAdapter(object : BaseModelItemClickCallback {
 			override fun onItemClick(item: BaseModel, itemCard: CardView) {
-				navigateEpisodeDetail( item as Chapter ,itemCard )
+				navigateEpisodeDetail(item as Chapter, itemCard)
 			}
 		})
 	}
 
-	override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+	override fun onCreateView(
+		inflater: LayoutInflater,
+		container: ViewGroup?,
+		savedInstanceState: Bundle?
+	): View {
 		_binding = FragmentEpisodeListBinding.inflate(layoutInflater)
 		return binding.root
 	}
@@ -84,27 +88,29 @@ class EpisodeListFragment : BaseViewBindingFragment<FragmentEpisodeListBinding>(
 		binding.episodeRv.layoutManager = LinearLayoutManager(requireActivity())
 
 		binding.episodeRv.adapter = adapter
-		viewModel.data.observe(viewLifecycleOwner, {data ->
-			adapter?.submitData(viewLifecycleOwner.lifecycle ,data)
+		viewModel.data.observe(viewLifecycleOwner, { data ->
+			adapter?.submitData(viewLifecycleOwner.lifecycle, data)
 		})
 
-		(requireActivity() as MainActivity).connectivityManager.isNetworkAvailable.observe(viewLifecycleOwner , connectionWatcher@{x ->
-			when(x){
-				true -> {
-					onNetworkReconnect()
+		(requireActivity() as MainActivity).connectivityManager.isNetworkAvailable.observe(
+			viewLifecycleOwner,
+			connectionWatcher@{ x ->
+				when (x) {
+					true -> {
+						onNetworkReconnect()
+					}
+					false -> {}
 				}
-				false -> { }
-			}
-		})
+			})
 
 		adapter?.addLoadStateListener { state ->
 			binding.progressBar.isVisible = state.source.refresh is LoadState.Loading
-			if( state.source.refresh is LoadState.NotLoading &&
-				state.append.endOfPaginationReached && adapter?.itemCount!! < 1) {
+			if (state.source.refresh is LoadState.NotLoading &&
+				state.append.endOfPaginationReached && adapter?.itemCount!! < 1
+			) {
 				binding.emptyView.visibility = View.VISIBLE
 				binding.episodeRv.isVisible = false
-			}
-			else {
+			} else {
 				binding.emptyView.visibility = View.GONE
 				binding.episodeRv.isVisible = true
 			}
@@ -114,7 +120,7 @@ class EpisodeListFragment : BaseViewBindingFragment<FragmentEpisodeListBinding>(
 	private fun setMenu() {
 		initMenu()
 		binding.toolbar.setOnMenuItemClickListener {
-			when(it.itemId){
+			when (it.itemId) {
 				R.id.action_filter -> {
 					settingsSheet?.show()
 				}
@@ -128,22 +134,27 @@ class EpisodeListFragment : BaseViewBindingFragment<FragmentEpisodeListBinding>(
 
 	private fun initMenu() {
 
-		searchSheet = MaterialDialog(requireActivity(), BottomSheet(LayoutMode.WRAP_CONTENT)).apply {
-			title(text = "Search")
-			message(text = "Select range to filter episodes.")
-			customView(R.layout.layout_search_range)
-			cornerRadius(res = R.dimen.dialog_default_corner_radius)
-		}
+		searchSheet =
+			MaterialDialog(requireActivity(), BottomSheet(LayoutMode.WRAP_CONTENT)).apply {
+				title(text = "Search")
+				message(text = "Select range to filter episodes.")
+				customView(R.layout.layout_search_range)
+				cornerRadius(res = R.dimen.dialog_default_corner_radius)
+			}
 
 		setupRangeSheet(searchSheet?.getCustomView() as RangeSlider)
 
 		settingsSheet = EpisodeSettingSheet(
-			requireActivity() ,
+			requireActivity(),
 			(requireActivity() as MainActivity).preferenceManager
-		){ group ->
+		) { group ->
 			when (group) {
-				is EpisodeSettingSheet.Filter.FilterGroup -> { onFilterChanged() }
-				is EpisodeSettingSheet.Sort.SortGroup -> { onSortChanged() }
+				is EpisodeSettingSheet.Filter.FilterGroup -> {
+					onFilterChanged()
+				}
+				is EpisodeSettingSheet.Sort.SortGroup -> {
+					onSortChanged()
+				}
 			}
 		}
 
@@ -158,24 +169,24 @@ class EpisodeListFragment : BaseViewBindingFragment<FragmentEpisodeListBinding>(
 	}
 
 	private fun setupRangeSheet(rangeSlider: RangeSlider?) {
-		if( rangeSlider == null )
+		if (rangeSlider == null)
 			return
-		with(rangeSlider){
+		with(rangeSlider) {
 
-			setValues(viewModel.rangeEpSt.toFloat() ,viewModel.rangeEpEd.toFloat())
+			setValues(viewModel.rangeEpSt.toFloat(), viewModel.rangeEpEd.toFloat())
 			valueFrom = 0f
 			valueTo = MAX_EPISODE_NUMBER.toFloat()
 			stepSize = 20f
 
 			setLabelFormatter { value ->
-				when( value.toInt() ){
+				when (value.toInt()) {
 					MAX_EPISODE_NUMBER -> "End"
 					0 -> "Start"
 					else -> value.toInt().toString()
 				}
 			}
 
-			addOnSliderTouchListener( object : RangeSlider.OnSliderTouchListener{
+			addOnSliderTouchListener(object : RangeSlider.OnSliderTouchListener {
 				override fun onStartTrackingTouch(slider: RangeSlider) {}
 
 				override fun onStopTrackingTouch(slider: RangeSlider) {
@@ -193,7 +204,7 @@ class EpisodeListFragment : BaseViewBindingFragment<FragmentEpisodeListBinding>(
 			EpisodeListFragmentDirections.actionEpisodeListFragmentToEpisodeDetailFragment(
 				chapter
 			)
-		safeNavigate(action ,extras)
+		safeNavigate(action, extras)
 	}
 
 	private fun prepareTransitions() {

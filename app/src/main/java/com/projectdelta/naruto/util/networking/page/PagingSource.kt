@@ -1,6 +1,7 @@
 package com.projectdelta.naruto.util.networking.page
 
 
+import androidx.paging.PagingConfig
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.projectdelta.naruto.data.model.entity.BaseModel
@@ -31,35 +32,47 @@ import timber.log.Timber
  * - *Update 29-09 13:01* - now supports custom filters for filtering data while fetching from endpoint. and [List.distinct] for distinct ops ,
  * due to some server side error
  *
+ * - *Update 28-04 12:28* - support for jumping pages (not loading jumped pages sequentially) and default paging config : [defaultPagingConfig].
+ *
  * @param T generic for type of document needed.
  * @param endPoint a suspend HTTP request endpoint
  * @param filters a suspend filter lambda for filtering data
  */
-class PagingSource<T: BaseModel> (
-	private val endPoint : suspend (Int) -> ApiResult<PageResult<T?>>,
-	private val filters : suspend (T) -> Boolean = {true}
-) : PagingSource<Int ,T>() {
+class PagingSource<T : BaseModel>(
+	private val endPoint: suspend (Int) -> ApiResult<PageResult<T?>>,
+	private val filters: suspend (T) -> Boolean = { true }
+) : PagingSource<Int, T>() {
 
-	companion object{
+	@Suppress("MemberVisibilityCanBePrivate")
+	companion object {
 		const val DEFAULT_STARTING_PAGE_INDEX = 0
+		const val DEFAULT_PAGE_SIZE = 20
+		const val DEFAULT_JUMPING_THRESHOLD = DEFAULT_PAGE_SIZE * 3
+
+		val defaultPagingConfig: PagingConfig = PagingConfig(
+			pageSize = DEFAULT_PAGE_SIZE,
+			enablePlaceholders = false,
+			jumpThreshold = DEFAULT_JUMPING_THRESHOLD
+		)
 	}
+
+	override val jumpingSupported: Boolean = true
 
 	override suspend fun load(params: LoadParams<Int>): LoadResult<Int, T> {
 		Timber.d("load Called for : ${endPoint::class}")
 		val pageIndex = params.key ?: DEFAULT_STARTING_PAGE_INDEX
 		val responsePageable = endPoint(pageIndex)
-		val responseData : MutableList<T> = mutableListOf()
+		val responseData: MutableList<T> = mutableListOf()
 		val nextKey: Int?
-		when( responsePageable ) {
+		when (responsePageable) {
 			is ApiResult.Success -> {
-				if(responsePageable.data.content.isNotEmpty()) {
+				if (responsePageable.data.content.isNotEmpty()) {
 					nextKey = pageIndex + 1
 					responseData.addAll(responsePageable.data.content
 						.filterNotNull()
 						.filter { filters(it) }
 					)
-				}
-				else {
+				} else {
 					nextKey = null
 				}
 			}
@@ -74,8 +87,8 @@ class PagingSource<T: BaseModel> (
 		}
 
 		return LoadResult.Page(
-			data = responseData ,
-			prevKey = if(pageIndex == DEFAULT_STARTING_PAGE_INDEX) null else pageIndex ,
+			data = responseData,
+			prevKey = if (pageIndex == DEFAULT_STARTING_PAGE_INDEX) null else pageIndex,
 			nextKey = nextKey
 		)
 	}

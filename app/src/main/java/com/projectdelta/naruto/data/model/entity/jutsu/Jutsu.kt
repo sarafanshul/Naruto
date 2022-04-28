@@ -16,4 +16,4 @@ data class Jutsu(
 	val handSeals: String? = null,
 	val debut: JutsuDebut? = null,
 	val users: List<String>? = null,
-):BaseModel(), Serializable
+) : BaseModel(), Serializable

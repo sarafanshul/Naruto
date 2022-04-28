@@ -11,8 +11,8 @@ import com.projectdelta.naruto.widgets.ExtendedNavigationView
 import com.projectdelta.naruto.widgets.sheet.TabbedBottomSheetDialog
 
 @Suppress("unused", "JoinDeclarationAndAssignment")
-class EpisodeSettingSheet (
-	fActivity : Activity,
+class EpisodeSettingSheet(
+	fActivity: Activity,
 	private val preferenceManager: PreferenceManager,
 	onGroupClickListener: (ExtendedNavigationView.Group) -> Unit
 ) : TabbedBottomSheetDialog(fActivity) {
@@ -65,7 +65,7 @@ class EpisodeSettingSheet (
 			private val cannon = Item.CheckboxGroup(R.string.action_filter_cannon, this)
 
 			override val header = null
-			override val items: List<Item> = listOf( cannon )
+			override val items: List<Item> = listOf(cannon)
 			override val footer = null
 
 			override fun initModels() {
@@ -74,7 +74,7 @@ class EpisodeSettingSheet (
 
 			override fun onItemClicked(item: Item) {
 				item as Item.CheckboxGroup
-				val newState = ! item.checked
+				val newState = !item.checked
 				item.checked = newState
 				when (item) {
 					cannon -> preferenceManager.setFilterCannon(newState)
@@ -135,7 +135,7 @@ class EpisodeSettingSheet (
 
 				item.group.items.forEach { adapter.notifyItemChanged(it) }
 
-				when(item){
+				when (item) {
 					airDate -> preferenceManager.setSortAirDate(item.state)
 					else -> throw NotFound.TheFuckHappened("Unknown sort selected !")
 				}

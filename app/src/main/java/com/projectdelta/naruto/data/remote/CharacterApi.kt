@@ -31,9 +31,9 @@ interface CharacterApi {
 	 */
 	@GET(CHARACTER_URL + SUB_URL_POWER)
 	suspend fun getCharactersSortedByPower(
-		@Query(QUERY_PAGE) pageNumber: Int ,
+		@Query(QUERY_PAGE) pageNumber: Int,
 		@Query(QUERY_REVERSE) reverse: Boolean
-	):ApiResult<PageResult<Character?>>
+	): ApiResult<PageResult<Character?>>
 
 	/**
 	 * Page Api just to get work done , TODO (Update Later)
@@ -44,10 +44,10 @@ interface CharacterApi {
 	@Deprecated("Use getCoreCharacters endPoint")
 	@GET(CHARACTER_URL + SUB_URL_PAGE)
 	suspend fun getCharacterPaged(
-		@Query(QUERY_PAGE) pageNumber: Int ,
-		@Query(QUERY_SORT) sort : String ,
-		@Query(QUERY_SORT) sort1 : String = ""
-	):ApiResult<PageResult<Character?>>
+		@Query(QUERY_PAGE) pageNumber: Int,
+		@Query(QUERY_SORT) sort: String,
+		@Query(QUERY_SORT) sort1: String = ""
+	): ApiResult<PageResult<Character?>>
 
 	/**
 	 * Gets cannon characters with null check on name and images.
@@ -56,9 +56,9 @@ interface CharacterApi {
 	 */
 	@GET(CHARACTER_URL + SUB_URL_CORE)
 	suspend fun getCoreCharacters(
-		@Query(QUERY_PAGE) pageNumber: Int ,
-		@Query(QUERY_SORT) sortParam : String
-	):ApiResult<PageResult<Character?>>
+		@Query(QUERY_PAGE) pageNumber: Int,
+		@Query(QUERY_SORT) sortParam: String
+	): ApiResult<PageResult<Character?>>
 
 	/**
 	 * Gets characters with regex match.
@@ -67,10 +67,10 @@ interface CharacterApi {
 	 */
 	@GET(CHARACTER_URL + SUB_URL_LIKE_PAGED)
 	suspend fun getCharacterLikePaged(
-		@Query(QUERY_NAME) name : String ,
-		@Query(QUERY_PAGE) pageNumber: Int ,
+		@Query(QUERY_NAME) name: String,
+		@Query(QUERY_PAGE) pageNumber: Int,
 		@Query(QUERY_SORT) sortParam: String
-	):ApiResult<PageResult<Character?>>
+	): ApiResult<PageResult<Character?>>
 
 	/**
 	 * Gets character's jutsu filtered by : name.kanji ,range ,type
@@ -78,12 +78,12 @@ interface CharacterApi {
 	 */
 	@GET(CHARACTER_URL + SUB_URL_JUTSU_FILTER)
 	suspend fun getCharacterJutsuFiltered(
-		@Query(QUERY_ID) id : String
-	):ApiResult<List<Jutsu?>>
+		@Query(QUERY_ID) id: String
+	): ApiResult<List<Jutsu?>>
 
 	@GET(CHARACTER_URL + SUB_URL_DEBUT_CHAPTER)
 	suspend fun getCharacterDebutChapter(
-		@Query(QUERY_ID) id : String
-	):ApiResult<List<Chapter?>>
+		@Query(QUERY_ID) id: String
+	): ApiResult<List<Chapter?>>
 
 }

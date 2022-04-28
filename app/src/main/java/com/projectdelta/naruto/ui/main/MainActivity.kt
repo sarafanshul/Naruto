@@ -38,7 +38,7 @@ class MainActivity : BaseViewBindingActivity<ActivityMainBinding>() {
 
 	private fun registerObservers() {
 		viewModel.bottomNavVisibility.observe(this, { integer: Int ->
-			when( integer ){
+			when (integer) {
 				View.GONE -> binding.bottomPanel.slideDown()
 				View.VISIBLE -> binding.bottomPanel.slideUp()
 				else -> throw NotFound.TheFuckHappened("Only GONE & VISIBLE state supported!")
@@ -51,14 +51,15 @@ class MainActivity : BaseViewBindingActivity<ActivityMainBinding>() {
 		binding.bottomPanel.setupWithNavController(navController)
 
 		navController.addOnDestinationChangedListener { _, destination: NavDestination, _ ->
-			if( destination.id in listOf(
-					R.id.characterDetailFragment ,
-					R.id.locationDetailFragment ,
-					R.id.episodeDetailFragment)
-			){
+			if (destination.id in listOf(
+					R.id.characterDetailFragment,
+					R.id.locationDetailFragment,
+					R.id.episodeDetailFragment
+				)
+			) {
 				makeTransparentStatusBar(true)
 				viewModel.hideBottomNav()
-			}else{
+			} else {
 				makeTransparentStatusBar(false)
 				viewModel.showBottomNav()
 			}
@@ -66,8 +67,8 @@ class MainActivity : BaseViewBindingActivity<ActivityMainBinding>() {
 	}
 
 	private fun initUI() {
-		connectivityManager.isNetworkAvailable.observe(this , { comms ->
-			when( comms ){
+		connectivityManager.isNetworkAvailable.observe(this, { comms ->
+			when (comms) {
 				true -> {
 					binding.connectionTv.visibility = View.GONE
 					window.statusBarColor = Color.TRANSPARENT

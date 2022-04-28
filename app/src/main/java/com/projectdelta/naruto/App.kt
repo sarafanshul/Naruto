@@ -60,7 +60,6 @@ open class App : Application() {
 			)
 			StrictMode.setVmPolicy(
 				StrictMode.VmPolicy.Builder()
-//					.detectNonSdkApiUsage()
 					.detectLeakedSqlLiteObjects()
 					.detectLeakedClosableObjects()
 					.penaltyLog()

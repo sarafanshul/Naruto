@@ -1,7 +1,6 @@
 package com.projectdelta.naruto.data.repository
 
 import androidx.paging.Pager
-import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.projectdelta.naruto.data.model.entity.chapter.Chapter
 import com.projectdelta.naruto.data.model.entity.chapter.Chapter.Companion.MAX_EPISODE_NUMBER
@@ -17,16 +16,10 @@ class ChapterRepository @Inject constructor(
 	private val chapterApi: ChapterApi
 ) : InitManager<Character> {
 
-	companion object {
-		const val DEFAULT_PAGE_SIZE = 20
-	}
 
 	fun getChapterSortedPaged(): Flow<PagingData<Chapter>> {
 		return Pager(
-			config = PagingConfig(
-				pageSize = DEFAULT_PAGE_SIZE,
-				enablePlaceholders = false
-			),
+			config = PagingSource.defaultPagingConfig,
 			pagingSourceFactory = {
 				PagingSource(endPoint = { x: Int ->
 					chapterApi.getChapterSortedPaged(x)
@@ -37,22 +30,19 @@ class ChapterRepository @Inject constructor(
 	}
 
 	fun getChapterRangedOrdered(
-		rangeL : Int = 0,
-		rangeR : Int = MAX_EPISODE_NUMBER,
-		cannon : Boolean = false,
-		sort : Int = SORT_ASC
-	) : Flow<PagingData<Chapter>>{
+		rangeL: Int = 0,
+		rangeR: Int = MAX_EPISODE_NUMBER,
+		cannon: Boolean = false,
+		sort: Int = SORT_ASC
+	): Flow<PagingData<Chapter>> {
 		return Pager(
-			config = PagingConfig(
-				pageSize = DEFAULT_PAGE_SIZE,
-				enablePlaceholders = false
-			),
+			config = PagingSource.defaultPagingConfig,
 			pagingSourceFactory = {
 				PagingSource(
-					endPoint = { pageNumber : Int ->
+					endPoint = { pageNumber: Int ->
 						chapterApi.getChapterRangedOrdered(rangeL, rangeR, cannon, sort, pageNumber)
 					},
-					filters = {true}
+					filters = { true }
 				)
 			}
 		).flow

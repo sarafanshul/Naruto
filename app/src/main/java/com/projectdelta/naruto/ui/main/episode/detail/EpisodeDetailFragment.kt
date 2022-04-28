@@ -44,16 +44,16 @@ class EpisodeDetailFragment : BaseViewBindingFragment<FragmentEpisodeDetailBindi
 		fun newInstance() = EpisodeDetailFragment()
 	}
 
-	lateinit var episode : Chapter
+	lateinit var episode: Chapter
 
-	private val viewModel : EpisodeDetailViewModel by viewModels()
+	private val viewModel: EpisodeDetailViewModel by viewModels()
 
-	val dateFormat = SimpleDateFormat( "dd MMMM yy", Locale.ENGLISH )
+	val dateFormat = SimpleDateFormat("dd MMMM yy", Locale.ENGLISH)
 
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
 
-		val args : EpisodeDetailFragmentArgs by navArgs()
+		val args: EpisodeDetailFragmentArgs by navArgs()
 		episode = args.chapterData
 	}
 
@@ -79,11 +79,11 @@ class EpisodeDetailFragment : BaseViewBindingFragment<FragmentEpisodeDetailBindi
 
 	@SuppressLint("SetTextI18n")
 	private fun initUI() {
-		with(binding){
+		with(binding) {
 			layoutEpisodeDetail.transitionName = TRANSITION_EPISODE.plus(episode.id)
 
 			appBar.addOnOffsetChangedListener(
-				AppBarLayout.OnOffsetChangedListener{ _, offset ->
+				AppBarLayout.OnOffsetChangedListener { _, offset ->
 					if (offset < COLLAPSING_TOOLBAR_VISIBILITY_THRESHOLD) {
 						viewModel.setCollapsingToolbarState(CollapsingToolbarState.Collapsed())
 					} else {
@@ -170,7 +170,7 @@ class EpisodeDetailFragment : BaseViewBindingFragment<FragmentEpisodeDetailBindi
 	}
 
 	private fun launchWebView() {
-		(requireActivity() as MainActivity).launchWebView( ApiConstants.FANDOM_URL + episode.id)
+		(requireActivity() as MainActivity).launchWebView(ApiConstants.FANDOM_URL + episode.id)
 	}
 
 	private fun transitionToExpandedMode() {
@@ -184,7 +184,7 @@ class EpisodeDetailFragment : BaseViewBindingFragment<FragmentEpisodeDetailBindi
 	}
 
 	private fun getToolbarTitle(): String =
-		if( episode.name?.english!!.isOk())
+		if (episode.name?.english!!.isOk())
 			episode.name?.english?.chop(45)!!
 		else
 			NotFound.surpriseMe()

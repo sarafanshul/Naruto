@@ -5,6 +5,6 @@ import com.projectdelta.naruto.data.model.entity.BaseModel
 
 interface BaseModelItemClickCallback {
 
-	fun onItemClick( item : BaseModel ,itemCard : CardView )
+	fun onItemClick(item: BaseModel, itemCard: CardView)
 
 }

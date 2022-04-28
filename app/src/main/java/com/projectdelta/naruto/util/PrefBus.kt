@@ -17,9 +17,9 @@ object PrefBus {
 	)
 
 	data class EpisodeDataPrefBus(
-		var rangeL : Int = 0,
-		var rangeR : Int = MAX_EPISODE_NUMBER,
-		var cannon : Boolean = false,
-		var sort : Int = SORT_ASC,
+		var rangeL: Int = 0,
+		var rangeR: Int = MAX_EPISODE_NUMBER,
+		var cannon: Boolean = false,
+		var sort: Int = SORT_ASC,
 	)
 }

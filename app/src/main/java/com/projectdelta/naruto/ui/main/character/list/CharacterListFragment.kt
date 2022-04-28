@@ -37,25 +37,29 @@ class CharacterListFragment : BaseViewBindingFragment<FragmentCharacterListBindi
 		fun newInstance() = CharacterListFragment()
 	}
 
-	private val viewModel : CharacterViewModel by activityViewModels()
+	private val viewModel: CharacterViewModel by activityViewModels()
 
 	private var adapter: CharacterListAdapter? = null
 
-	private var settingsSheet : CharacterSettingSheet? = null
+	private var settingsSheet: CharacterSettingSheet? = null
 
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
 		// Access viewModel so that it gets initialized on the main thread
 		viewModel
 
-		adapter = CharacterListAdapter( object : BaseModelItemClickCallback{
+		adapter = CharacterListAdapter(object : BaseModelItemClickCallback {
 			override fun onItemClick(item: BaseModel, itemCard: CardView) {
 				navigateCharacterDetail(item as Character, itemCard as MaterialCardView)
 			}
-		} )
+		})
 	}
 
-	override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+	override fun onCreateView(
+		inflater: LayoutInflater,
+		container: ViewGroup?,
+		savedInstanceState: Bundle?
+	): View {
 		_binding = FragmentCharacterListBinding.inflate(layoutInflater)
 		return binding.root
 	}
@@ -80,27 +84,29 @@ class CharacterListFragment : BaseViewBindingFragment<FragmentCharacterListBindi
 
 		binding.characterRv.adapter = adapter
 
-		viewModel.data.observe(viewLifecycleOwner ,{
-			adapter?.submitData( viewLifecycleOwner.lifecycle , it )
+		viewModel.data.observe(viewLifecycleOwner, {
+			adapter?.submitData(viewLifecycleOwner.lifecycle, it)
 		})
 
-		(requireActivity() as MainActivity).connectivityManager.isNetworkAvailable.observe(viewLifecycleOwner , connectionWatcher@{ x ->
-			when(x){
-				true -> onNetworkReconnect()
-				false -> {
-					// TODO( SET MENU ITEMS UN-CLICKABLE )
+		(requireActivity() as MainActivity).connectivityManager.isNetworkAvailable.observe(
+			viewLifecycleOwner,
+			connectionWatcher@{ x ->
+				when (x) {
+					true -> onNetworkReconnect()
+					false -> {
+						// TODO( SET MENU ITEMS UN-CLICKABLE )
+					}
 				}
-			}
-		})
+			})
 
 		adapter?.addLoadStateListener { state ->
 			binding.progressBar.isVisible = state.source.refresh is LoadState.Loading
-			if( state.source.refresh is LoadState.NotLoading &&
-				state.append.endOfPaginationReached && adapter?.itemCount!! < 1) {
+			if (state.source.refresh is LoadState.NotLoading &&
+				state.append.endOfPaginationReached && adapter?.itemCount!! < 1
+			) {
 				binding.emptyView.visibility = View.VISIBLE
 				binding.characterRv.isVisible = false
-			}
-			else {
+			} else {
 				binding.emptyView.visibility = View.GONE
 				binding.characterRv.isVisible = true
 			}
@@ -111,7 +117,7 @@ class CharacterListFragment : BaseViewBindingFragment<FragmentCharacterListBindi
 	private fun setMenu() {
 		initMenu()
 		binding.toolbar.setOnMenuItemClickListener {
-			when(it.itemId){
+			when (it.itemId) {
 				R.id.action_filter -> {
 					settingsSheet?.show()
 				}
@@ -124,9 +130,9 @@ class CharacterListFragment : BaseViewBindingFragment<FragmentCharacterListBindi
 	private fun initMenu() {
 		setSearchBar()
 		settingsSheet = CharacterSettingSheet(
-			requireActivity() ,
+			requireActivity(),
 			(requireActivity() as MainActivity).preferenceManager
-		){ group ->
+		) { group ->
 			when (group) {
 				is CharacterSettingSheet.Filter.FilterGroup -> onFilterChanged()
 				is CharacterSettingSheet.Sort.SortGroup -> onSortChanged()
@@ -148,10 +154,11 @@ class CharacterListFragment : BaseViewBindingFragment<FragmentCharacterListBindi
 	For now Search disables sort and filter
 	 */
 	private fun setSearchBar() {
-		val searchView : SearchView? = binding.toolbar.menu.findItem(R.id.action_search).actionView as SearchView?
+		val searchView: SearchView? =
+			binding.toolbar.menu.findItem(R.id.action_search).actionView as SearchView?
 		searchView?.queryHint = "Hinata Hyuga"
 
-		searchView?.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
+		searchView?.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
 			override fun onQueryTextSubmit(query: String?): Boolean {
 				searchView.clearFocus()
 				return false
@@ -165,7 +172,7 @@ class CharacterListFragment : BaseViewBindingFragment<FragmentCharacterListBindi
 
 		// refer : https://stackoverflow.com/a/48989340/11718077
 		binding.toolbar.menu.findItem(R.id.action_search).setOnActionExpandListener(
-			object : MenuItem.OnActionExpandListener{
+			object : MenuItem.OnActionExpandListener {
 				override fun onMenuItemActionExpand(item: MenuItem?): Boolean {
 					binding.toolbar.menu.findItem(R.id.action_filter).isEnabled = false
 					binding.toolbar.menu.findItem(R.id.action_filter).icon.alpha = 130
@@ -194,7 +201,7 @@ class CharacterListFragment : BaseViewBindingFragment<FragmentCharacterListBindi
 			CharacterListFragmentDirections.actionCharacterListFragmentToCharacterDetailFragment(
 				character
 			)
-		safeNavigate(action ,extras)
+		safeNavigate(action, extras)
 	}
 
 	private fun prepareTransitions() {

@@ -1,7 +1,6 @@
 package com.projectdelta.naruto.data.repository
 
 import androidx.paging.Pager
-import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.projectdelta.naruto.data.model.entity.chapter.Chapter
 import com.projectdelta.naruto.data.model.entity.character.Character
@@ -17,76 +16,69 @@ class CharacterRepository @Inject constructor(
 	private val characterApi: CharacterApi
 ) : InitManager<Character> {
 
-	companion object {
-		const val DEFAULT_PAGE_SIZE = 20
-	}
 
 	fun getCharactersSortedByPowerPaged(
-		reverse : Boolean,
-		filters : suspend (Character) -> Boolean
+		reverse: Boolean,
+		filters: suspend (Character) -> Boolean
 	): Flow<PagingData<Character>> {
 		return Pager(
-			config = PagingConfig(
-				pageSize = DEFAULT_PAGE_SIZE,
-				enablePlaceholders = false
-			),
+			config = PagingSource.defaultPagingConfig,
 			pagingSourceFactory = {
-				PagingSource(endPoint = loadMore@{ x: Int ->
-					characterApi.getCharactersSortedByPower(x, reverse)
-				},
-				filters = filters
+				PagingSource(
+					endPoint = loadMore@{ x: Int ->
+						characterApi.getCharactersSortedByPower(x, reverse)
+					},
+					filters = filters
 				)
 			}
 		).flow
 	}
 
 	fun getCoreCharacters(
-		sortParam: Character.Companion.SortCharacter ,
+		sortParam: Character.Companion.SortCharacter,
 		filters: suspend (Character) -> Boolean
-	) : Flow<PagingData<Character>>{
+	): Flow<PagingData<Character>> {
 		return Pager(
-			config = PagingConfig(
-				pageSize = DEFAULT_PAGE_SIZE,
-				enablePlaceholders = false
-			),
+			config = PagingSource.defaultPagingConfig,
 			pagingSourceFactory = {
-				PagingSource(endPoint = loadMore@{ x: Int ->
-					characterApi.getCoreCharacters(x ,sortParam.value)
-				},
-				filters = filters
+				PagingSource(
+					endPoint = loadMore@{ x: Int ->
+						characterApi.getCoreCharacters(x, sortParam.value)
+					},
+					filters = filters
 				)
 			}
 		).flow
 	}
 
 	fun getCharacterLikePaged(
-		name : String , sortParam: Character.Companion.SortCharacter ,
+		name: String, sortParam: Character.Companion.SortCharacter,
 		filters: suspend (Character) -> Boolean
-	) : Flow<PagingData<Character>>{
+	): Flow<PagingData<Character>> {
 		return Pager(
-			config = PagingConfig(
-				pageSize = DEFAULT_PAGE_SIZE,
-				enablePlaceholders = false
-			),
+			config = PagingSource.defaultPagingConfig,
 			pagingSourceFactory = {
-				PagingSource(endPoint = loadMore@{ x: Int ->
-					characterApi.getCharacterLikePaged(name ,x ,sortParam.value)
-				} ,
-				filters = filters
+				PagingSource(
+					endPoint = loadMore@{ x: Int ->
+						characterApi.getCharacterLikePaged(name, x, sortParam.value)
+					},
+					filters = filters
 				)
 			}
 		).flow
 	}
 
-	suspend fun getCharacterJutsuFiltered(id : String) : List<Jutsu?> {
-		return when(val result : ApiResult<List<Jutsu?>> = characterApi.getCharacterJutsuFiltered(id)){
+	suspend fun getCharacterJutsuFiltered(id: String): List<Jutsu?> {
+		return when (val result: ApiResult<List<Jutsu?>> =
+			characterApi.getCharacterJutsuFiltered(id)) {
 			is ApiResult.Success -> result.data
 			else -> emptyList()
 		}
 	}
 
-	suspend fun getCharacterDebutChapter( id : String ) : List<Chapter?>{
-		return when( val result : ApiResult<List<Chapter?>> = characterApi.getCharacterDebutChapter(id) ){
+	suspend fun getCharacterDebutChapter(id: String): List<Chapter?> {
+		return when (val result: ApiResult<List<Chapter?>> =
+			characterApi.getCharacterDebutChapter(id)) {
 			is ApiResult.Success -> result.data
 			else -> emptyList()
 		}

@@ -11,8 +11,8 @@ import com.projectdelta.naruto.widgets.ExtendedNavigationView.Item.TriStateGroup
 import com.projectdelta.naruto.widgets.sheet.TabbedBottomSheetDialog
 
 @Suppress("unused", "JoinDeclarationAndAssignment")
-class CharacterSettingSheet (
-	fActivity : Activity,
+class CharacterSettingSheet(
+	fActivity: Activity,
 	private val preferenceManager: PreferenceManager,
 	onGroupClickListener: (ExtendedNavigationView.Group) -> Unit
 ) : TabbedBottomSheetDialog(fActivity) {
@@ -57,7 +57,8 @@ class CharacterSettingSheet (
 		 * Returns true if there's at least one filter from [FilterGroup] active.
 		 */
 		fun hasActiveFilters(): Boolean {
-			return filterGroup.items.filterIsInstance<Item.TriStateGroup>().any { it.state != State.IGNORE.value }
+			return filterGroup.items.filterIsInstance<Item.TriStateGroup>()
+				.any { it.state != State.IGNORE.value }
 		}
 
 		inner class FilterGroup : Group {
@@ -66,7 +67,7 @@ class CharacterSettingSheet (
 			private val alive = Item.TriStateGroup(R.string.action_filter_alive, this)
 
 			override val header = null
-			override val items: List<Item> = listOf( female  ,alive )
+			override val items: List<Item> = listOf(female, alive)
 			override val footer = null
 
 			override fun initModels() {
@@ -150,7 +151,7 @@ class CharacterSettingSheet (
 				item.group.items.forEach { adapter.notifyItemChanged(it) }
 
 				preferenceManager.resetSorting()
-				when(item){
+				when (item) {
 					alphabetically -> preferenceManager.setSortAlphabetically(item.state)
 					power -> preferenceManager.setSortPower(item.state)
 					debut -> preferenceManager.setSortDebut(item.state)

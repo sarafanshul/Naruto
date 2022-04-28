@@ -4,12 +4,12 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import com.projectdelta.naruto.util.CollapsingToolbarState
 
-@Suppress("unused" , "MemberVisibilityCanBePrivate")
+@Suppress("unused", "MemberVisibilityCanBePrivate")
 abstract class BaseDetailViewModel : ViewModel() {
 
 	private val interactionManager = BaseDetailInteractionManager()
 
-	val collapsingToolbarState : LiveData<CollapsingToolbarState>
+	val collapsingToolbarState: LiveData<CollapsingToolbarState>
 		get() = interactionManager.collapsingToolbarState
 
 	fun setCollapsingToolbarState(state: CollapsingToolbarState) {

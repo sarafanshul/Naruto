@@ -23,10 +23,10 @@ interface ChapterApi {
 
 	@GET(CHAPTER_URL + SUB_URL_IZANAMI)
 	suspend fun getChapterRangedOrdered(
-		@Query(QUERY_RANGE_L) rangeL : Int ,
-		@Query(QUERY_RANGE_R) rangeR : Int ,
-		@Query(QUERY_CANNON) cannon : Boolean ,
-		@Query(QUERY_SORT) sort : Int ,
+		@Query(QUERY_RANGE_L) rangeL: Int,
+		@Query(QUERY_RANGE_R) rangeR: Int,
+		@Query(QUERY_CANNON) cannon: Boolean,
+		@Query(QUERY_SORT) sort: Int,
 		@Query(QUERY_PAGE) pageNumber: Int
-	) : ApiResult< PageResult< Chapter? > >
+	): ApiResult<PageResult<Chapter?>>
 }

@@ -18,9 +18,9 @@ class LocationViewModel @Inject constructor(
 	private val repository: VillageRepository
 ) : ViewModel() {
 
-	private var getLocationPagedData : LiveData<PagingData<Village>>? = null
-	fun getLocationPaged() : LiveData<PagingData<Village>> {
-		if( getLocationPagedData == null )
+	private var getLocationPagedData: LiveData<PagingData<Village>>? = null
+	fun getLocationPaged(): LiveData<PagingData<Village>> {
+		if (getLocationPagedData == null)
 			getLocationPagedData = repository
 				.getVillagePaged()
 				.map { pagingData ->

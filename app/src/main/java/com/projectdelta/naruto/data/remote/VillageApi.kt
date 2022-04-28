@@ -13,6 +13,6 @@ interface VillageApi {
 
 	@GET(VILLAGE_URL + SUB_URL_PAGE)
 	suspend fun getVillagesPaged(
-		@Query(QUERY_PAGE) pageNumber : Int
-	) : ApiResult<PageResult<Village?>>
+		@Query(QUERY_PAGE) pageNumber: Int
+	): ApiResult<PageResult<Village?>>
 }

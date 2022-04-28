@@ -13,7 +13,7 @@ interface JutsuApi {
 	@Suppress("ConvertToStringTemplate")
 	@GET(JUTSU_URL + SUB_URL_ID)
 	suspend fun getJutsuById(
-		@Query("id") id : String
-	) : ApiResult<Jutsu?>
+		@Query("id") id: String
+	): ApiResult<Jutsu?>
 
 }
